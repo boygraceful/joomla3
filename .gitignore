@@ -1,0 +1,6 @@
+.idea
+.idea/*
+configuration.php
+index.php
+joomla.xml
+*.txt
