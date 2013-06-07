@@ -209,9 +209,35 @@ class Zo2Framework {
             {
                 $success = (bool) include_once ZO2_ADMIN_BASE . '/' . $path . '.php';
             }
-            return $paths[$filePath] = $success;
+            $paths[$filePath] = $success;
         }
 
         return $paths[$filePath];
+    }
+
+    public static function displayMegaMenu($menutype) {
+        Zo2Framework::import2('core.menu');
+        $app = JFactory::getApplication('site');
+        $params = $app->getTemplate(true)->params;
+
+        $currentconfig = json_decode($params->get('mm_config', ''), true);
+        $mmconfig = ($currentconfig && isset($currentconfig[$menutype])) ? $currentconfig[$menutype] : array();
+        $mmconfig['edit'] = true;
+        $menu = new ZO2MegaMenu ($menutype, $mmconfig, $params);
+        $menu->renderMenu();
+
+//        // add core megamenu.css in plugin
+//        // deprecated - will extend the core style into template megamenu.less & megamenu-responsive.less
+//        // to use variable overridden in template
+//        $this->addStyleSheet(T3_URL.'/css/megamenu.css');
+//        if ($this->getParam('responsive', 1)) $this->addStyleSheet(T3_URL.'/css/megamenu-responsive.css');
+//
+//        // megamenu.css override in template
+//        $this->addCss ('megamenu');
+
+    }
+
+    public function getParam($name, $default) {
+
     }
 }
