@@ -63,7 +63,7 @@ class ZO2MegaMenu
             $item->isdropdown = false;
 
             if (isset($config['show_group'])) {
-                $item->showgroup = true;
+                $item->show_group = true;
             } else {
                 // if this item is a parent then setting up the status is dropdown
                 if (isset($config['submenu']) || (isset($this->children[$item->id]) && ($config['hide_submenu'] || $this->edit))) {
@@ -137,7 +137,7 @@ class ZO2MegaMenu
         $html = '';
         $animation = $this->_params->get('menu_aimation', '');
         $duration = $this->_params->get('duration', 4);
-        $class = 'class="zo2-megamenu"' . ($animation ? ' animate ' . $animation : '') . '"';
+        $class = 'class="t3-megamenu' . ($animation ? ' animate ' . $animation : '') . '"';
         $data = $animation && $duration ? ' data-duration="' . $duration . '"' : '';
         $keys = array_keys($this->_items);
 
@@ -183,7 +183,7 @@ class ZO2MegaMenu
         }
         $class = '';
         if (!$parent) {
-            $class .= ' normal-nav level1';
+            $class .= ' nav level1';
         } else {
             $class .= ' zo2-megamenu-nav';
             $class .= ' level' . $parent->level;
@@ -231,11 +231,11 @@ class ZO2MegaMenu
         $caption = '';
         $linktype = '';
         if ($menu->isdropdown && $menu->level < 2) {
-            $class .= ' dropdown-toggle';
+            $class .= 'dropdown-toggle';
             $dropdown = ' data-toggle="dropdown"';
         }
 
-        if ($menu->showgroup) {
+        if ($menu->show_group) {
             $class .= ' group-title';
         }
 
@@ -249,7 +249,7 @@ class ZO2MegaMenu
             $linktype = $menu->title;
         }
 
-        if ($config['caption']) {
+        if (isset($config['caption'])) {
             $caption = '<span class="caption">' . $config['caption'] . '</span>';
         } else {
             $caption = '<span class="empty-caption"></span>';
@@ -319,11 +319,11 @@ class ZO2MegaMenu
             $class .= $menu->level == 1 ? ' dropdown' : ' dropdown-child';
         }
 
-        if ($menu->megamenu) $class .= ' zo2-megamenu';
-        if ($menu->showgroup) $class .= ' group-menu';
+        if ($menu->megamenu) $class .= ' mega';
+        if ($menu->show_group) $class .= ' group-menu';
 
         $data = "data-id=\"{$menu->id}\" data-level=\"{$menu->level}\"";
-        if ($menu->showgroup) $data .= " data-group=\"1\"";
+        if ($menu->show_group) $data .= " data-group=\"1\"";
         if (isset($config['class'])) {
             $data .= " data-class=\"{$config['class']}\"";
             $class .= " {$config['class']}";
@@ -363,20 +363,20 @@ class ZO2MegaMenu
         //default first item
         $fitem = count($menus) ? $menus[0]->id : 0;
 
-        $class = 'child ' . $parent->isdropdown ? 'dropdown-submenu' : '';
+        $class = 'child ' . $parent->isdropdown ? 'dropdown-menu' : '';
         $data = '';
         $style = '';
 
         if (isset($config['class'])) $data .= " data-class=\"{$config['class']}\"";
         if (isset($submenu['width'])) {
             if ($parent->isdropdown) {
-                $style = " style=\"width:{$submenu['width']}\"";
+                $style = " style=\"width:{$submenu['width']}px\"";
             }
             $data .= " data-width=\"{$submenu['width']}\"";
         }
         $class = 'class="' . $class . '"';
 
-        $html .= "<div $style $class $data>";
+        $html .= "<div $style $class $data><div class=\"mega-dropdown-inner\">";
 
         $end = array();
         $menuid = 0;
@@ -418,7 +418,7 @@ class ZO2MegaMenu
                     $class .= " hidden-collapse";
                 }
                 // start column
-                $html .= "<div class=\"$class\" $data>";
+                $html .= "<div class=\"$class\" $data><div class=\"mega-inner\">";
 
                 if (isset($column['module_id'])) {
                     $html .= $this->getModule($column['module_id']);
@@ -429,13 +429,13 @@ class ZO2MegaMenu
                     $firstitem = false;
                 }
 
-                $html .= "</div>"; // end column
+                $html .= "</div></div>"; // end column
             }
 
             $html .= "</div>"; //end row
         }
 
-        $html .= "</div>";
+        $html .= "</div></div>";
         return $html;
     }
 

@@ -215,12 +215,15 @@ class Zo2Framework {
         return $paths[$filePath];
     }
 
-    public static function displayMegaMenu($menutype) {
+    public static function displayMegaMenu($menutype, $template) {
         Zo2Framework::import2('core.menu');
         $app = JFactory::getApplication('site');
         $params = $app->getTemplate(true)->params;
-
-        $currentconfig = json_decode($params->get('mm_config', ''), true);
+        $file = JPATH_ROOT . '/templates/'.$template.'/layouts/megamenu.json';
+//        var_dump($file);die;
+        $currentconfig = json_decode(JFile::read($file), true);
+//        var_dump($currentconfig);die;
+        //$currentconfig = json_decode($params->get('mm_config', ''), true);
         $mmconfig = ($currentconfig && isset($currentconfig[$menutype])) ? $currentconfig[$menutype] : array();
         $mmconfig['edit'] = true;
         $menu = new ZO2MegaMenu ($menutype, $mmconfig, $params);
@@ -240,4 +243,12 @@ class Zo2Framework {
     public function getParam($name, $default) {
 
     }
+
+    public static function getController () {
+        if ($zo2controller = JFactory::getApplication()->input->getCmd ('zo2controller')) {
+            Zo2Framework::import2 ('core.controller');
+            ZO2Controller::exec($zo2controller);
+        }
+    }
+
 }

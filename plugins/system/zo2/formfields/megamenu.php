@@ -8,16 +8,12 @@
  //no direct accees
 defined ('_JEXEC') or die ('resticted aceess');
 
+JFormHelper::loadFieldClass('list');
+
 require_once realpath(JPATH_ADMINISTRATOR . '/components/com_menus/helpers/menus.php');
 
-/**
- * Supports an HTML select list of menus
- *
- * @package     Joomla.Libraries
- * @subpackage  Form
- * @since       1.6
- */
-class JFormFieldMegaMenu extends JFormFieldList
+
+class JFormFieldMegaMenu extends JFormFieldHidden
 {
     /**
      * The form field type.
@@ -26,21 +22,6 @@ class JFormFieldMegaMenu extends JFormFieldList
      * @since  1.6
      */
     public $type = 'MegaMenu';
-
-    /**
-     * Method to get the list of menus for the field options.
-     *
-     * @return  array  The field option objects.
-     *
-     * @since   1.6
-     */
-    protected function getOptions()
-    {
-        // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), JHtml::_('menu.menus'));
-
-        return $options;
-    }
 
     /**
      * Method to get the field input markup for a generic list.
@@ -66,45 +47,34 @@ class JFormFieldMegaMenu extends JFormFieldList
     protected function getMegaMenuMarkup()
     {
 
-//        if(!defined('T3_TEMPLATE')){
-//
-//            if (!defined ('_T3_DEPEND_ASSET_')) {
-//                define ('_T3_DEPEND_ASSET_', 1);
-//
-//                JFactory::getLanguage()->load(ZO2_ADMIN_PLUGIN_REL, JPATH_ADMINISTRATOR);
-//
-//                $jdoc = JFactory::getDocument();
-//                $jdoc->addStyleSheet(T3_ADMIN_URL . '/includes/depend/css/depend.css');
-//                $jdoc->addScript(T3_ADMIN_URL . '/includes/depend/js/depend.js');
-//
-//                JFactory::getDocument()->addScriptDeclaration ( '
-//				jQuery.extend(T3Depend, {
-//					adminurl: \'' . JFactory::getURI()->toString() . '\',
-//					rooturl: \'' . JURI::root() . '\'
-//				});
-//			');
-//            }
-//        }
+        if(!defined('T3_TEMPLATE')){
 
+            if (!defined ('_T3_DEPEND_ASSET_')) {
+                define ('_T3_DEPEND_ASSET_', 1);
 
-        if(!defined('__T3_MEGAMENU_ASSET__')){
-            define('__T3_MEGAMENU_ASSET__', 1);
+                JFactory::getLanguage()->load(ZO2_SYSTEM_PLUGIN, JPATH_ADMINISTRATOR);
 
-            $jdoc = JFactory::getDocument();
+                $jdoc = JFactory::getDocument();
+                $jdoc->addStyleSheet(ZO2_ADMIN_PLUGIN_URL . '/formfields/css/megamenu.css');
+                $jdoc->addScript(ZO2_ADMIN_PLUGIN_URL . '/formfields/js/megamenu.js');
 
-            if(is_file(ZO2_ADMIN_BASE . '/css/megamenu.css')){
-                $jdoc->addStylesheet(ZO2_ADMIN_PLUGIN_URL . '/css/megamenu.css');
-            }
-
-
-            JHtml::_('jquery.framework');
-
-            if(is_file(ZO2_ADMIN_BASE . '/js/megamenu.js')){
-                $jdoc->addScript(ZO2_ADMIN_PLUGIN_URL . '/js/megamenu.js');
             }
         }
 
+
+
+//        $jdoc = JFactory::getDocument();
+//
+//        if(is_file(ZO2_ADMIN_BASE . '/css/megamenu.css')){
+//            $jdoc->addStylesheet(ZO2_ADMIN_PLUGIN_URL . '/css/megamenu.css');
+//        }
+//        JHtml::_('jquery.framework');
+//        if(is_file(ZO2_ADMIN_BASE . '/js/megamenu.js')){
+//            $jdoc->addScript(ZO2_ADMIN_PLUGIN_URL . '/js/megamenu.js');
+//        }
+
         $modules = $this->getModules();
+
         ?>
             <div id="t3-admin-megamenu" class="hidden t3-admin-megamenu">
             <div class="admin-inline-toolbox clearfix">
@@ -312,11 +282,11 @@ class JFormFieldMegaMenu extends JFormFieldList
 
             <div id="t3-admin-mm-container" class="navbar clearfix"></div>
             </div>
-            <script type="text/javascript">
-                jQuery('#t3-admin-megamenu select').chosen({
-                    allow_single_deselect: true
-                });
-            </script>
+<!--            <script type="text/javascript">-->
+<!--                jQuery('#t3-admin-megamenu select').chosen({-->
+<!--                    allow_single_deselect: true-->
+<!--                });-->
+<!--            </script>-->
 
         <?php
 
@@ -374,5 +344,6 @@ class JFormFieldMegaMenu extends JFormFieldList
 
         return $db->loadObjectList();
     }
+
 
 }

@@ -46,10 +46,13 @@
         <folder>vendor</folder>
     </files>
     <config>
+
         <fields name="params" addfieldpath="/plugins/system/zo2/formfields">
-            <!--<fieldset name="layout" addfieldpath="/plugins/system/zo2/formfields">-->
+
+            <fieldset name="layout">
+                <field type="assets" name="assets" />
                 <!--<field type="layout" name="layout" />-->
-            <!--</fieldset>-->
+            </fieldset>
             <fieldset name="megamenu">
 
                 <field name="hover_type" type="list" default="hover"
@@ -89,6 +92,10 @@
                        label="Duration"
                        description="Duration" />
 
+                <field name="menu_type" type="menutype" default="mainmenu"
+                       label="Menu type"
+                       description="Menu type"
+                        />
 
                 <field name="menu_config" type="megamenu" hide="true"
                        label=""
@@ -96,6 +103,8 @@
                         />
 
             </fieldset>
+
+
         </fields>
     </config>
 </extension>
