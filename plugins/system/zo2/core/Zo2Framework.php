@@ -43,10 +43,12 @@ class Zo2Framework {
         if (!$app->isAdmin()) {
             // JViewLegacy
             if (!class_exists('JViewLegacy', false)) Zo2Framework::import2('core.class.legacy');
-            // JModuleHelper
-            if (!class_exists('JModuleHelper', false)) Zo2Framework::import2('core.class.helper');
+
 
         }
+        // JModuleHelper
+        if (!class_exists('JModuleHelper', false)) Zo2Framework::import2('core.class.helper');
+        JFactory::getLanguage()->load(ZO2_SYSTEM_PLUGIN, JPATH_ADMINISTRATOR);
     }
 
     /**
@@ -215,29 +217,35 @@ class Zo2Framework {
         return $paths[$filePath];
     }
 
-    public static function displayMegaMenu($menutype) {
+    public static function displayMegaMenu($menutype, $template) {
         Zo2Framework::import2('core.menu');
         $app = JFactory::getApplication('site');
         $params = $app->getTemplate(true)->params;
-
-        $currentconfig = json_decode($params->get('mm_config', ''), true);
+        $file = JPATH_ROOT . '/templates/'.$template.'/layouts/megamenu.json';
+        $currentconfig = json_decode(JFile::read($file), true);
+        //$currentconfig = json_decode($params->get('mm_config', ''), true);
         $mmconfig = ($currentconfig && isset($currentconfig[$menutype])) ? $currentconfig[$menutype] : array();
         $mmconfig['edit'] = true;
         $menu = new ZO2MegaMenu ($menutype, $mmconfig, $params);
         $menu->renderMenu();
-
-//        // add core megamenu.css in plugin
-//        // deprecated - will extend the core style into template megamenu.less & megamenu-responsive.less
-//        // to use variable overridden in template
-//        $this->addStyleSheet(T3_URL.'/css/megamenu.css');
-//        if ($this->getParam('responsive', 1)) $this->addStyleSheet(T3_URL.'/css/megamenu-responsive.css');
-//
-//        // megamenu.css override in template
-//        $this->addCss ('megamenu');
 
     }
 
     public function getParam($name, $default) {
 
     }
+
+    public static function getController () {
+        if ($zo2controller = JFactory::getApplication()->input->getCmd ('zo2controller')) {
+            Zo2Framework::import2 ('core.controller');
+            ZO2Controller::exec($zo2controller);
+        }
+    }
+
+    public static function loadStyleJs() {
+        Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL . '/css/admin.css');
+        JHtml::_('formbehavior.chosen', 'select');
+
+    }
+
 }

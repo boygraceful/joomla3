@@ -32,7 +32,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 		nav_items.each (function () {			
 			var a = $(this),
 				liitem = a.closest('li');
-			if (liitem.data ('hidesub') == 1) {
+			if (liitem.data ('hide_submenu') == 1) {
 				var sub = liitem.find('.nav-child:first');
 				// check if have menu-items in sub
 				sub.css('display','none');
@@ -118,7 +118,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 			} else {
 				// sub.attr('style', '');
 				sub.css('display','');
-				liitem.data('hidesub', 0);
+				liitem.data('hide_submenu', 0);
 			}
 			liitem.data('group', 0);
 			currentSelected.addClass ('dropdown-toggle').data('toggle', 'dropdown');
@@ -129,7 +129,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 			// check if have menu-items in sub
 			if (liitem.find('ul.level'+liitem.data('level')).length > 0) {
 				sub.css('display','none');
-				liitem.data('hidesub', 1);
+				liitem.data('hide_submenu', 1);
 			} else {
 				// just remove it
 				sub.remove();
@@ -366,19 +366,6 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 		update_toolbox ();
 	}
 
-	// toggle screen
-	actions.toggleScreen = function () {
-		if ($('.toolbox-togglescreen').hasClass('t3-fullscreen-full')) {
-			$('.subhead-collapse').removeClass ('subhead-fixed');
-			$('#t3-admin-megamenu').closest('.controls').removeClass ('t3-admin-control-fixed');			
-			$('.toolbox-togglescreen').removeClass ('t3-fullscreen-full').find('i').removeClass().addClass(actions.datas.iconfull);
-		} else {
-			$('.subhead-collapse').addClass ('subhead-fixed');
-			$('#t3-admin-megamenu').closest('.controls').addClass ('t3-admin-control-fixed');
-			$('.toolbox-togglescreen').addClass ('t3-fullscreen-full').find('i').removeClass().addClass(actions.datas.iconsmall);
-		}
-	}
-
 	actions.saveConfig = function (e) {
 		var config = {},
 		items = megamenu.find('ul[class*="level"] > li');
@@ -522,7 +509,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 				// toggle Group
 				var toggle = $('.toolitem-group');
 				toggle.find('label').removeClass('active btn-success btn-danger btn-primary');
-				if (liitem.data('level') == 1 || sub.length == 0 || liitem.data('hidesub') == 1) {
+				if (liitem.data('level') == 1 || sub.length == 0 || liitem.data('hide_submenu') == 1) {
 					// disable the toggle
 					$('.toolitem-group').addClass ('disabled');
 				} else if (liitem.data('group')) {
@@ -661,8 +648,8 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 					// get module content
 					if (value) {
 						$.ajax({
-							url: T3Admin.rooturl,
-							data:{'t3action':'module', 'mid': value}
+							url: Assets.url,
+							data:{'zo2controller':'module', 'module_id': value}
 						}).done(function ( data ) {
 							currentSelected.find('.mega-inner').html(data).find(':input').removeAttr('name');
 						});

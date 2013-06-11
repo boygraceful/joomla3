@@ -14,7 +14,7 @@ $zo2 = $this->zo2;
 <body>
 <div class="container">
 <!--    <jdoc:include type="modules" name="top" style="xhtml"/>-->
-    <?php echo $zo2::displayMegaMenu('mainmenu'); ?>
+    <?php echo $zo2::displayMegaMenu('mainmenu', $this->template); ?>
     <jdoc:include type="component" />
     <jdoc:include type="modules" name="bottom" />
 </div>
