@@ -7,7 +7,7 @@
  * @package Zo2 Framework
  * @author JoomShaper http://www.joomvision.com
  * @author Duc Nguyen <ducntq@gmail.com>
- * @author Vu Hiep
+ * @author Hiepvu
  * @copyright Copyright (c) 2008 - 2013 JoomVision
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
  */
@@ -43,7 +43,6 @@ class Zo2Framework {
         if (!$app->isAdmin()) {
             // JViewLegacy
             if (!class_exists('JViewLegacy', false)) Zo2Framework::import2('core.class.legacy');
-
 
         }
         // JModuleHelper
@@ -106,7 +105,6 @@ class Zo2Framework {
     public static function getSystemPluginPath(){
         return JURI::root(true) . '/plugins/system/zo2';
     }
-
 
     public static function getPluginPath(){
         return JPATH_SITE . '/system/zo2';
@@ -219,22 +217,51 @@ class Zo2Framework {
 
     public static function displayMegaMenu($menutype, $template) {
         Zo2Framework::import2('core.menu');
-        $app = JFactory::getApplication('site');
-        $params = $app->getTemplate(true)->params;
-        $file = JPATH_ROOT . '/templates/'.$template.'/layouts/megamenu.json';
-        $currentconfig = json_decode(JFile::read($file), true);
-        //$currentconfig = json_decode($params->get('mm_config', ''), true);
-        $mmconfig = ($currentconfig && isset($currentconfig[$menutype])) ? $currentconfig[$menutype] : array();
+        $params = Zo2Framework::getParams();
+//        $file = JPATH_ROOT . '/templates/'.$template.'/layouts/megamenu.json';
+//        $configs = json_decode(JFile::read($file), true);
+        $configs = json_decode($params->get('menu_config', ''), true);
+        $mmconfig = ($configs && isset($configs[$menutype])) ? $configs[$menutype] : array();
         $mmconfig['edit'] = true;
         $menu = new ZO2MegaMenu ($menutype, $mmconfig, $params);
         $menu->renderMenu();
 
+        Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL . '/css/megamenu.css');
+        //if (Zo2Framework::getParams('responsive', 1)) Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL.'/css/megamenu-responsive.css');
+
     }
 
-    public function getParam($name, $default) {
-
+    /**
+     * Get current template object
+     * @return array|string
+     */
+    public static function getTemplate() {
+        $template = JFactory::getApplication()->getTemplate(true);
+        if ($template) {
+            return $template;
+        } else {
+            return array();
+        }
     }
 
+    /**
+     * Get current template params
+     * @param null $name
+     * @param null $default
+     * @return mixed
+     */
+    public static function getParams($name = null, $default = null) {
+
+        if ($name) {
+            return JFactory::getApplication()->getTemplate(true)->params->get($name, $default);
+        } else {
+            return JFactory::getApplication()->getTemplate(true)->params;
+        }
+    }
+
+    /**
+     * Execute an action of the controller
+     */
     public static function getController () {
         if ($zo2controller = JFactory::getApplication()->input->getCmd ('zo2controller')) {
             Zo2Framework::import2 ('core.controller');
@@ -242,9 +269,43 @@ class Zo2Framework {
         }
     }
 
-    public static function loadStyleJs() {
+    /**
+     * Load Assets for admin
+     */
+    public static function loadAdminAssets() {
+
         Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL . '/css/admin.css');
         JHtml::_('formbehavior.chosen', 'select');
+
+    }
+
+    /**
+     * Add head
+     */
+    public static function addHead() {
+
+        $doc = JFactory::getDocument();
+        $direction = $doc->direction;
+
+        // Add Stylesheets
+        // Load optional RTL Bootstrap CSS
+        JHtml::_('bootstrap.loadCss', true, $direction);
+        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/template.css');
+        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/style.css');
+        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/vendor/font-awesome/css/font-awesome.min.css');
+        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/megamenu.css');
+        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/megamenu-responsive.css');
+
+        // Add JavaScript Frameworks
+        JHtml::_('jquery.framework');
+        JHtml::_('bootstrap.framework');
+    }
+
+    public static function addBody() {
+
+    }
+
+    public static function addFooter() {
 
     }
 

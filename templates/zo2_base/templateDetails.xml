@@ -50,11 +50,10 @@
         <fields name="params" addfieldpath="/plugins/system/zo2/formfields">
 
             <fieldset name="layout">
-                <field type="assets" name="assets" />
                 <!--<field type="layout" name="layout" />-->
             </fieldset>
             <fieldset name="megamenu">
-
+                <field type="assets" name="assets" />
                 <field name="hover_type" type="list" default="hover"
                        label="Hover type"
                        description="Hover type">

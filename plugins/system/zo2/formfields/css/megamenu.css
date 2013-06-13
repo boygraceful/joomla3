@@ -16,7 +16,7 @@
 /* T3 MEGAMENU ADMIN UI
 ---------------------------------------------------*/
 
-#t3-admin-megamenu {
+#zo2-admin-megamenu {
   min-height: 800px;
   background: url(../images/grid-bg.jpg) top left;
   margin: 0 -20px;
@@ -30,17 +30,17 @@
 
 /* Intro
 ---------------------*/
-#t3-admin-mm-intro {
+#zo2-admin-mm-intro {
   float: left;
   padding: 20px 200px 20px 20px;
   text-shadow: 0 1px 1px white;
 }
 
-#t3-admin-mm-intro h3 {
+#zo2-admin-mm-intro h3 {
   margin-top: 0;
 }
 
-#t3-admin-mm-intro p {
+#zo2-admin-mm-intro p {
   display: block;
   color: #999999;
   max-height: 50px;
@@ -51,16 +51,16 @@
 
 /* Toolbox
 ---------------------*/
-#t3-admin-mm-tb {
+#zo2-admin-mm-tb {
   float: left;
   text-shadow: 0 1px 1px #fff;
 }
 
-#t3-admin-megamenu .admin-inline-toolbox {
+#zo2-admin-megamenu .admin-inline-toolbox {
   height: 119px;
 }
 
-#t3-admin-mm-tb .admin-toolbox {
+#zo2-admin-mm-tb .admin-toolbox {
   height: 119px;
   padding: 20px;
   display: none;
@@ -70,39 +70,39 @@
   -o-box-sizing: border-box;
 }
 
-#t3-admin-mm-tb .admin-toolbox h3 {
+#zo2-admin-mm-tb .admin-toolbox h3 {
   margin-top: 0;
 }
 
-#t3-admin-mm-tb .admin-toolbox ul {
+#zo2-admin-mm-tb .admin-toolbox ul {
   margin-right: 20px;
   float: left;
 }
 
-#t3-admin-mm-tb .admin-toolbox li > label {
+#zo2-admin-mm-tb .admin-toolbox li > label {
   font-size: 11px;
   color: #999999;
 }
 
-#t3-admin-mm-tb .btn [class^="icon-"],
-#t3-admin-mm-tb .btn [class*=" icon-"] {
+#zo2-admin-mm-tb .btn [class^="icon-"],
+#zo2-admin-mm-tb .btn [class*=" icon-"] {
   margin-right: 0;
 }
 
 
 /* Toolbox Actions ---- */
-.t3-admin-mm-row .toolbox-actions-group {
+.zo2-admin-mm-row .toolbox-actions-group {
   height: 100px;
   position: absolute;
   right: 20px;
 }
 
-.t3-admin-mm-row .toolbox-actions-group button {
+.zo2-admin-mm-row .toolbox-actions-group button {
 }
 
 
 /* Fullscreen Toggle */
-#navigation_params .t3-admin-tog-fullscreen {
+#navigation_params .zo2-admin-tog-fullscreen {
   position: absolute;
   right: 0;
   top: -50px;
@@ -111,25 +111,25 @@
 
 /* The Menu
 ---------------------*/
-#t3-admin-mm-container {
+#zo2-admin-mm-container {
   float: left;
   margin-left: 20px;
 }
 
 
 /* Global Menu Inner padding ---*/
-.t3-megamenu .mega-inner {
+.zo2-megamenu .mega-inner {
   padding: 10px;
 }
 
 
 /* Menu Grid ---*/
-.t3-megamenu .row-fluid + .row-fluid {
+.zo2-megamenu .row-fluid + .row-fluid {
   margin-top: 0;
   border-top: 0;
 }
 
-.t3-megamenu .row-fluid [class*="span"] {
+.zo2-megamenu .row-fluid [class*="span"] {
   border: 1px dotted #cccccc;
   border-radius: 3px;
   transition: all 0.1s ease 0s;
@@ -140,16 +140,16 @@
 
 
 /* The Nav ---*/
-.t3-megamenu .span12.mega-col-nav .mega-inner {
+.zo2-megamenu .span12.mega-col-nav .mega-inner {
   padding: 10px;
 }
 
-.t3-megamenu .nav > li {
+.zo2-megamenu .nav > li {
   margin-right: 20px;
 }
 
-.t3-megamenu .nav > li > a,
-.t3-megamenu .nav > li > span {
+.zo2-megamenu .nav > li > a,
+.zo2-megamenu .nav > li > span {
   border: 1px solid #dddddd;
   padding: 8px 20px;
   background: #f2f2f2;
@@ -161,18 +161,18 @@
 }
 
 /* The caret */
-.t3-megamenu .mega-nav .dropdown-submenu > a::after {
+.zo2-megamenu .mega-nav .dropdown-submenu > a::after {
   margin-right: -10px;
 }
 
 
 /* Dropdown ---*/
-.t3-megamenu .dropdown-menu::before,
-.t3-megamenu .dropdown-menu::after {
+.zo2-megamenu .dropdown-menu::before,
+.zo2-megamenu .dropdown-menu::after {
   display: none !important; /* Hide the Arrow */
 }
 
-.t3-megamenu .dropdown-menu {
+.zo2-megamenu .dropdown-menu {
   border: 1px solid #dddddd;
   padding: 10px;
   margin-top: 10px;
@@ -187,26 +187,26 @@
   /* Fixed overlap with the Joomla Toolbar */
 }
 
-.t3-megamenu .dropdown-menu .dropdown-menu {
+.zo2-megamenu .dropdown-menu .dropdown-menu {
   margin-top: 0;
   margin-left: 11px;
 }
 
-.t3-megamenu .dropdown-submenu.mega-align-right .dropdown-menu {
+.zo2-megamenu .dropdown-submenu.mega-align-right .dropdown-menu {
   margin-left: 0;
   margin-right: 11px;
 }
 
-.t3-megamenu .mega-nav li {
+.zo2-megamenu .mega-nav li {
   margin-bottom: 5px;
 }
 
-.t3-megamenu .mega-nav li:last-child {
+.zo2-megamenu .mega-nav li:last-child {
   margin-bottom: 0;
 }
 
-.t3-megamenu .mega-nav li > a,
-.t3-megamenu .mega-nav li > span {
+.zo2-megamenu .mega-nav li > a,
+.zo2-megamenu .mega-nav li > span {
   padding: 5px 20px 5px 10px;
   border: 1px dotted #dddddd;
   border-radius: 3px;
@@ -219,13 +219,13 @@
 
 
 /* The group ---*/
-.t3-megamenu .mega-nav .mega-group > .mega-group-title,
-.t3-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title {
+.zo2-megamenu .mega-nav .mega-group > .mega-group-title,
+.zo2-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title {
   padding: 5px 20px 5px 10px;
   cursor: pointer;
 }
 
-.t3-megamenu .mega-group-ct {
+.zo2-megamenu .mega-group-ct {
   border: 1px solid #dddddd;
   padding: 10px;
   margin: 10px 0 10px 0;
@@ -236,13 +236,13 @@
   background: #f2f2f2;
 }
 
-.t3-megamenu .mega-group-ct > .row-fluid > [class*="span"] > .mega-inner {
+.zo2-megamenu .mega-group-ct > .row-fluid > [class*="span"] > .mega-inner {
   padding: 10px;
 }
 
 
 /* Module in Menu ---*/
-.t3-megamenu .t3-module {
+.zo2-megamenu .zo2-module {
   pointer-events: none;
   cursor: default;
   position: relative;
@@ -252,7 +252,7 @@
   -moz-transition: all 0.1s ease 0s;
 }
 
-.t3-megamenu .t3-module:after {
+.zo2-megamenu .zo2-module:after {
   display: block;
   position: absolute;
   background: #eeeeee;
@@ -270,31 +270,31 @@
   border-width: 1px 0 0 1px;
 }
 
-.t3-megamenu .t3-module .module-inner {
+.zo2-megamenu .zo2-module .module-inner {
   opacity: .3;
   font-size: 12px;
 }
 
-.t3-megamenu .t3-module .module-title {
+.zo2-megamenu .zo2-module .module-title {
   margin-top: 0;
   margin-bottom: 5px;
   font-size: 14px;
 }
 
-.t3-megamenu .t3-module .module-ct {
+.zo2-megamenu .zo2-module .module-ct {
   overflow: hidden;
   zoom: 1;
 }
 
 /* Reset List Style in Module */
-.t3-megamenu .t3-module ul,
-.t3-megamenu .t3-module .nav,
-.t3-megamenu .dropdown-menu .nav {
+.zo2-megamenu .zo2-module ul,
+.zo2-megamenu .zo2-module .nav,
+.zo2-megamenu .dropdown-menu .nav {
   margin: 0 0 0 15px;
 }
-.t3-megamenu .t3-module ul li,
-.t3-megamenu .t3-module .nav li,
-.t3-megamenu .dropdown-menu .nav li {
+.zo2-megamenu .zo2-module ul li,
+.zo2-megamenu .zo2-module .nav li,
+.zo2-megamenu .dropdown-menu .nav li {
   list-style: disc;
   display: list-item;
   float: none;
@@ -302,9 +302,9 @@
   padding: 0;
   border: 0;
 }
-.t3-megamenu .t3-module ul li a,
-.t3-megamenu .t3-module .nav li a,
-.t3-megamenu .dropdown-menu .t3-module li a {
+.zo2-megamenu .zo2-module ul li a,
+.zo2-megamenu .zo2-module .nav li a,
+.zo2-megamenu .dropdown-menu .zo2-module li a {
   display: inline;
   padding: 0;
   margin: 0;
@@ -314,26 +314,26 @@
   font: inherit;
   white-space: normal;
 }
-.t3-megamenu .t3-module ul li a:hover,
-.t3-megamenu .t3-module .nav li a:hover,
-.t3-megamenu .dropdown-menu .t3-module li a:hover,
-.t3-megamenu .t3-module ul li a:active,
-.t3-megamenu .t3-module .nav li a:active,
-.t3-megamenu .dropdown-menu .t3-module li a:active,
-.t3-megamenu .t3-module ul li a:focus,
-.t3-megamenu .t3-module .nav li a:focus,
-.t3-megamenu .dropdown-menu .t3-module li a:focus,
-.t3-megamenu .t3-module ul li a:visited,
-.t3-megamenu .t3-module .nav li a:visited,
-.t3-megamenu .dropdown-menu .t3-module li a:visited {
+.zo2-megamenu .zo2-module ul li a:hover,
+.zo2-megamenu .zo2-module .nav li a:hover,
+.zo2-megamenu .dropdown-menu .zo2-module li a:hover,
+.zo2-megamenu .zo2-module ul li a:active,
+.zo2-megamenu .zo2-module .nav li a:active,
+.zo2-megamenu .dropdown-menu .zo2-module li a:active,
+.zo2-megamenu .zo2-module ul li a:focus,
+.zo2-megamenu .zo2-module .nav li a:focus,
+.zo2-megamenu .dropdown-menu .zo2-module li a:focus,
+.zo2-megamenu .zo2-module ul li a:visited,
+.zo2-megamenu .zo2-module .nav li a:visited,
+.zo2-megamenu .dropdown-menu .zo2-module li a:visited {
   background: none;
   color: inherit;
   font: inherit;
 }
 
 
-.t3-megamenu [class*="span"].hover .t3-module:after,
-.t3-megamenu [class*="span"].selected .t3-module:after {
+.zo2-megamenu [class*="span"].hover .zo2-module:after,
+.zo2-megamenu [class*="span"].selected .zo2-module:after {
   border-style: solid;
   border-color: #666666;
   background: #ffbb00;
@@ -341,18 +341,18 @@
 }
 
 /* Fix Form display problem in Modules */
-.t3-megamenu .t3-module .control-group {
+.zo2-megamenu .zo2-module .control-group {
   margin-bottom: 5px;
 }
 
-.t3-megamenu .t3-module .controls {
+.zo2-megamenu .zo2-module .controls {
   margin-left: 3px;
 }
 
 
 /* Open Item ---*/
-.t3-megamenu .nav > li.open > a,
-.t3-megamenu .open > a {
+.zo2-megamenu .nav > li.open > a,
+.zo2-megamenu .open > a {
   background: #333333 !important;
   color: #fff !important;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5) !important;
@@ -360,10 +360,10 @@
 
 
 /* Hover Item ---*/
-.t3-megamenu .nav-child.hover,
-.t3-megamenu ul[class*="level"] > li > a.hover,
-.t3-megamenu ul[class*="level"] > li > span.hover,
-.t3-megamenu .row-fluid [class*="span"].hover {
+.zo2-megamenu .nav-child.hover,
+.zo2-megamenu ul[class*="level"] > li > a.hover,
+.zo2-megamenu ul[class*="level"] > li > span.hover,
+.zo2-megamenu .row-fluid [class*="span"].hover {
   background: #fffbf0 !important;
   color: #333333 !important;
   border: 1px solid #666666 !important;
@@ -371,23 +371,23 @@
   border-radius: 3px;
 }
 
-.t3-megamenu ul[class*="level"] > li > a:hover,
-.t3-megamenu ul[class*="level"] > li > a:focus,
-.t3-megamenu ul[class*="level"] > li > a:active {
+.zo2-megamenu ul[class*="level"] > li > a:hover,
+.zo2-megamenu ul[class*="level"] > li > a:focus,
+.zo2-megamenu ul[class*="level"] > li > a:active {
   background: #fffbf0 !important;
   color: #333333 !important;
   text-shadow: 0 1px 1px #fff !important;
 }
 
 /* The caret */
-.t3-megamenu .mega-nav li a.hover:after,
-.t3-megamenu .mega-nav li a.selected:after {
+.zo2-megamenu .mega-nav li a.hover:after,
+.zo2-megamenu .mega-nav li a.selected:after {
   border-left-color: #333333;
 }
 
 
 /* Selected Item ---*/
-.t3-megamenu .selected {
+.zo2-megamenu .selected {
   background: #fffbf0 !important;
   color: #333333 !important;
   border: 1px solid #666666 !important;
@@ -406,27 +406,27 @@
 
 /* Fix for Joomla! Default Admin Template
 --------------------------------------------------*/
-#t3-admin-megamenu .dropdown-menu a {
+#zo2-admin-megamenu .dropdown-menu a {
   white-space: normal;
 }
-#t3-admin-megamenu .row-fluid [class*="span"] {
+#zo2-admin-megamenu .row-fluid [class*="span"] {
   margin-left: 2.12766%;
 }
-#t3-admin-megamenu .row-fluid [class*="span"]:first-child {
+#zo2-admin-megamenu .row-fluid [class*="span"]:first-child {
   margin-left: 0;
 }
 
 /* Fix right spacing for chzn chosen in Megamenu Admin UI */
-#t3-admin-megamenu ul.chzn-results {
+#zo2-admin-megamenu ul.chzn-results {
   margin-right: 4px;
   float: none;
 }
 
 /* Fix submenu auto open on hover */
-#t3-admin-megamenu .dropdown-submenu:hover .dropdown-menu {
+#zo2-admin-megamenu .dropdown-submenu:hover .dropdown-menu {
   display: none;
 }
 
-#t3-admin-megamenu .dropdown-submenu:hover > .dropdown-menu {
+#zo2-admin-megamenu .dropdown-submenu:hover > .dropdown-menu {
   display: block;
 }

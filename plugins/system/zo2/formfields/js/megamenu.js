@@ -1,4 +1,11 @@
-/** 
+/**
+ * Zo2 Framework (http://zo2framework.org)
+ *
+ * @link     http://github.com/aploss/zo2
+ * @package  Zo2
+ * @author   Hiepvu
+ * @copyright  Copyright ( c ) 2008 - 2013 APL Solutions
+ * @license  http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
  *------------------------------------------------------------------------------
  * @package       T3 Framework for Joomla!
  *------------------------------------------------------------------------------
@@ -11,7 +18,7 @@
  *------------------------------------------------------------------------------
  */
 
-var T3AdminMegamenu = window.T3AdminMegamenu || {};
+var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 
 !function ($) {
 	var currentSelected = null,
@@ -22,7 +29,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 		};
 
 		var options = $.extend(defaultOptions, options);
-		megamenu = $(this).find('.t3-megamenu');
+		megamenu = $(this).find('.zo2-megamenu');
 		nav_items = megamenu.find('ul[class*="level"]>li>:first-child');
 		nav_subs = megamenu.find('.nav-child');
 		nav_cols = megamenu.find('[class*="span"]');
@@ -32,7 +39,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 		nav_items.each (function () {			
 			var a = $(this),
 				liitem = a.closest('li');
-			if (liitem.data ('hide_submenu') == 1) {
+			if (liitem.data ('hidesub') == 1) {
 				var sub = liitem.find('.nav-child:first');
 				// check if have menu-items in sub
 				sub.css('display','none');
@@ -49,7 +56,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 		$('.toolbox-action, .toolbox-toggle, .toolbox-input').unbind ("focus blur click change keydown");
 
 		// stop popup event when click in toolbox area
-		$('.t3-admin-mm-row').click (function(event) {
+		$('.zo2-admin-mm-row').click (function(event) {
 			event.stopPropagation();
 			// return false;
 		});
@@ -118,7 +125,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 			} else {
 				// sub.attr('style', '');
 				sub.css('display','');
-				liitem.data('hide_submenu', 0);
+				liitem.data('hidesub', 0);
 			}
 			liitem.data('group', 0);
 			currentSelected.addClass ('dropdown-toggle').data('toggle', 'dropdown');
@@ -129,7 +136,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 			// check if have menu-items in sub
 			if (liitem.find('ul.level'+liitem.data('level')).length > 0) {
 				sub.css('display','none');
-				liitem.data('hide_submenu', 1);
+				liitem.data('hidesub', 1);
 			} else {
 				// just remove it
 				sub.remove();
@@ -375,11 +382,11 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 			item = {};
 			if ($this.hasClass ('mega')) {
 				var $sub = $this.find ('.nav-child:first');
-				item['sub'] = {};
+				item['submenu'] = {};
 				
 				for (var d in $sub.data()) {
 					if (d != 'id' && d != 'level' && $sub.data(d))
-						item['sub'][d] = $sub.data(d);
+						item['submenu'][d] = $sub.data(d);
 				}
 				// build row
 				var $rows = $sub.find('[class*="row"]:first').parent().children('[class*="row"]'),
@@ -409,7 +416,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 					});
 					rows[i++] = row;
 				});
-				item['sub']['rows'] = rows;
+				item['submenu']['rows'] = rows;
 			}
 
 			for (var d in $this.data()) {
@@ -425,8 +432,8 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 			if (Object.keys(item).length) config[id] = item;
 		});
 
-		var menutype = $('#jform_params_mm_type').val(),
-			jmmconfig = $('#jform_params_mm_config'),
+		var menutype = $('#jform_params_menu_type').val(),
+			jmmconfig = $('#jform_params_menu_config'),
 			curconfig = null;
 
 		try {
@@ -447,14 +454,14 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 	}
 
 	hide_toolbox = function (show_intro) {
-		$('#t3-admin-mm-tb .admin-toolbox').hide();
+		$('#zo2-admin-mm-tb .admin-toolbox').hide();
 		currentSelected = null;
 		if (megamenu && megamenu.data('nav_all')) megamenu.data('nav_all').removeClass ('selected');
 		megamenu.find ('li').removeClass ('open');
 		if (show_intro) {
-			$('#t3-admin-mm-intro').show();
+			$('#zo2-admin-mm-intro').show();
 		} else {
-			$('#t3-admin-mm-intro').hide();
+			$('#zo2-admin-mm-intro').hide();
 		}
 	}
 
@@ -471,17 +478,17 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 		megamenu.data('nav_all').removeClass ('selected');
 		currentSelected.addClass ('selected');		
 		var type = toolbox_type ();
-		$('#t3-admin-mm-tool' + type).show();
+		$('#zo2-admin-mm-tool' + type).show();
 		update_toolbox (type);
 
-		$('#t3-admin-mm-tb').show();
+		$('#zo2-admin-mm-tb').show();
 	}
 
 	update_toolbox = function (type) {
 		if (!type) type = toolbox_type ();
 		// remove all disabled status
-		$('#t3-admin-mm-tb .disabled').removeClass('disabled');
-		$('#t3-admin-mm-tb .active').removeClass('active');
+		$('#zo2-admin-mm-tb .disabled').removeClass('disabled');
+		$('#zo2-admin-mm-tb .active').removeClass('active');
 		switch (type) {
 			case 'item':
 				// value for toggle
@@ -509,7 +516,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 				// toggle Group
 				var toggle = $('.toolitem-group');
 				toggle.find('label').removeClass('active btn-success btn-danger btn-primary');
-				if (liitem.data('level') == 1 || sub.length == 0 || liitem.data('hide_submenu') == 1) {
+				if (liitem.data('level') == 1 || sub.length == 0 || liitem.data('hidesub') == 1) {
 					// disable the toggle
 					$('.toolitem-group').addClass ('disabled');
 				} else if (liitem.data('group')) {
@@ -711,31 +718,31 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 }(jQuery);
 
 !function($){
-	$.extend(T3AdminMegamenu, {
+	$.extend(ZO2AdminMegamenu, {
 		// put megamenu admin panel into right place
 		prepare: function(){
 			// var panel = $('#jform_params_mm_panel-lbl').closest ('.control-group').find('.controls');
 			var panel = $('#jform_params_mm_type').closest ('.controls');
-			panel.append ($('#t3-admin-megamenu').removeClass('hidden'));
+			panel.append ($('#zo2-admin-megamenu').removeClass('hidden'));
 
 			// first load
-			if ($('#jform_params_navigation_type').val() == 'megamenu') {
+			if ($('#jform_params_nav_type').val() == 'megamenu') {
 				setTimeout(function(){ //wait for page ready
-					$('#jform_params_mm_type').trigger('change.less');
+					$('#jform_params_menu_type').trigger('change.less');
 				}, 500);
 			} else {
 
 				// handle event for enable megamenu
-				$('#jform_params_navigation_type').on('change', function(e) {
+				$('#jform_params_nav_type').on('change', function(e) {
 					if ($(this).val() == 'megamenu'){
-						$('#jform_params_mm_type').trigger('change.less');
+						$('#jform_params_menu_type').trigger('change.less');
 					}
 				});
 			}
 		},
 
-		t3megamenu: function(form, ctrlelm, ctrl, rsp){
-			$('#t3-admin-mm-container').html(rsp).megamenuAdmin().find(':input').removeAttr('name');
+		megamenu: function(form, ctrlelm, ctrl, rsp){
+			$('#zo2-admin-mm-container').html(rsp).megamenuAdmin().find(':input').removeAttr('name');
 		},
 
 		initPanel: function(){
@@ -760,16 +767,15 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 		},
 
 		initRadioGroup: function(){
-			//copy from J3.0
-			// Turn radios into btn-group
-			if(typeof T3Admin != 'undefined'){
+			
+			if(typeof ZO2Admin != 'undefined'){
 				return true;
 			}
 
-			var jt3menu = $('.t3-admin-megamenu');
+			var zo2_admin = $('.zo2-admin-megamenu');
 
-			jt3menu.find('.radio.btn-group label').addClass('btn');
-			jt3menu.find('.btn-group label').unbind('click').click(function() {
+			zo2_admin.find('.radio.btn-group label').addClass('btn');
+			zo2_admin.find('.btn-group label').unbind('click').click(function() {
 				var label = $(this),
 					input = $('#' + label.attr('for'));
 
@@ -784,7 +790,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 				}
 			});
 
-			jt3menu.on('update', 'input[type=radio]', function(){
+			zo2_admin.on('update', 'input[type=radio]', function(){
 				if(this.checked){
 					$(this)
 						.closest('.btn-group')
@@ -794,7 +800,7 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 				}
 			});
 
-			jt3menu.find('.btn-group input[checked=checked]').each(function(){
+			zo2_admin.find('.btn-group input[checked=checked]').each(function(){
 				if($(this).val() == ''){
 					$('label[for=' + $(this).attr('id') + ']').addClass('active btn-primary');
 				} else if($(this).val() == 0){
@@ -807,13 +813,13 @@ var T3AdminMegamenu = window.T3AdminMegamenu || {};
 	});
 
 	$(window).load(function(){
-		T3AdminMegamenu.prepare();
+		ZO2AdminMegamenu.prepare();
 	});
 
 	$(document).ready(function(){
-		T3AdminMegamenu.initPanel();
-		T3AdminMegamenu.initPreSubmit();
-		T3AdminMegamenu.initRadioGroup();
+		ZO2AdminMegamenu.initPanel();
+		ZO2AdminMegamenu.initPreSubmit();
+		ZO2AdminMegamenu.initRadioGroup();
 	});
 
 }(jQuery);

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Zo2 Framework
- * @author Hiep Vu <vqhiep2010@gmail.com>
+ * @author Hiepvu
  * @copyright Copyright (c) 2008 - 2013 JoomVision.com
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
  */

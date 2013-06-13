@@ -4,7 +4,7 @@
  *
  * @link         http://github.com/aploss/zo2
  * @package      Zo2
- * @author       Hiep Vu <vqhiep2010@gmail.com>
+ * @author       Hiepvu
  * @copyright    Copyright ( c ) 2008 - 2013 APL Solutions
  * @license      http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
  */
@@ -42,6 +42,7 @@ class JFormFieldMegaMenu extends JFormFieldHidden
             JFactory::getLanguage()->load(ZO2_SYSTEM_PLUGIN, JPATH_ADMINISTRATOR);
 
             $jdoc = JFactory::getDocument();
+            $jdoc->addStylesheet(ZO2_ADMIN_PLUGIN_URL . '/css/megamenu.css');
             $jdoc->addStyleSheet(ZO2_ADMIN_PLUGIN_URL . '/formfields/css/megamenu.css');
             $jdoc->addScript(ZO2_ADMIN_PLUGIN_URL . '/formfields/js/megamenu.js');
 
@@ -50,17 +51,17 @@ class JFormFieldMegaMenu extends JFormFieldHidden
         $modules = $this->getModules();
 
         ?>
-            <div id="t3-admin-megamenu" class="hidden t3-admin-megamenu">
+            <div id="zo2-admin-megamenu" class="hidden zo2-admin-megamenu">
             <div class="admin-inline-toolbox clearfix">
-            <div class="t3-admin-mm-row clearfix">
+            <div class="zo2-admin-mm-row clearfix">
 
-                <div id="t3-admin-mm-intro" class="pull-left">
+                <div id="zo2-admin-mm-intro" class="pull-left">
                     <h3><?php echo JTexT::_('ZO2_NAVIGATION_MM_TOOLBOX') ?></h3>
                     <p><?php echo JTexT::_('ZO2_NAVIGATION_MM_TOOLBOX_DESC') ?></p>
                 </div>
 
-                <div id="t3-admin-mm-tb">
-                    <div id="t3-admin-mm-toolitem" class="admin-toolbox">
+                <div id="zo2-admin-mm-tb">
+                    <div id="zo2-admin-mm-toolitem" class="admin-toolbox">
                         <h3><?php echo JTexT::_('ZO2_NAVIGATION_MM_ITEM_CONF') ?></h3>
                         <ul>
                             <li>
@@ -123,7 +124,7 @@ class JFormFieldMegaMenu extends JFormFieldHidden
                         </ul>
                     </div>
 
-                    <div id="t3-admin-mm-toolsub" class="admin-toolbox">
+                    <div id="zo2-admin-mm-toolsub" class="admin-toolbox">
                         <h3><?php echo JTexT::_('ZO2_NAVIGATION_MM_SUBMNEU_CONF') ?></h3>
                         <ul>
                             <li>
@@ -175,7 +176,7 @@ class JFormFieldMegaMenu extends JFormFieldHidden
                         </ul>
                     </div>
 
-                    <div id="t3-admin-mm-toolcol" class="admin-toolbox">
+                    <div id="zo2-admin-mm-toolcol" class="admin-toolbox">
                         <h3><?php echo JTexT::_('ZO2_NAVIGATION_MM_COLUMN_CONF') ?></h3>
                         <ul>
                             <li>
@@ -252,7 +253,7 @@ class JFormFieldMegaMenu extends JFormFieldHidden
             </div>
             </div>
 
-            <div id="t3-admin-mm-container" class="navbar clearfix"></div>
+            <div id="zo2-admin-mm-container" class="navbar clearfix"></div>
             </div>
 
         <?php

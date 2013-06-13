@@ -4,7 +4,7 @@
  *
  * @link     http://github.com/aploss/zo2
  * @package  Zo2
- * @author   Hiep Vu <vqhiep2010@gmail.com>
+ * @author   Hiepvu
  * @copyright  Copyright ( c ) 2008 - 2013 APL Solutions
  * @license  http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
  */
@@ -137,7 +137,7 @@ class ZO2MegaMenu
         $html = '';
         $animation = $this->_params->get('menu_aimation', '');
         $duration = $this->_params->get('duration', 4);
-        $class = 'class="t3-megamenu' . ($animation ? ' animate ' . $animation : '') . '"';
+        $class = 'class="zo2-megamenu' . ($animation ? ' animate ' . $animation : '') . '"';
         $data = $animation && $duration ? ' data-duration="' . $duration . '"' : '';
         $keys = array_keys($this->_items);
 
@@ -189,7 +189,7 @@ class ZO2MegaMenu
             $class .= ' level' . $parent->level;
         }
 
-        $html .= '<ul class="'.$class.'">';
+        $html .= '<ul class="' . $class . '">';
         foreach ($menus as $menu) {
             $html .= $this->getLiTag($menu);
         }
@@ -320,7 +320,7 @@ class ZO2MegaMenu
         }
 
         if ($menu->megamenu) $class .= ' mega';
-        if ($menu->show_group) $class .= ' group-menu';
+        if ($menu->show_group) $class .= ' mega-group';
 
         $data = "data-id=\"{$menu->id}\" data-level=\"{$menu->level}\"";
         if ($menu->show_group) $data .= " data-group=\"1\"";
@@ -328,13 +328,22 @@ class ZO2MegaMenu
             $data .= " data-class=\"{$config['class']}\"";
             $class .= " {$config['class']}";
         }
-        if (isset($config['hide_submenu'])) $data .= " data-hide_submenu=\"1\"";
+
+        if (isset($setting['alignsub'])) {
+            $data .= " data-alignsub=\"{$config['alignsub']}\"";
+            $class .= " mega-align-{$config['alignsub']}";
+        }
+        if (isset($config['hidesub'])) $data .= " data-hidesub=\"1\"";
+        if (isset($config['xicon'])) $data .= " data-xicon=\"{$config['xicon']}\"";
+        if (isset($config['caption'])) $data .= " data-caption=\"" . htmlspecialchars($config['caption']) . "\"";
+
+        if (isset($config['hide_submenu'])) $data .= " data-hidesub=\"1\"";
         if (isset($config['caption'])) $data .= " data-caption=\"" . htmlspecialchars($config['caption']) . "\"";
         if (isset($config['hide_column'])) {
-            $data .= " data-hide_column=\"1\"";
-            $class .= " hide-column";
+            $data .= " data-hidewcol=\"1\"";
+            $class .= " sub-hidden-collapse";
         }
-        $class = 'class="'.$class.'"';
+        $class = 'class="' . $class . '"';
         return "<li $class $data>";
 
     }
@@ -384,9 +393,9 @@ class ZO2MegaMenu
             foreach ($row as $column) {
                 if (!isset($column['module_id'])) {
                     if ($menuid) {
-                        $end[$menuid] = $column['menu_id'];
+                        $end[$menuid] = $column['item'];
                     }
-                    $menuid = $column['menu_id'];
+                    $menuid = $column['item'];
                 }
             }
         }
@@ -423,8 +432,8 @@ class ZO2MegaMenu
                 if (isset($column['module_id'])) {
                     $html .= $this->getModule($column['module_id']);
                 } else {
-                    $endId = $end[$column['menu_id']];
-                    $startId = $firstitem ? $fitem : $column['menu_id'];
+                    $endId = $end[$column['item']];
+                    $startId = $firstitem ? $fitem : $column['item'];
                     $html .= $this->getMenu($parent, $startId, $endId);
                     $firstitem = false;
                 }
