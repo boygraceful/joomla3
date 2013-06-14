@@ -2,17 +2,15 @@
 
 /**
  *
- * Zo2Framework class serves as helper for all basic functionalyties of Zo2Framework system
- *
- * @package Zo2 Framework
- * @author JoomShaper http://www.joomvision.com
- * @author Duc Nguyen <ducntq@gmail.com>
- * @author Hiepvu
- * @copyright Copyright (c) 2008 - 2013 JoomVision
- * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
+ * @link         http://github.com/aploss/zo2
+ * @package      Zo2
+ * @author       Duc Nguyen <ducntq@gmail.com>
+ * @author       Vu Hiep
+ * @copyright    Copyright ( c ) 2008 - 2013 APL Solutions
+ * @license      http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
  */
 
-defined ('_JEXEC') or die('Resticted aceess');
+defined ('_JEXEC') or die('Resticted access!');
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -107,18 +105,19 @@ class Zo2Framework {
     }
 
     public static function getPluginPath(){
-        return JPATH_SITE . '/system/zo2';
+        return JPATH_SITE . '/plugins/system/zo2';
     }
 
     /**
      * Import file from Zo2Framework plugin directory
      *
-     * @param string $filepath File's path, base directory is Zo2Framework plugin directory
+     * @param string $filepath Dot syntax file path
      * @param bool $once Require this file only once
      * @return bool
      */
     public static function import($filepath, $once = true) {
-        $path = Zo2Framework::getPluginPath() . '/' . $filepath;
+        $filepath = str_replace('.', '/', $filepath);
+        $path = Zo2Framework::getPluginPath() . '/' . $filepath . '.php';
         if(file_exists($path) && !is_dir($path)){
             $once ? require_once $path : require $path;
             return true;
@@ -213,6 +212,17 @@ class Zo2Framework {
         }
 
         return $paths[$filePath];
+    }
+
+    /**
+     * Return current page.
+     *
+     * @return string
+     */
+    public static function getCurrentPage(){
+        $app = JFactory::getApplication();
+        if($app->getMenu()->getActive()->home) return 'home';
+        else return $app->input->getString('view', 'home');
     }
 
     /**
