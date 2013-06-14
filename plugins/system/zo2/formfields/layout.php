@@ -28,6 +28,17 @@ class JFormFieldLayout extends JFormField {
         $pluginPath = JURI::root(true).'/plugins/system/zo2/';
         $cssPath = $pluginPath . 'css/';
         $jsPath = $pluginPath . 'js/';
+        $vendorPath = $pluginPath . 'vendor/';
+
+        // load jquery & jqueryui newest version, cause joomla's jquery is plain old
+        // Load custom js and css
+        $doc->addScript($vendorPath . 'jqueryui/js/jquery-ui-1.10.3.custom.min.js');
+        $doc->addScript($vendorPath . 'underscorejs/underscore-min.js');
+        $doc->addScript($vendorPath . 'backbonejs/backbone-min.js');
+        $doc->addScript($jsPath . 'layoutbuildermodels.js');
+        $doc->addStyleSheet($vendorPath . 'jqueryui/css/jquery-ui-1.10.3.custom.min.css');
+        $doc->addStyleSheet($cssPath . 'style.css');
+        $doc->addScript($jsPath . 'admin.js');
 
         // Load jQuery framework
         JHtml::_('jquery.framework', false);
@@ -55,7 +66,7 @@ class JFormFieldLayout extends JFormField {
      */
     public function getLabel()
     {
-        return '<b>This is a label</b>';
+        return '';
     }
 
 
@@ -65,11 +76,11 @@ class JFormFieldLayout extends JFormField {
      * @param $positionSettings
      * @return string
      */
-    private function generateLayoutBuilder($positionSettings){
+    private function generateLayoutBuilder(){
+        $layout = new Zo2Layout(Zo2Framework::getTemplateName(), 'homepage');
         $path = JPATH_SITE.'/plugins/system/zo2/templates/layoutbuilder.php';
-        $html = '';
         ob_start();
-        include_once($path);
+        include($path);
         $html = ob_get_contents();
         ob_end_clean();
         return $html;

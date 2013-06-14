@@ -1,13 +1,18 @@
-jQuery(function($){
-    var $container = $('#hdLayoutBuilder').parent().clone();
-    var $optionsContainer = $('#options');
+jQuery(function($$){
+    var $container = jQuery('#hdLayoutBuilder').parent().clone();
+    var $optionsContainer = jQuery('#options');
     $optionsContainer.empty();
     $container.appendTo($optionsContainer);
     $container.css('margin-left', 0);
 
-    $container.find('.row-fluid').sortable({
-        handle: '.drag-handler'
+    $$(window).bind('load', function(){
+        $$('#myTabTabs li').eq(1).one('click', function(){
+            setTimeout(function(){
+                var workSpace = new WorkSpace();
+
+                var layoutHtml = $$('#jsTemplate').html();
+                workSpace.setBodyHtmlContent(layoutHtml);
+            }, 500);
+        });
     });
-
-
 });
