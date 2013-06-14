@@ -1,6 +1,6 @@
 <?php
-
 /**
+ * Zo2 Framework (http://zo2framework.org)
  *
  * @link         http://github.com/aploss/zo2
  * @package      Zo2
@@ -36,6 +36,7 @@ class Zo2Framework {
      */
     public static function init(){
         self::getInstance();
+        Zo2Framework::import('core.Zo2Layout');
 
         $app = JFactory::getApplication();
         if (!$app->isAdmin()) {
