@@ -40,22 +40,12 @@ class JFormFieldLayout extends JFormField {
         $doc->addStyleSheet($cssPath . 'style.css');
         $doc->addScript($jsPath . 'admin.js');
 
-        // Load jQuery framework
-        JHtml::_('jquery.framework', false);
-        // Load jQueryUI with sortable
-        JHtml::_('jquery.ui', array('core', 'sortable'));
         // Load Bootstrap JS framework
         JHtml::_('bootstrap.framework');
         // Load Bootstrap CSS
         JHtml::_('bootstrap.loadCss');
 
-        // Load custom js and css
-        $doc->addScript($jsPath . 'admin.js');
-        $doc->addStyleSheet($cssPath . 'style.css');
-
-        $positionSettings = array();
-
-        return $this->generateLayoutBuilder($positionSettings);
+        return $this->generateLayoutBuilder();
     }
 
     /**
