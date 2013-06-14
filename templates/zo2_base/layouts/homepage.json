@@ -1,0 +1,13 @@
+{
+    "header": [
+        {
+            "path": "/css/style.css",
+            "type": "css",
+            "options": {
+                "rel": "stylesheet"
+            }
+        }
+    ],
+    "footer": [
+    ]
+}

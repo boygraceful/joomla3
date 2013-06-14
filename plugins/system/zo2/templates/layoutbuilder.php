@@ -3,6 +3,16 @@
 <input type="hidden" id="hdLayoutBuilder" value="0" />
 
 <div id="layoutbuilder-container">
-    <iframe id="layoutframe" src="<?php echo Zo2Framework::getSystemPluginPath() . '/layoutiframe.php'?>"></iframe>
-    <div id="layoutbuilder-droppable"></div>
+    <div class="components-container"></div>
+    <div id="droppable-container">
+        <iframe id="layoutframe"></iframe>
+
+        <div id="layoutbuilder-droppable">
+            <div class="relative"></div>
+        </div>
+    </div>
 </div>
+
+<script id="jsTemplate" type="text/template">
+<?php echo $layout->compile(true, true) ?>
+</script>

@@ -6,6 +6,8 @@ $zo2 = $this->zo2;
 $doc = JFactory::getDocument();
 $this->language = $doc->language;
 $this->direction = $doc->direction;
+/* @var $this JDocumentHTML */
+if(!class_exists('Zo2Framework')) die('Zo2Framework not found');
 
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
@@ -57,3 +59,8 @@ $this->direction = $doc->direction;
         <jdoc:include type="modules" name="debug" style="none" />
     </body>
 </html>
+$zo2 = Zo2Framework::getInstance();
+$templateName = $this->template;
+$layoutName = $zo2->getCurrentPage();
+$layout = new Zo2Layout($templateName, $layoutName);
+echo $layout->compile();
