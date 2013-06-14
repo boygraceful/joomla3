@@ -215,6 +215,11 @@ class Zo2Framework {
         return $paths[$filePath];
     }
 
+    /**
+     * Display megamenu with
+     * @param $menutype
+     * @param $template
+     */
     public static function displayMegaMenu($menutype, $template) {
         Zo2Framework::import2('core.menu');
         $params = Zo2Framework::getParams();
@@ -222,7 +227,9 @@ class Zo2Framework {
 //        $configs = json_decode(JFile::read($file), true);
         $configs = json_decode($params->get('menu_config', ''), true);
         $mmconfig = ($configs && isset($configs[$menutype])) ? $configs[$menutype] : array();
-        $mmconfig['edit'] = true;
+        if (JFactory::getApplication()->isAdmin()) {
+            $mmconfig['edit'] = true;
+        }
         $menu = new ZO2MegaMenu ($menutype, $mmconfig, $params);
         $menu->renderMenu();
 
@@ -293,8 +300,8 @@ class Zo2Framework {
         Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/template.css');
         Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/style.css');
         Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/vendor/font-awesome/css/font-awesome.min.css');
-        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/megamenu.css');
-        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/megamenu-responsive.css');
+//        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/megamenu.css');
+//        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/megamenu-responsive.css');
 
         // Add JavaScript Frameworks
         JHtml::_('jquery.framework');

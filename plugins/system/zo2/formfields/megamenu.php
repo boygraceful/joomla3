@@ -11,11 +11,6 @@
  //no direct accees
 defined ('_JEXEC') or die ('resticted aceess');
 
-JFormHelper::loadFieldClass('list');
-
-require_once realpath(JPATH_ADMINISTRATOR . '/components/com_menus/helpers/menus.php');
-
-
 class JFormFieldMegaMenu extends JFormFieldHidden
 {
     /**
@@ -223,7 +218,7 @@ class JFormFieldMegaMenu extends JFormFieldHidden
                             <li>
                                 <label class="hasTip" title="<?php echo JTexT::_('ZO2_NAVIGATION_MM_MODULE'), '::', JTexT::_('ZO2_NAVIGATION_MM_MODULE_DESC') ?>"><?php echo JTexT::_('ZO2_NAVIGATION_MM_MODULE') ?></label>
                                 <fieldset class="">
-                                    <select class="toolcol-position toolbox-input toolbox-select input-medium" name="toolcol-position" data-name="position" data-placeholder="<?php echo JTexT::_('ZO2_NAVIGATION_MM_SELECT_MODULE') ?>">
+                                    <select class="toolcol-module toolbox-input toolbox-select input-medium" name="toolcol-module" data-name="module_id" data-placeholder="<?php echo JTexT::_('ZO2_NAVIGATION_MM_SELECT_MODULE') ?>">
                                         <option value=""></option>
                                         <?php
                                         foreach ($modules as $module) {
@@ -247,7 +242,6 @@ class JFormFieldMegaMenu extends JFormFieldHidden
 
                 <div class="toolbox-actions-group">
                     <button class="btn btn-success toolbox-action toolbox-saveConfig hide" data-action="saveConfig"><i class="icon-save"></i><?php echo JTexT::_('ZO2_NAVIGATION_MM_SAVE') ?></button>
-                    <!--button class="btn btn-danger toolbox-action toolbox-resetConfig"><i class="icon-undo"></i><?php echo JTexT::_('ZO2_NAVIGATION_MM_RESET') ?></button-->
                 </div>
 
             </div>

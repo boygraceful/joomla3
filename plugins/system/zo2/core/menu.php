@@ -23,7 +23,7 @@ class ZO2MegaMenu
     {
         $this->_configs = $configs;
         $this->_params = $params;
-        $this->edit = $configs['edit'];
+        $this->edit = isset($configs['edit']) ? $configs['edit'] : false;
         $this->loadMegaMenu($menutype);
     }
 
@@ -62,11 +62,11 @@ class ZO2MegaMenu
             $item->show_group = false;
             $item->isdropdown = false;
 
-            if (isset($config['show_group'])) {
+            if (isset($config['group'])) {
                 $item->show_group = true;
             } else {
                 // if this item is a parent then setting up the status is dropdown
-                if (isset($config['submenu']) || (isset($this->children[$item->id]) && ($config['hide_submenu'] || $this->edit))) {
+                if (isset($config['submenu']) || (isset($this->children[$item->id]) && ($config['hidesub'] || $this->edit))) {
                     $item->isdropdown = true;
                 }
             }
@@ -89,6 +89,7 @@ class ZO2MegaMenu
                         // If this is an internal Joomla link, ensure the Itemid is set.
                         $item->flink = $item->link . '&Itemid=' . $item->id;
                     }
+
                     break;
 
                 case 'alias':
@@ -107,6 +108,7 @@ class ZO2MegaMenu
             }
 
             if (strcasecmp(substr($item->flink, 0, 4), 'http') && (strpos($item->flink, 'index.php?') !== false)) {
+
                 $item->flink = JRoute::_($item->flink, true, $item->params->get('secure'));
             } else {
                 $item->flink = JRoute::_($item->flink);
@@ -183,7 +185,7 @@ class ZO2MegaMenu
         }
         $class = '';
         if (!$parent) {
-            $class .= ' nav level10';
+            $class .= 'nav level10';
         } else {
             $class .= ' mega-nav';
             $class .= ' level' . $parent->level;
@@ -230,6 +232,7 @@ class ZO2MegaMenu
         $dropdown = '';
         $caption = '';
         $linktype = '';
+        $caret = '<b class="caret"></b>';
         if ($menu->isdropdown && $menu->level < 2) {
             $class .= 'dropdown-toggle';
             $dropdown = ' data-toggle="dropdown"';
@@ -267,15 +270,15 @@ class ZO2MegaMenu
                 switch ($menu->browserNav) {
                     default:
                     case 0:
-                        $html = "<a class=\"$class\" href=\"{$menu->flink}\" $title $dropdown>$linktype $caption</a>";
+                        $html = "<a class=\"$class\" href=\"{$menu->flink}\" $title $dropdown>$linktype $caret$caption</a>";
                         break;
                     case 1:
                         // _blank
-                        $html = "<a class=\"$class\" href=\"{$menu->flink}\" target=\"_blank\" $title $dropdown>$linktype $caption</a>";
+                        $html = "<a class=\"$class\" href=\"{$menu->flink}\" target=\"_blank\" $title $dropdown>$linktype $caret$caption</a>";
                         break;
                     case 2:
                         // window.open
-                        $html = "<a class=\"$class\" href=\"{$menu->flink}\" onclick=\"window.open(this.href,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes');return false;\" $title $dropdown>$linktype $caption</a>";
+                        $html = "<a class=\"$class\" href=\"{$menu->flink}\" onclick=\"window.open(this.href,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes');return false;\" $title $dropdown>$linktype $caret$caption</a>";
                         break;
                 }
                 break;
@@ -286,16 +289,16 @@ class ZO2MegaMenu
 
                     default:
                     case 0:
-                        $html = "<a class=\"$class\" href=\"$flink\" $title $dropdown>$linktype$caption</a>";
+                        $html = "<a class=\"$class\" href=\"$flink\" $title $dropdown>$linktype$caret$caption</a>";
                         break;
                     case 1:
                         // _blank
-                        $html = "<a class=\"$class\" href=\"$flink\" target=\"_blank\" $title $dropdown>$linktype$caption</a>";
+                        $html = "<a class=\"$class\" href=\"$flink\" target=\"_blank\" $title $dropdown>$linktype$caret$caption</a>";
                         break;
                     case 2:
                         // window.open
                         $options = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,' . $menu->params->get('window_open');
-                        $html = "<a class=\"$class\" href=\"$flink\" onclick=\"window.open(this.href,'targetWindow','$options');return false;\" $title $dropdown>$linktype$caption</a>";
+                        $html = "<a class=\"$class\" href=\"$flink\" onclick=\"window.open(this.href,'targetWindow','$options');return false;\" $title $dropdown>$linktype$caret$caption</a>";
                         break;
                 }
 
@@ -337,9 +340,9 @@ class ZO2MegaMenu
         if (isset($config['xicon'])) $data .= " data-xicon=\"{$config['xicon']}\"";
         if (isset($config['caption'])) $data .= " data-caption=\"" . htmlspecialchars($config['caption']) . "\"";
 
-        if (isset($config['hide_submenu'])) $data .= " data-hidesub=\"1\"";
+        if (isset($config['hidesub'])) $data .= " data-hidesub=\"1\"";
         if (isset($config['caption'])) $data .= " data-caption=\"" . htmlspecialchars($config['caption']) . "\"";
-        if (isset($config['hide_column'])) {
+        if (isset($config['hidewcol'])) {
             $data .= " data-hidewcol=\"1\"";
             $class .= " sub-hidden-collapse";
         }
@@ -413,17 +416,17 @@ class ZO2MegaMenu
                 $data = "data-width=\"$width\"";
                 $class = "span$width";
                 if (isset($column['module_id'])) {
-                    $class .= " column-module";
+                    $class .= " mega-col-module";
                     $data .= " data-module_id=\"{$column['module_id']}\"";
                 } else {
-                    $class .= " column-navigation";
+                    $class .= " mega-col-nav";
                 }
                 if (isset($column['class'])) {
                     $class .= " {$column['class']}";
                     $data .= " data-class=\"{$column['class']}\"";
                 }
-                if (isset($column['hide_column'])) {
-                    $data .= " data-hide_column=\"1\"";
+                if (isset($column['hidewcol'])) {
+                    $data .= " data-hidewcol=\"1\"";
                     $class .= " hidden-collapse";
                 }
                 // start column

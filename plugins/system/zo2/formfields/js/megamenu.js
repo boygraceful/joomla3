@@ -184,7 +184,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 		$moveitems = $items.slice (0, itemidx+1),
 		itemleft = $items.length - $moveitems.length,
 		$rows = $col.parent().parent().children ('[class*="row"]'),
-		$cols = $rows.children('[class*="span"]').filter (function(){return !$(this).data('position')}),
+		$cols = $rows.children('[class*="span"]').filter (function(){return !$(this).data('module_id')}),
 		colidx = $cols.index ($col);
 		if (!$liparent.length) return ; // need make this is mega first
 
@@ -195,7 +195,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 			// add column to first
 			actions.datas.addfirst = true;
 			actions.addColumn ();
-			$cols = $rows.children('[class*="span"]').filter (function(){return !$(this).data('position')});
+			$cols = $rows.children('[class*="span"]').filter (function(){return !$(this).data('module_id')});
 			currentSelected = oldSelected;
 			colidx++;
 		}
@@ -224,7 +224,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 		$moveitems = $items.slice (itemidx),
 		itemleft = $items.length - $moveitems.length,
 		$rows = $col.parent().parent().children ('[class*="row"]'),
-		$cols = $rows.children('[class*="span"]').filter (function(){return !$(this).data('position')}),
+		$cols = $rows.children('[class*="span"]').filter (function(){return !$(this).data('module_id')}),
 		colidx = $cols.index ($col);
 		if (!$liparent.length) return ; // need make this is mega first
 
@@ -234,7 +234,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 			currentSelected = $col;
 			actions.datas.addfirst = false;
 			actions.addColumn ();
-			$cols = $rows.children('[class*="span"]').filter (function(){return !$(this).data('position')});
+			$cols = $rows.children('[class*="span"]').filter (function(){return !$(this).data('module_id')});
 			currentSelected = oldSelected;
 		}
 		// move content to right col
@@ -309,12 +309,12 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 			$row = $col.parent(),
 			$rows = $row.parent().children ('[class*="row"]'),
 			$allcols = $rows.children('[class*="span"]'),
-			$allmenucols = $allcols.filter (function(){return !$(this).data('position')}),
-			$haspos = $allcols.filter (function(){return $(this).data('position')}).length,
+			$allmenucols = $allcols.filter (function(){return !$(this).data('module_id')}),
+			$haspos = $allcols.filter (function(){return $(this).data('module_id')}).length,
 			$cols = $row.children('[class*="span"]'),
 			colcount = $cols.length - 1,
 			colwidths = defaultColumnsWidth (colcount),
-			type_menu = $col.data ('position') ? false : true;
+			type_menu = $col.data ('module_id') ? false : true;
 
 		if ((type_menu && ((!$haspos && $allmenucols.length == 1) || ($haspos && $allmenucols.length == 0))) 
 			|| $allcols.length == 1) {
@@ -402,14 +402,14 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 						col = {};
 						if (li.length) {
 							col['item'] = li.data('id');
-						} else if ($(this).data('position')) {
-							col['position'] = $(this).data('position');
+						} else if ($(this).data('module_id')) {
+							col['module_id'] = $(this).data('module_id');
 						} else {
 							col['item'] = -1;
 						}
 						
 						for (var d in $(this).data()) {
-							if (d != 'id' && d != 'level' && d != 'position' && $(this).data(d))
+							if (d != 'id' && d != 'level' && d != 'module_id' && $(this).data(d))
 								col[d] = $(this).data(d);
 						}
 						row[j++] = col;
@@ -574,13 +574,13 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 
 			case 'col':
 				$('.toolcol-exclass').attr('value', currentSelected.data ('class') || '');
-				//$('.toolcol-position').attr('value', currentSelected.data ('position') || '');
+				//$('.toolcol-module').attr('value', currentSelected.data ('module_id') || '');
 				//$('.toolcol-width').attr('value', currentSelected.data ('width') || '');
-				$('.toolcol-position').val (currentSelected.data ('position') || '').trigger("liszt:updated");
+				$('.toolcol-module').val (currentSelected.data ('module_id') || '').trigger("liszt:updated");
 				$('.toolcol-width').val (currentSelected.data ('width') || '').trigger("liszt:updated");
 				/* enable/disable module chosen */
 				if (currentSelected.find ('.mega-nav').length > 0) {
-					$('.toolcol-position').parent().addClass('disabled');
+					$('.toolcol-module').parent().addClass('disabled');
 				}
 				// disable choose width if signle column
 				if (currentSelected.parent().children().length == 1) {
@@ -649,7 +649,7 @@ var ZO2AdminMegamenu = window.ZO2AdminMegamenu || {};
 				}
 				break;
 
-			case 'position':
+			case 'module_id':
 				// replace content if this is not menu-items type
 				if (currentSelected.find ('ul[class*="level"]').length == 0) {
 					// get module content
