@@ -42,17 +42,20 @@
     <files>
         <filename>index.php</filename>
         <filename>layout.json</filename>
+        <filename>error.php</filename>
         <folder>css</folder>
         <folder>vendor</folder>
+        <folder>layouts</folder>
+        <folder>html</folder>
     </files>
     <config>
 
     <fields name="params" addfieldpath="/plugins/system/zo2/formfields">
 
         <fieldset name="layout" addfieldpath="/plugins/system/zo2/formfields">
-            <field
-                type="layout"
-                name="layout" />
+            <!--<field-->
+                <!--type="layout"-->
+                <!--name="layout" />-->
         </fieldset>
 
         <fieldset name="megamenu">
