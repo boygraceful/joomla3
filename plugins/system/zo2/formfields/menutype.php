@@ -40,18 +40,19 @@ class JFormFieldMenutype extends JFormFieldMenu
 
         $html = array();
         $vars = array();
+        $calls = array();
+
         $input = JFactory::getApplication()->input;
         if($input->getCmd('option') == 'com_templates' &&
             (preg_match('/style\./', $input->getCmd('task')) || $input->getCmd('view') == 'style' || $input->getCmd('view') == 'template')
         ){
             $vars['url'] = JUri::root() . 'index.php?zo2controller=menu&task=display';
         }
-
-        $fcalls[] = 'Assets.ajax(\''.$this->getName('menu_type').'\', ' . json_encode($vars) . ');';
+        $calls[] = 'Assets.ajax(\''.$this->getName('menu_type').'\', ' . json_encode($vars) . ');';
 
         $html[] = '<script type="text/javascript">';
         $html[] = '         jQuery(window).on(\'load\', function(){';
-        $html[] = '             '.implode("\n", $fcalls).'';
+        $html[] = '             '.implode("\n", $calls).'';
         $html[] = '         })';
         $html[] = '</script>';
 
