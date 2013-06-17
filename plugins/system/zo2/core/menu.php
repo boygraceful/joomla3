@@ -235,7 +235,7 @@ class ZO2MegaMenu
         $caret = '<b class="caret"></b>';
         if ($menu->isdropdown && $menu->level < 2) {
             $class .= 'dropdown-toggle';
-            $dropdown = ' data-toggle="dropdown"';
+            $dropdown = ' data-toggle="dropdown" ';
         }
 
         if ($menu->show_group) {

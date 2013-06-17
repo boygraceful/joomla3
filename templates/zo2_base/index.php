@@ -31,9 +31,16 @@ if(!class_exists('Zo2Framework')) die('Zo2Framework not found');
                 </div>
                 <!--Navigation-->
                 <div class="wrap zo2-menu navbar navbar-static" id="zo2-menu">
-                    <div class="navbar-inner">
-                        <div class="container">
-                            <?php echo $this->zo2->displayMegaMenu($this->zo2->getParams('menutype', 'mainmenu'), $this->template); ?>
+                    <div class="container">
+                        <div class="navbar-inner">
+                            <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <div class="nav-collapse collapse">
+                                <?php echo $this->zo2->displayMegaMenu($this->zo2->getParams('menutype', 'mainmenu'), $this->template); ?>
+                            </div>
                         </div>
                     </div>
                 </div>

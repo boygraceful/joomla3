@@ -245,7 +245,9 @@ class Zo2Framework {
         $menu->renderMenu();
 
         Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL . '/css/megamenu.css');
-        //if (Zo2Framework::getParams('responsive', 1)) Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL.'/css/megamenu-responsive.css');
+        Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL.'/css/megamenu-responsive.css');
+
+        Zo2Framework::addJsScript(ZO2_ADMIN_PLUGIN_URL.'/js/hover.js');
 
     }
 
