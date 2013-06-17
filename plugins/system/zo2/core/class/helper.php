@@ -183,8 +183,8 @@ abstract class JModuleHelper
 		{
 			$chrome = array();
 		}
-        include_once ZO2_ADMIN_BASE . '/html/modules.php';
-        include_once JPATH_THEMES . '/system/html/modules.php';
+        	include_once ZO2_ADMIN_BASE . '/html/modules.php';
+		include_once JPATH_THEMES . '/system/html/modules.php';
 		$chromePath = JPATH_THEMES . '/' . $template . '/html/modules.php';
 
 		if (!isset($chrome[$chromePath]))

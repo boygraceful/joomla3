@@ -33,7 +33,7 @@ if(!class_exists('Zo2Framework')) die('Zo2Framework not found');
                 <div class="wrap zo2-menu navbar navbar-static" id="zo2-menu">
                     <div class="navbar-inner">
                         <div class="container">
-                            <?php echo $this->zo2->displayMegaMenu('mainmenu', $this->template); ?>
+                            <?php echo $this->zo2->displayMegaMenu($this->zo2->getParams('menutype', 'mainmenu'), $this->template); ?>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,6 @@ if(!class_exists('Zo2Framework')) die('Zo2Framework not found');
                 </div>
                 <jdoc:include type="modules" name="bottom" />
             </div>
-
         </div>
 
         <!-- Footer -->
