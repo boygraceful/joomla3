@@ -1,127 +1,71 @@
-/*
-
-
- * Project: Twitter Bootstrap Hover Dropdown
- * Author: Cameron Spear
- * Contributors: Mattia Larentis
+/**
+ * Zo2 Framework (http://zo2framework.org)
  *
- * Dependencies?: Twitter Bootstrap's Dropdown plugin
- *
- * A simple plugin to enable twitter bootstrap dropdowns to active on hover and provide a nice user experience.
- *
- * No license, do what you want. I'd love credit or a shoutout, though.
- *
- * http://cameronspear.com/blog/twitter-bootstrap-dropdown-on-hover-plugin/
+ * @link     http://github.com/aploss/zo2
+ * @package  Zo2
+ * @author   Hiepvu
+ * @copyright  Copyright ( c ) 2008 - 2013 APL Solutions
+ * @license  http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
  */
-;(function($, window, undefined) {
-    // outside the scope of the jQuery plugin to
-    // keep track of all dropdowns
-    var $allDropdowns = $();
 
-    // if instantlyCloseOthers is true, then it will instantly
-    // shut other nav items when a new one is hovered over
-    $.fn.dropdownHover = function(options) {
+!function ($) {
+    $(document).ready(function ($) {
 
-        // the element we really care about
-        // is the dropdown-toggle's parent
-        $allDropdowns = $allDropdowns.add(this.parent());
+        var duration = 0;
+        var $parent = $('.zo2-megamenu');
+        if ($parent.data('duration')) {
+            duration = $parent.data('duration');
+        }
 
-        return this.each(function() {
-            var $this = $(this),
-                $parent = $this.parent(),
-                defaults = {
-                    delay: 500,
-                    instantlyCloseOthers: true
-                },
-                data = {
-                    delay: $(this).data('delay'),
-                    instantlyCloseOthers: $(this).data('close-others')
-                },
-                settings = $.extend(true, {}, defaults, options, data),
-                timeout;
+        if (duration) {
+            var css = '.zo2-megamenu.animate .mega > .mega-dropdown-menu {';
+            css += 'transition-duration: ' + duration + 'ms;';
+            css += '-webkit-transition-duration: ' + duration + 'ms;';
+            css += '-ms-transition-duration: ' + duration + 'ms;';
+            css += '-o-transition-duration: ' + duration + 'ms;';
+            css += '}';
+            var style = document.createElement('style');
+            style.type = 'text/css';
 
-            $parent.hover(function(event) {
-                // so a neighbor can't open the dropdown
-                if(!$parent.hasClass('open') && !$this.is(event.target)) {
-                    return true;
-                }
+            if (style.stylesheet) {
+                style.stylesheet.cssText = css;
+            } else {
+                style.appendChild(document.createTextNode(css));
+            }
+            $('head')[0].appendChild(style);
 
-                if(shouldHover()) {
-                    if(settings.instantlyCloseOthers === true)
-                        $allDropdowns.removeClass('open');
+            var timeout = duration ? duration + 50 : 500;
+            $('.nav > li').hover(
+                function (e) {
+                    var $this = $(this);
+                    if ($this.hasClass('mega')) {
+                        $this.addClass('animating');
+                        clearTimeout($this.data('timeout'));
+                        $this.data('timeout', setTimeout(function () {
+                            $this.removeClass('animating')
+                        }), timeout);
 
-                    window.clearTimeout(timeout);
-                    $parent.addClass('open');
-                }
-            }, function() {
-                if(shouldHover()) {
-                    timeout = window.setTimeout(function() {
-                        $parent.removeClass('open');
-                    }, settings.delay);
-                }
-
-            });
-
-            // this helps with button groups!
-            $this.hover(function() {
-                if(shouldHover()) {
-                    if(settings.instantlyCloseOthers === true)
-                        $allDropdowns.removeClass('open');
-
-                    window.clearTimeout(timeout);
-                    $parent.addClass('open');
-                }
-            });
-
-            // handle submenus
-            $parent.find('.dropdown-submenu').each(function(){
-                var $this = $(this);
-                var subTimeout;
-                $this.hover(function() {
-                    if(shouldHover()) {
-                        window.clearTimeout(subTimeout);
-                        $this.children('.dropdown-menu').show();
-                        // always close submenu siblings instantly
-                        $this.siblings().children('.dropdown-menu').hide();
-                    }
-                }, function() {
-                    var $submenu = $this.children('.dropdown-menu');
-                    if(shouldHover()) {
-                        subTimeout = window.setTimeout(function() {
-                            $submenu.hide();
-                        }, settings.delay);
+                        $this.data('hoverTime',
+                            setTimeout(function () {
+                                $this.addClass('open')
+                            }, 100));
                     } else {
-                        // emulate Twitter Bootstrap's default behavior
-                        $submenu.hide();
+                        clearTimeout($this.data('hoverTime'));
+                        $this.data('hoverTime',
+                            setTimeout(function () {
+                                $this.addClass('open')
+                            }, 100));
                     }
-                });
-            });
-        });
-    };
-
-    // helper function to see if we should hover
-    var shouldHover = function() { return !$('#cwspear-is-awesome').is(':visible'); };
-    $(document).ready(function() {
-        // apply dropdownHover to all elements with the data-hover="dropdown" attribute
-        $('[data-hover="dropdown"]').dropdownHover();
-
-        // pure win here: we create these spans so we can test if we have the responsive css loaded
-        // this is my attempt to hopefully make sure the IDs are unique
-        $('<div class="navbar" style="visibility:hidden;position:fixed"><div class="btn-navbar" id="cwspear-is-awesome">.</div></div>').appendTo('body');
+                },
+                function () {
+                    var $this = $(this);
+                    clearTimeout($this.data('hoverTime'));
+                    $this.data('hoverTime',
+                        setTimeout(function () {
+                            $this.removeClass('open')
+                        }, 100));
+                }
+            );
+        }
     });
-
-    // for the submenu to close on delay, we need to override Bootstrap's CSS in this case
-    var css = '.dropdown-submenu:hover>.dropdown-menu{display:none}';
-    var style = document.createElement('style');
-    style.type = 'text/css';
-    if (style.styleSheet) {
-        style.styleSheet.cssText = css;
-    } else {
-        style.appendChild(document.createTextNode(css));
-    }
-    $('head')[0].appendChild(style);
-})(jQuery, this);
-
-jQuery(document).ready(function() {
-    jQuery('.dropdown-toggle').dropdownHover();
-});
+}(jQuery);

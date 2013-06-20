@@ -137,8 +137,8 @@ class ZO2MegaMenu
     function renderMenu()
     {
         $html = '';
-        $animation = $this->_params->get('menu_aimation', '');
-        $duration = $this->_params->get('duration', 4);
+        $animation = $this->_params->get('animation', '');
+        $duration = $this->_params->get('duration', 400);
         $class = 'class="zo2-megamenu' . ($animation ? ' animate ' . $animation : '') . '"';
         $data = $animation && $duration ? ' data-duration="' . $duration . '"' : '';
         $keys = array_keys($this->_items);
@@ -185,7 +185,7 @@ class ZO2MegaMenu
         }
         $class = '';
         if (!$parent) {
-            $class .= 'nav level10';
+            $class .= 'nav level-top';
         } else {
             $class .= ' mega-nav';
             $class .= ' level' . $parent->level;
