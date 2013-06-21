@@ -248,6 +248,8 @@ class Zo2Framework {
         Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL.'/css/megamenu-responsive.css');
         if ($params->get('hover_type') == 'hover') {
             Zo2Framework::addJsScript(ZO2_ADMIN_PLUGIN_URL.'/js/hover.js');
+        } else {
+            Zo2Framework::addJsScript(ZO2_ADMIN_PLUGIN_URL.'/js/click.js');
         }
 
     }
@@ -305,18 +307,14 @@ class Zo2Framework {
      */
     public static function addHead() {
 
-        $doc = JFactory::getDocument();
-        $direction = $doc->direction;
-        // Add JavaScript Frameworks
         JHtml::_('jquery.framework');
-        JHtml::_('bootstrap.framework');
-
+        Zo2Framework::addJsScript(ZO2_ADMIN_PLUGIN_URL.'/vendor/bootstrap/js/bootstrap.min.js');
+        Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL.'/vendor/bootstrap/css/bootstrap.min.css');
         // Add Stylesheets
         // Load optional RTL Bootstrap CSS
-//        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/vendor/font-awesome/css/font-awesome.min.css');
+        Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/vendor/font-awesome/css/font-awesome.min.css');
         Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/template.css');
         Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/style.css');
-        JHtml::_('bootstrap.loadCss', false, $direction);
 
     }
 

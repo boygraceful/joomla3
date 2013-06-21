@@ -35,7 +35,7 @@
             $('head')[0].appendChild(style);
 
             var timeout = duration ? duration + 50 : 500;
-            $('.nav > li').hover(
+            $('.nav > li, li.mega').hover(
                 function (e) {
                     var $this = $(this);
                     if ($this.hasClass('mega')) {
@@ -48,13 +48,13 @@
                         $this.data('hoverTime',
                             setTimeout(function () {
                                 $this.addClass('open')
-                            }, 100));
+                            }, 200));
                     } else {
                         clearTimeout($this.data('hoverTime'));
                         $this.data('hoverTime',
                             setTimeout(function () {
                                 $this.addClass('open')
-                            }, 100));
+                            }, 200));
                     }
                 },
                 function () {
@@ -63,7 +63,7 @@
                     $this.data('hoverTime',
                         setTimeout(function () {
                             $this.removeClass('open')
-                        }, 100));
+                        }, 200));
                 }
             );
         }
