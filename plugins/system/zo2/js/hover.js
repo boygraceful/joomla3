@@ -39,22 +39,22 @@
                 function (e) {
                     var $this = $(this);
                     if ($this.hasClass('mega')) {
-                        $this.addClass('animating');
+                        $this.addClass('hovering');
                         clearTimeout($this.data('timeout'));
                         $this.data('timeout', setTimeout(function () {
-                            $this.removeClass('animating')
+                            $this.removeClass('hovering')
                         }), timeout);
 
                         $this.data('hoverTime',
                             setTimeout(function () {
                                 $this.addClass('open')
-                            }, 200));
+                            }, 100));
                     } else {
                         clearTimeout($this.data('hoverTime'));
                         $this.data('hoverTime',
                             setTimeout(function () {
                                 $this.addClass('open')
-                            }, 200));
+                            }, 100));
                     }
                 },
                 function () {
@@ -63,7 +63,7 @@
                     $this.data('hoverTime',
                         setTimeout(function () {
                             $this.removeClass('open')
-                        }, 200));
+                        }, 100));
                 }
             );
         }

@@ -375,7 +375,7 @@ class ZO2MegaMenu
         //default first item
         $fitem = count($menus) ? $menus[0]->id : 0;
 
-        $class = 'nav-child ' . ($parent->isdropdown ? 'dropdown-menu mega-dropdown-menu' : 'mega-group-ct');
+        $class = 'menu-child  ' . ($parent->isdropdown ? 'dropdown-menu mega-dropdown-menu' : 'mega-group-content');
         $data = '';
         $style = '';
 
