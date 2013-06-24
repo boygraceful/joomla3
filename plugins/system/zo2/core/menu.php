@@ -137,14 +137,16 @@ class ZO2MegaMenu
     function renderMenu()
     {
         $html = '';
+        $hover = ' data-hover="' . $this->_params->get('hover_type', 'hover') . '"';
         $animation = $this->_params->get('animation', '');
         $duration = $this->_params->get('duration', 400);
         $class = 'class="zo2-megamenu' . ($animation ? ' animate ' . $animation : '') . '"';
         $data = $animation && $duration ? ' data-duration="' . $duration . '"' : '';
+
         $keys = array_keys($this->_items);
 
         if (count($this->_items)) {
-            $html .= "<div $class$data>";
+            $html .= "<div $class$data$hover>";
             $html .= $this->getMenu(null, $keys[0]);
             $html .= "</div>";
             echo $html;
