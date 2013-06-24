@@ -70,7 +70,6 @@
             <field name="nav_type" type="list" default="joomla"
                    label="Navigation type"
                    description="Navigation type">
-                <option value="joomla">Joomla Module</option>
                 <option value="megamenu">Megamenu</option>
             </field>
 

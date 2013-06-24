@@ -245,12 +245,8 @@ class Zo2Framework {
         $menu->renderMenu();
 
         Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL . '/css/megamenu.css');
-        Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL.'/css/megamenu-responsive.css');
-        if ($params->get('hover_type') == 'hover') {
-            Zo2Framework::addJsScript(ZO2_ADMIN_PLUGIN_URL.'/js/hover.js');
-        } else {
-            Zo2Framework::addJsScript(ZO2_ADMIN_PLUGIN_URL.'/js/click.js');
-        }
+//        Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL.'/css/megamenu-responsive.css');
+        Zo2Framework::addJsScript(ZO2_ADMIN_PLUGIN_URL.'/js/megamenu.js');
 
     }
 
