@@ -34,7 +34,9 @@ if(!class_exists('Zo2Framework')) die('Zo2Framework not found');
                     <div class="container">
                         <div class="navbar-inner">
                             <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                               <i class="icon-reorder"></i>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
                             </button>
                             <div class="nav-collapse collapse">
                                 <?php echo $this->zo2->displayMegaMenu($this->zo2->getParams('menutype', 'mainmenu'), $this->template); ?>
