@@ -24,8 +24,8 @@ class JConfig {
 	public $helpurl = 'http://help.joomla.org/proxy/index.php?option=com_help&keyref=Help{major}{minor}:{keyref}';
 	public $ftp_host = '';
 	public $ftp_port = '';
-	public $ftp_user = '';
-	public $ftp_pass = '';
+	public $ftp_user = 'admin';
+	public $ftp_pass = 'admin';
 	public $ftp_root = '';
 	public $ftp_enable = '0';
 	public $offset = 'UTC';
