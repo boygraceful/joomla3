@@ -1,9 +1,3 @@
-NodeType = {
-    ELEMENT: 1,
-    TEXT: 3,
-    COMMENT: 8
-};
-
 var WorkSpace = Backbone.Model.extend({
     initialize: function()
     {
@@ -18,8 +12,14 @@ var WorkSpace = Backbone.Model.extend({
 
         this.set('componentList', jQuery('#components-container'));
 
+        this.set('hfHtml', jQuery('.hfLayoutHtml'));
+
         //this.bindClickDroppable();
         this._initDraggingInsideIframe();
+
+        this.bindKeyboardDeleteElement();
+
+        this.bindOverlayToolbar();
     },
 
     defaults: function() {
@@ -37,6 +37,12 @@ var WorkSpace = Backbone.Model.extend({
         };
     },
 
+    getLayoutHtml: function(layoutName, callback) {
+        jQuery.post('index.php?zo2controller=getLayout&layout=' + layoutName + '&template=' + jQuery('#hfLayoutName').val(), function(resp){
+            if(typeof callback == 'function') callback(resp);
+        });
+    },
+
     /**
      * Set the content of iframe element
      *
@@ -51,6 +57,17 @@ var WorkSpace = Backbone.Model.extend({
         target.write(html);
         target.close();
         return this;
+    },
+
+    saveLayout: function()
+    {
+        var thisWorkspace = this;
+        var html = document.getElementById('layoutframe').contentWindow.document.body.innerHTML;
+        var opt = {html: html, name: 'homepage', template: jQuery('#hfLayoutName').val()};
+
+        jQuery.post('index.php?zo2controller=saveLayout', opt, function(resp){
+            console.log(resp);
+        });
     },
 
     eventToFramePosition: function(e)
@@ -96,6 +113,45 @@ var WorkSpace = Backbone.Model.extend({
         return jQuery(this.getElementByPosition(pos));
     },
 
+    deleteSelectedElement: function() {
+        var thisWorkspace = this;
+        var $iframe = jQuery(thisWorkspace.get('iframeEl').contents()[0]);
+        var $els = $iframe.find('.zo2-selected');
+
+        if($els.length > 0) {
+            $els.remove();
+            jQuery('#layoutbuilder-toolbar').hide();
+            return false; //to prevent back behaviour on macosx when press delete key
+        }
+        else return true;
+    },
+
+    bindKeyboardDeleteElement: function(){
+        var thisWorkspace = this;
+        jQuery(document).bind('keydown', function(e){
+            var keycode =  e.keyCode ? e.keyCode : e.which;
+
+            if(keycode == 8 || keycode == 46) return thisWorkspace.deleteSelectedElement();
+            else return true;
+        });
+    },
+
+    bindOverlayToolbar: function(){
+        this.bindOverlayRemoveButton();
+        this.bindOverlaySettingsButton();
+    },
+
+    bindOverlaySettingsButton: function(){
+        var thisWorkspace = this;
+    },
+
+    bindOverlayRemoveButton: function(){
+        var thisWorkspace = this;
+        jQuery('#layoutbuilder-toolbar .delete').on('click', function(){
+            thisWorkspace.deleteSelectedElement();
+        });
+    },
+
     _initDraggingInsideIframe: function ()
     {
         var $droppable = this.get('droppableEl');
@@ -105,6 +161,9 @@ var WorkSpace = Backbone.Model.extend({
         $droppable.bind('mousedown', function(e) {
             var button = (e.which || e.button);
             if (button != 1) return true;
+
+            $iframe.find('.zo2-selected').removeClass('zo2-selected');
+
             thisWorkspace.set('isDragging', true);
             var $draggingEl = thisWorkspace.getElementByEvent(e);
             if (!$draggingEl.attr('data-zo2selectable')) {
@@ -115,15 +174,33 @@ var WorkSpace = Backbone.Model.extend({
             if ($draggingEl && $draggingEl.length > 0) {
                 $draggingEl.addClass('zo2-selected');
                 var $cloneDraggingEl = $draggingEl.clone();
+                $cloneDraggingEl.hide();
                 var pos = thisWorkspace.eventToFramePosition(e);
+
+                /*
                 $cloneDraggingEl.css({
                     top: pos.y + 5,
                     left: pos.x + 5,
                     position: 'absolute'
                 });
+                */
+
+                thisWorkspace.generateElementForm($draggingEl);
+
                 $cloneDraggingEl.addClass('zo2-clonedragging zo2-dragging').insertAfter($draggingEl);
                 thisWorkspace.set('draggingEl', $draggingEl);
                 thisWorkspace.set('cloneDraggingEl', $cloneDraggingEl);
+
+                // show control toolbar
+                var draggingElOffset = $draggingEl.offset();
+                var $toolbar = jQuery('#layoutbuilder-toolbar').css({
+                    display: 'block',
+                    top: draggingElOffset.top + 5,
+                    left: draggingElOffset.left + $draggingEl.width() - 20 - jQuery('#layoutbuilder-toolbar').width()
+                });
+            }
+            else {
+                jQuery('#layoutbuilder-toolbar').hide();
             }
 
             return true;
@@ -140,7 +217,7 @@ var WorkSpace = Backbone.Model.extend({
             }
 
             // clean up class
-            $iframe.find('.zo2-selected').removeClass('zo2-selected');
+            //$iframe.find('.zo2-selected').removeClass('zo2-selected');
             $iframe.find('.zo2-hoveron').removeClass('zo2-hoveron');
 
             return true;
@@ -166,6 +243,14 @@ var WorkSpace = Backbone.Model.extend({
 
                 // TODO: Nghiên cứu thêm để đảm bảo việc drop vào vị trí chuẩn xác hơn. Tính toán để dùng prepend hay insertBefore.
                 $draggingEl.insertBefore($hoverOnEl);
+
+                // move toolbar
+                var draggingElOffset = $draggingEl.offset();
+                var $toolbar = jQuery('#layoutbuilder-toolbar').css({
+                    display: 'block',
+                    top: draggingElOffset.top + 5,
+                    left: draggingElOffset.left + $draggingEl.width() - 20 - jQuery('#layoutbuilder-toolbar').width()
+                });
             }
 
             // set position for draggable helper
@@ -173,7 +258,7 @@ var WorkSpace = Backbone.Model.extend({
                 top: pos.y + 5,
                 left: pos.x + 5,
                 position: 'absolute'
-            });
+            }).show();
 
             return true;
         });
@@ -184,7 +269,7 @@ var WorkSpace = Backbone.Model.extend({
             var pos = thisWorkspace.eventToFramePosition(e);
 
             var $editingEl = jQuery(thisWorkspace.getElementByPosition(pos)).closest('[data-zo2selectable]')
-                .not('body');
+                .not('body').not('[data-zo2componenttype="data-component"]');
 
             if($editingEl && $editingEl.length > 0) {
                 $droppable.hide();
@@ -247,6 +332,7 @@ var WorkSpace = Backbone.Model.extend({
 
         var $draggable = jQuery('.zo2-draggable');
         $draggable.draggable({
+            cursorAt: {left: -10, top: -20},
             helper: 'clone',
             revert: 'invalid',
             drag: function(e, ui) {
@@ -260,11 +346,12 @@ var WorkSpace = Backbone.Model.extend({
                     var hoverOnEl = thisWorkspace.getElementByEvent(e);
                     var $containableEl = hoverOnEl.closest('[data-zo2selectable]');
                     var $el = thisWorkspace.get('outsideDraggingEl');
-                    if ($el) {
+                    if ($el !== null && $el.length > 0) {
                         $el.insertBefore($containableEl);
                     }
                     else {
-                        $el = jQuery(html).insertBefore($containableEl);
+                        $el = jQuery(html);
+                        $el.insertBefore($containableEl);
                         thisWorkspace.set('outsideDraggingEl', $el);
                     }
                 }
@@ -305,6 +392,43 @@ var WorkSpace = Backbone.Model.extend({
     addComponentToList: function(component) {
         var $container = this.get('componentList');
         component.createDraggableElement().appendTo($container);
+    },
+
+    extractAttributes: function(el) {
+        var result = [];
+        jQuery.each(el.attributes, function(index){
+            result.push({name: this.name, value: this.value});
+        });
+        return result;
+    },
+
+    generateElementForm: function($el) {
+        jQuery('#inputClass').val($el.attr('class') ? $el.attr('class') : '');
+        jQuery('#dynamic-attributes').empty();
+
+        var attr = this.extractAttributes($el[0]);
+
+        if (attr && attr.length > 0) {
+            for (var i = 0; i < attr.length; i++) {
+                this.generateAttributeRow($el, attr[i]);
+            }
+        }
+    },
+
+    generateAttributeRow: function($el, attr) {
+        var attribute = attr.name.charAt(0).toUpperCase() + attr.name.slice(1); // uppercase first character
+
+        var html = '<div class="control-group"><label class="control-label" for="input' + attribute + '">' + attribute
+                + '</label><div class="controls"><input type="text" id="input' + attribute + '">'
+                + '</div></div>';
+
+        var $row = jQuery(html);
+
+        // apply on the fly
+        $row.find('input').on('keydown', function(){
+        });
+
+        $row.appendTo('#dynamic-attributes');
     }
 });
 
@@ -317,7 +441,8 @@ var Component = Backbone.Model.extend({
             class: ['zo2-draggable'],
             html: '',
             groups: ['Common components'],
-            type: 'normal-component'
+            type: 'normal-component',
+            icon: ''
         }
     },
     createElement: function() {
@@ -326,7 +451,10 @@ var Component = Backbone.Model.extend({
     createDraggableElement: function() {
         var classArray = this.get('class');
         var classes = classArray && classArray.length > 0 ? classArray.join(' ') : '';
-        var html = '<div data-zo2componenttype="' + this.get('type') + '" data-zo2componentid="' + this.get('id') + '" class="' + classes + '">' + this.get('name') + '</div>';
+        var html = '<div data-zo2componenttype="' + this.get('type') + '" data-zo2componentid="' + this.get('id') + '" class="' + classes + '">'
+            + '<img src="../plugins/system/zo2/images/components/' + this.get('icon') + '" />'
+            + this.get('name')
+            + '</div>';
         return jQuery(html);
     }
 });
