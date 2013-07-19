@@ -15,24 +15,26 @@ Zo2Framework::import2('core.shortcodes');
 
 class Gist  extends ZO2Shortcode
 {
+    // set short code tag
     protected $tagname = 'gist';
+
+    /**
+     * initializing variables for short code
+     */
+    protected function init_attrs() {
+        $this->default_attrs =  array(
+            'id' => '',
+            'username' => '',
+            'url' => ''
+        );
+    }
 
     protected function body()
     {
 
-        extract(shortcode_atts(array(
-            'id' => '',
-            'username' => '',
-            'url' => ''
-        ), $this->attrs));
+        if (!empty($this->content)) {
 
-        if (!is_array($this->attrs)) {
-            return '<!-- Gist shortcode passed invalid attributes -->';
-        }
-
-        if (!empty($url)) {
-
-            $url = JString::parse_url($url);
+            $url = JString::parse_url($this->content);
             $path = $url['path'];
             $info = explode('/', trim($path, '/'));
             $id = $info[1];

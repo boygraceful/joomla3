@@ -15,20 +15,22 @@ Zo2Framework::import2('core.shortcodes');
 
 class Wufoo  extends ZO2Shortcode
 {
+    // set short code tag
     protected $tagname = 'wufoo';
 
-    protected function body()
-    {
-        extract(shortcode_atts(array(
+    /**
+     * initializing variables for short code
+     */
+    protected function init_attrs() {
+        $this->default_attrs =  array(
             'username' => '',
             'formhash' => '',
             'h' => 320,
-        ), $this->attrs));
+        );
+    }
 
-        if ( ! is_array( $this->attrs ) ) {
-            return '<!-- Wufoo shortcode passed invalid attributes -->';
-        }
-
+    protected function body()
+    {
         return '<iframe height="'.$h.'" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="http://'.$username.'.wufoo.com/embed/'.$formhash.'/"><a href="http://'.$username.'.wufoo.com/forms/'.$formhash.'/">Fill out my Wufoo form!</a></iframe>';
     }
 

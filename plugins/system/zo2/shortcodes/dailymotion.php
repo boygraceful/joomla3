@@ -15,21 +15,23 @@ Zo2Framework::import2('core.shortcodes');
 
 class Dailymotion  extends ZO2Shortcode
 {
+    // set short code tag
     protected $tagname = 'dailymotion';
 
-    protected function body()
-    {
-
-        extract(shortcode_atts(array(
+    /**
+     * initializing variables for short code
+     */
+    protected function init_attrs() {
+        $this->default_attrs =  array(
             'id' => 'xuj8os',
             'w' => 720,
             'h' => 320,
             'autoplay' => 0
-        ), $this->attrs));
+        );
+    }
 
-        if ( ! is_array( $this->attrs ) ) {
-            return '<!-- Dailymotion shortcode passed invalid attributes -->';
-        }
+    protected function body()
+    {
 
         if (!empty($this->content)) {
 

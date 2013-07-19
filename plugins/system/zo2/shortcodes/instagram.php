@@ -15,23 +15,25 @@ Zo2Framework::import2('core.shortcodes');
 
 class Instagram  extends ZO2Shortcode
 {
+    // set short code tag
     protected $tagname = 'instagram';
 
-    protected function body()
-    {
-        extract(shortcode_atts(array(
+    /**
+     * initializing variables for short code
+     */
+    protected function init_attrs() {
+        $this->default_attrs =  array(
             'url' => '',
             'w' => 720,
             'h' => 320,
-        ), $this->attrs));
+        );
+    }
 
-        if ( ! is_array( $this->attrs ) ) {
-            return '<!-- Instagram shortcode passed invalid attributes -->';
-        }
+    protected function body()
+    {
+        if (!empty($this->content)) {
 
-        if (!empty($url)) {
-
-            $video_json = 'http://api.instagram.com/oembed?url=' . $url;
+            $video_json = 'http://api.instagram.com/oembed?url=' . $this->content;
             $http = JHttpFactory::getHttp();
             $response = $http->get($video_json);
             $body = $response->body;

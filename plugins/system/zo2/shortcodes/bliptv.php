@@ -16,21 +16,21 @@ Zo2Framework::import2('core.shortcodes');
 
 class Bliptv extends ZO2Shortcode
 {
+    // set short code tag
     protected $tagname = 'blip.tv';
 
-    protected function body()
-    {
-
-        extract(shortcode_atts(array(
+    // initializing variables for short code
+    protected function init_attrs() {
+        $this->default_attrs = array(
             'id' => 6608034,
             'w' => 720,
             'h' => 320,
             'autoplay' => false
-        ), $this->attrs));
-        if (!is_array($this->attrs)) {
-            return '<!-- Bliptv shortcode passed invalid attributes -->';
-        }
+        );
+    }
 
+    protected function body()
+    {
         return '<iframe width="' . $w . '" height="' . $h . '" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://blip.tv/players/xplayer?id=' . $id . '&amp;autoplay=' . $autoplay . '&amp;onsite=true&amp;no_postroll=true" webkitAllowFullScreen mozallowfullscreen allowfullscreen=""></iframe>';
     }
 

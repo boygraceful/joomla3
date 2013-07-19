@@ -15,20 +15,23 @@ Zo2Framework::import2('core.shortcodes');
 
 class Code extends ZO2Shortcode
 {
+    // set short code tag
     protected $tagname = 'code';
+
+    /**
+     * initializing variables for short code
+     */
+    protected function init_attrs() {
+        $this->default_attrs = array(
+            'languages' => '',
+            'firstline' => '1',
+            'highlight' => '',
+        );
+    }
 
     protected function body()
     {
 
-        extract(shortcode_atts(array(
-            'languages' => '',
-            'firstline' => '1',
-            'highlight' => '',
-        ), $this->attrs));
-
-        if (!is_array($this->attrs)) {
-            return '<!-- Code shortcode passed invalid attributes -->';
-        }
         $highlight = (!empty($highlight)) ? 'highlight: ' . $highlight . ';' : '';
 
         $this->loadScripts();

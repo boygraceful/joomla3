@@ -15,21 +15,24 @@ Zo2Framework::import2('core.shortcodes');
 
 class Googlemaps  extends ZO2Shortcode
 {
+    // set short code tag
     protected $tagname = 'googlemaps';
 
-    protected function body()
-    {
-        extract(shortcode_atts(array(
+    /**
+     * initializing variables for short code
+     */
+    protected function init_attrs() {
+        $this->default_attrs =  array(
             'lat' => -34.397,
             'lng' => 150.644,
             'zoom' => 11,
             'w' => 100,
             'h' => 400
-        ), $this->attrs));
+        );
+    }
 
-        if ( ! is_array( $this->attrs ) ) {
-            return '<!-- Googlemaps shortcode passed invalid attributes -->';
-        }
+    protected function body()
+    {
 
         $w = ($w == '100%') ? $w : $w . 'px';
 
@@ -49,7 +52,7 @@ class Googlemaps  extends ZO2Shortcode
               map = new google.maps.Map(document.getElementById(\'map-canvas\'), mapOptions);
               var marker = new google.maps.Marker({
                             position: myLatlng,
-                            title: "' . $content . '"
+                            title: "' . $this->content . '"
                            });
               marker.setMap(map);
             }
