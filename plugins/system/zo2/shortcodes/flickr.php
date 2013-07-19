@@ -11,9 +11,13 @@
 //no direct accees
 defined('_JEXEC') or die ('resticted aceess');
 
-if (!function_exists('flickr')) {
+Zo2Framework::import2('core.shortcodes');
 
-    function flickr($atts, $content = "")
+class Flickr  extends ZO2Shortcode
+{
+    protected $tagname = 'flickr';
+
+    protected function body()
     {
 
         extract(shortcode_atts(array(
@@ -21,9 +25,9 @@ if (!function_exists('flickr')) {
             'url' => '',
             'w' => 300,
             'h' => 100,
-        ), $atts));
+        ), $this->attrs));
 
-        if ( ! is_array( $atts ) ) {
+        if ( ! is_array( $this->attrs ) ) {
             return '<!-- Flickr shortcode passed invalid attributes -->';
         }
 
@@ -48,7 +52,4 @@ if (!function_exists('flickr')) {
 
     }
 
-
-    add_shortcode('flickr', 'flickr');
 }
-

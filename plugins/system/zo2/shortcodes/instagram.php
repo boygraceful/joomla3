@@ -11,18 +11,21 @@
 //no direct accees
 defined('_JEXEC') or die ('resticted aceess');
 
-if (!function_exists('instagram')) {
+Zo2Framework::import2('core.shortcodes');
 
-    function instagram($atts, $content = "")
+class Instagram  extends ZO2Shortcode
+{
+    protected $tagname = 'instagram';
+
+    protected function body()
     {
-
         extract(shortcode_atts(array(
             'url' => '',
             'w' => 720,
             'h' => 320,
-        ), $atts));
+        ), $this->attrs));
 
-        if ( ! is_array( $atts ) ) {
+        if ( ! is_array( $this->attrs ) ) {
             return '<!-- Instagram shortcode passed invalid attributes -->';
         }
 
@@ -37,6 +40,4 @@ if (!function_exists('instagram')) {
         }
     }
 
-    add_shortcode('instagram', 'instagram');
 }
-

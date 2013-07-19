@@ -11,32 +11,34 @@
 //no direct accees
 defined('_JEXEC') or die ('resticted aceess');
 
-if (!function_exists('code')) {
+Zo2Framework::import2('core.shortcodes');
 
-    function code($atts, $content = "")
+class Code extends ZO2Shortcode
+{
+    protected $tagname = 'code';
+
+    protected function body()
     {
 
         extract(shortcode_atts(array(
             'languages' => '',
             'firstline' => '1',
             'highlight' => '',
-        ), $atts));
+        ), $this->attrs));
 
-        if (!is_array($atts)) {
+        if (!is_array($this->attrs)) {
             return '<!-- Code shortcode passed invalid attributes -->';
         }
-        $highlight = (!empty($highlight)) ? 'highlight: '  .$highlight.';' : '';
-        loadScripts();
+        $highlight = (!empty($highlight)) ? 'highlight: ' . $highlight . ';' : '';
 
-        return '<pre class="brush: ' . $languages . '; first-line:' . $firstline . '; '.$highlight.'">' . htmlentities($content) . '</pre>';
+        $this->loadScripts();
+
+        return '<pre class="brush: ' . $languages . '; first-line:' . $firstline . '; ' . $highlight . '">' . htmlentities($this->content) . '</pre>';
 
     }
 
-    add_shortcode('code', 'code');
-
-
     // Write output scripts for SyntaxHighlighter
-    function loadScripts()
+    public function loadScripts()
     {
 
         static $bool = false;
@@ -112,6 +114,7 @@ EOF;
             $bool = true;
         }
     }
+
 }
 
 

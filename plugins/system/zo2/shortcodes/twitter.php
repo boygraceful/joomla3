@@ -11,17 +11,20 @@
 //no direct accees
 defined('_JEXEC') or die ('resticted aceess');
 
-if (!function_exists('twitter')) {
+Zo2Framework::import2('core.shortcodes');
 
-    function twitter($atts, $content = "")
+class Twitter  extends ZO2Shortcode
+{
+    protected $tagname = 'twitter';
+
+    protected function body()
     {
-
         extract(shortcode_atts(array(
             'id' => '',
             'username' => '',
-        ), $atts));
+        ), $this->attrs));
 
-        if ( ! is_array( $atts ) ) {
+        if ( ! is_array( $this->attrs ) ) {
             return '<!-- Twitter shortcode passed invalid attributes -->';
         }
         static $bool = false;
@@ -35,6 +38,5 @@ if (!function_exists('twitter')) {
         }
     }
 
-    add_shortcode('twitter', 'twitter');
 }
 

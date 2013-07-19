@@ -12,11 +12,14 @@
 //no direct accees
 defined('_JEXEC') or die ('resticted aceess');
 
-if (!function_exists('polldaddy')) {
+Zo2Framework::import2('core.shortcodes');
 
-    function polldaddy($atts, $content = "")
+class Polldaddy extends ZO2Shortcode
+{
+    protected $tagname = 'polldaddy';
+
+    protected function body()
     {
-
         extract(shortcode_atts(array(
             'survey' => null,
             'link_text' => 'Take Our Survey',
@@ -40,9 +43,9 @@ if (!function_exists('polldaddy')) {
             'visit' => 'single',
             'domain' => '',
             'id' => ''
-        ), $atts));
+        ), $this->attrs));
 
-        if (!is_array($atts)) {
+        if (!is_array($this->attrs)) {
             return '<!-- Polldaddy shortcode passed invalid attributes -->';
         }
 
@@ -51,7 +54,7 @@ if (!function_exists('polldaddy')) {
             $poll = intval($poll);
             $poll_url = 'http://polldaddy.com/poll/' . $poll;
             $poll_js = sprintf('%s.polldaddy.com/p/%d.js', 'http://static', $poll);
-            $poll_link = '<a href="'.$poll_url.'">Take Our Poll</a>';
+            $poll_link = '<a href="' . $poll_url . '">Take Our Poll</a>';
 
             $cb = ($cb == 1 ? '?cb=' . mktime() : false);
 
@@ -70,9 +73,9 @@ if (!function_exists('polldaddy')) {
 
                 return '<script type="text/javascript" charset="UTF-8" src="http://i0.poll.fm/survey.js"></script>
                         <script type="text/javascript" charset="UTF-8">
-                            polldaddy.add( '.$settings.' );
+                            polldaddy.add( ' . $settings . ' );
                         </script>
-                        <noscript>'.$poll_link.'</noscript>';
+                        <noscript>' . $poll_link . '</noscript>';
             } else {
                 $cb = ($cb == 1 ? '?cb=' . mktime() : false);
                 $margins = '';
@@ -96,11 +99,4 @@ if (!function_exists('polldaddy')) {
         } else
             return '<!-- no polldaddy -->';
     }
-
-
-    add_shortcode('polldaddy', 'polldaddy');
-
-
-
 }
-

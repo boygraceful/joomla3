@@ -5,7 +5,7 @@
  * @link         http://github.com/aploss/zo2
  * @package      Zo2
  * @author       Duc Nguyen <ducntq@gmail.com>
- * @author       Vu Hiep
+ * @author       Hiepvu <vqhiep2010@gmail.com>
  * @copyright    Copyright ( c ) 2008 - 2013 APL Solutions
  * @license      http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
  */
@@ -43,10 +43,9 @@ class Zo2Framework {
 
         $app = JFactory::getApplication();
 
-        Zo2Framework::import2('core.shortcodes');
         if (!$app->isAdmin()) {
-
-            Zo2Framework::loadShortCodes();
+             Zo2Framework::import2('addons.shortcodes.api');
+            //Zo2Framework::loadShortCodes();
             // JViewLegacy
             if (!class_exists('JViewLegacy', false)) Zo2Framework::import2('core.class.legacy');
             // JModuleHelper
@@ -334,7 +333,15 @@ class Zo2Framework {
         $shortcodes = array_unique($shortcodes);
 
         foreach ($shortcodes as $shortcode) {
-            Zo2Framework::import2('shortcodes.' . $shortcode);
+
+            if (Zo2Framework::import2('shortcodes.' . $shortcode)) {
+                if (JFile::exists(ZO2_ADMIN_BASE . '/shortcodes/'.$shortcode.'.php')) {
+                    $class = ucwords($shortcode);
+                    $shortcode = new $class;
+                    $shortcode->init();
+                }
+            }
+
         }
         return $shortcodes;
     }

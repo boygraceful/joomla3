@@ -11,27 +11,26 @@
 //no direct accees
 defined('_JEXEC') or die ('resticted aceess');
 
-if (!function_exists('slideshare')) {
-    /**
-     * @param $atts
-     * @param string $content
-     * @return string
-     */
-    function slideshare($atts, $content = "")
+Zo2Framework::import2('core.shortcodes');
+
+class Slideshare extends ZO2Shortcode
+{
+    protected $tagname = 'slideshare';
+
+    protected function body()
     {
         extract(shortcode_atts(array(
             'id' => '23773146',
             'w' => 720,
             'h' => 320,
-        ), $atts));
+        ), $this->attrs));
 
-        if ( ! is_array( $atts ) ) {
+        if (!is_array($this->attrs)) {
             return '<!-- Slideshare shortcode passed invalid attributes -->';
         }
 
         return '<iframe width="' . $w . '" height="' . $h . '" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://www.slideshare.net/slideshow/embed_code/' . $id . '" webkitAllowFullScreen mozallowfullscreen allowfullscreen=""></iframe>';
     }
 
-    add_shortcode('slideshare', 'slideshare');
 }
 

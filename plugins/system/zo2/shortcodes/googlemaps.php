@@ -11,13 +11,13 @@
 //no direct accees
 defined('_JEXEC') or die ('resticted aceess');
 
-if (!function_exists('googlemaps')) {
-    /**
-     * @param $atts
-     * @param string $content
-     * @return string
-     */
-    function googlemaps($atts, $content = "")
+Zo2Framework::import2('core.shortcodes');
+
+class Googlemaps  extends ZO2Shortcode
+{
+    protected $tagname = 'googlemaps';
+
+    protected function body()
     {
         extract(shortcode_atts(array(
             'lat' => -34.397,
@@ -25,9 +25,9 @@ if (!function_exists('googlemaps')) {
             'zoom' => 11,
             'w' => 100,
             'h' => 400
-        ), $atts));
+        ), $this->attrs));
 
-        if ( ! is_array( $atts ) ) {
+        if ( ! is_array( $this->attrs ) ) {
             return '<!-- Googlemaps shortcode passed invalid attributes -->';
         }
 
@@ -62,6 +62,4 @@ if (!function_exists('googlemaps')) {
         return '<div id="map-canvas" style="width: ' . $w . '; height: ' . $h . 'px;"></div>';
     }
 
-    add_shortcode('googlemaps', 'googlemaps');
 }
-

@@ -11,13 +11,13 @@
 //no direct accees
 defined('_JEXEC') or die ('resticted aceess');
 
-if (!function_exists('dailymotion')) {
-    /**
-     * @param $atts
-     * @param string $content
-     * @return string
-     */
-    function dailymotion($atts, $url = "")
+Zo2Framework::import2('core.shortcodes');
+
+class Dailymotion  extends ZO2Shortcode
+{
+    protected $tagname = 'dailymotion';
+
+    protected function body()
     {
 
         extract(shortcode_atts(array(
@@ -25,23 +25,22 @@ if (!function_exists('dailymotion')) {
             'w' => 720,
             'h' => 320,
             'autoplay' => 0
-        ), $atts));
+        ), $this->attrs));
 
-        if ( ! is_array( $atts ) ) {
+        if ( ! is_array( $this->attrs ) ) {
             return '<!-- Dailymotion shortcode passed invalid attributes -->';
         }
 
-        if (!empty($url)) {
+        if (!empty($this->content)) {
 
-            $parse = parse_url($url);
+            $parse = parse_url($this->content);
             $path = str_replace('/video/','', $parse['path']);
             $array = explode('_', $path);
             $id = $array[0];
 
         }
         return '<iframe width="' . $w . '" height="' . $h . '" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://www.dailymotion.com/embed/video/'.$id.'?autoPlay='.$autoplay.'" webkitAllowFullScreen mozallowfullscreen allowfullscreen=""></iframe>';
+
     }
 
-    add_shortcode('dailymotion', 'dailymotion');
 }
-
