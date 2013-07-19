@@ -15,21 +15,24 @@ Zo2Framework::import2('core.shortcodes');
 
 class Flickr  extends ZO2Shortcode
 {
+    // set short code tag
     protected $tagname = 'flickr';
 
-    protected function body()
-    {
-
-        extract(shortcode_atts(array(
+    /**
+     * initializing variables for short code
+     */
+    protected function init_attrs() {
+        $this->default_attrs =  array(
             'id' => '',
             'url' => '',
             'w' => 300,
             'h' => 100,
-        ), $this->attrs));
+        );
+    }
 
-        if ( ! is_array( $this->attrs ) ) {
-            return '<!-- Flickr shortcode passed invalid attributes -->';
-        }
+
+    protected function body()
+    {
 
         $http = JHttpFactory::getHttp();
 

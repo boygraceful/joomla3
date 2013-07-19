@@ -338,7 +338,7 @@ class Zo2Framework {
                 if (JFile::exists(ZO2_ADMIN_BASE . '/shortcodes/'.$shortcode.'.php')) {
                     $class = ucwords($shortcode);
                     $shortcode = new $class;
-                    $shortcode->init();
+                    $shortcode->run();
                 }
             }
 

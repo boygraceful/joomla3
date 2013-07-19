@@ -15,20 +15,22 @@ Zo2Framework::import2('core.shortcodes');
 
 class Youtube  extends ZO2Shortcode
 {
+    // set short code tag
     protected $tagname = 'youtube';
 
-    protected function body()
-    {
-        extract(shortcode_atts(array(
+    /**
+     * initializing variables for short code
+     */
+    protected function init_attrs() {
+        $this->default_attrs =  array(
             'id' => 69445362,
             'w' => 720,
             'h' => 320,
-        ), $this->attrs));
+        );
+    }
 
-        if ( ! is_array( $this->attrs ) ) {
-            return '<!-- Youtube shortcode passed invalid attributes -->';
-        }
-
+    protected function body()
+    {
         return '<iframe width="' . $w . '" height="' . $h . '" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="//www.youtube.com/embed/' . $id . '" webkitAllowFullScreen mozallowfullscreen allowfullscreen=""></iframe>';
     }
 

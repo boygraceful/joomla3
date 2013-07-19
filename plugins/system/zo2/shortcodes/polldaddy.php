@@ -18,9 +18,12 @@ class Polldaddy extends ZO2Shortcode
 {
     protected $tagname = 'polldaddy';
 
-    protected function body()
-    {
-        extract(shortcode_atts(array(
+    /**
+     * initializing variables for short code
+     */
+    protected function init_attrs() {
+
+        $this->default_attrs =  array(
             'survey' => null,
             'link_text' => 'Take Our Survey',
             'poll' => 'empty',
@@ -43,11 +46,12 @@ class Polldaddy extends ZO2Shortcode
             'visit' => 'single',
             'domain' => '',
             'id' => ''
-        ), $this->attrs));
+        );
 
-        if (!is_array($this->attrs)) {
-            return '<!-- Polldaddy shortcode passed invalid attributes -->';
-        }
+    }
+
+    protected function body()
+    {
 
         if (intval($poll) > 0) {
 

@@ -15,18 +15,21 @@ Zo2Framework::import2('core.shortcodes');
 
 class Twitter  extends ZO2Shortcode
 {
+    // set short code tag
     protected $tagname = 'twitter';
+
+    /**
+     * initializing variables for short code
+     */
+    protected function init_attrs() {
+        $this->default_attrs =  array(
+            'id' => '',
+            'username' => '',
+        );
+    }
 
     protected function body()
     {
-        extract(shortcode_atts(array(
-            'id' => '',
-            'username' => '',
-        ), $this->attrs));
-
-        if ( ! is_array( $this->attrs ) ) {
-            return '<!-- Twitter shortcode passed invalid attributes -->';
-        }
         static $bool = false;
         if (!empty($username)) {
             if (!$bool) {
