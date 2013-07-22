@@ -13,26 +13,23 @@ defined('_JEXEC') or die ('resticted aceess');
 
 Zo2Framework::import2('core.shortcodes');
 
-class Flickr  extends ZO2Shortcode
+class Flickr extends ZO2Shortcode
 {
     // set short code tag
     protected $tagname = 'flickr';
 
-    /**
-     * initializing variables for short code
-     */
-    protected function init_attrs() {
-        $this->default_attrs =  array(
-            'id' => '',
-            'url' => '',
-            'w' => 300,
-            'h' => 100,
-        );
-    }
-
-
     protected function body()
     {
+
+        // initializing variables for short code
+        extract(shortcode_atts(array(
+                'id' => '',
+                'url' => '',
+                'w' => 300,
+                'h' => 100,
+            ),
+            $this->attrs
+        ));
 
         $http = JHttpFactory::getHttp();
 
@@ -42,7 +39,7 @@ class Flickr  extends ZO2Shortcode
 //            $info = json_decode($body);
             //$url = 'http://flickr.com/services/oembed?url=http://www.flickr.com/photo.gne?id='. $id .'&format=json';
         } elseif (!empty($this->content)) {
-            $url = 'http://flickr.com/services/oembed?url='. $this->content .'&format=json&maxwidth='.$w.'&maxheight=' . $h;
+            $url = 'http://flickr.com/services/oembed?url=' . $this->content . '&format=json&maxwidth=' . $w . '&maxheight=' . $h;
         }
 
         $response = $http->get($url);

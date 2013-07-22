@@ -13,26 +13,24 @@ defined('_JEXEC') or die ('resticted aceess');
 
 Zo2Framework::import2('core.shortcodes');
 
-class Googlemaps  extends ZO2Shortcode
+class Googlemaps extends ZO2Shortcode
 {
     // set short code tag
     protected $tagname = 'googlemaps';
 
-    /**
-     * initializing variables for short code
-     */
-    protected function init_attrs() {
-        $this->default_attrs =  array(
-            'lat' => -34.397,
-            'lng' => 150.644,
-            'zoom' => 11,
-            'w' => 100,
-            'h' => 400
-        );
-    }
-
     protected function body()
     {
+
+        // initializing variables for short code
+        extract(shortcode_atts(array(
+                'lat' => -34.397,
+                'lng' => 150.644,
+                'zoom' => 11,
+                'w' => 100,
+                'h' => 400
+            ),
+            $this->attrs
+        ));
 
         $w = ($w == '100%') ? $w : $w . 'px';
 

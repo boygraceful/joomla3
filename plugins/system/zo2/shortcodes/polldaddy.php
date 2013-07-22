@@ -18,40 +18,35 @@ class Polldaddy extends ZO2Shortcode
 {
     protected $tagname = 'polldaddy';
 
-    /**
-     * initializing variables for short code
-     */
-    protected function init_attrs() {
-
-        $this->default_attrs =  array(
-            'survey' => null,
-            'link_text' => 'Take Our Survey',
-            'poll' => 'empty',
-            'rating' => 'empty',
-            'unique_id' => null,
-            'item_id' => null,
-            'title' => null,
-            'permalink' => null,
-            'cb' => 0,
-            'type' => 'button',
-            'body' => '',
-            'button' => '',
-            'text_color' => '000000',
-            'back_color' => 'FFFFFF',
-            'align' => '',
-            'style' => '',
-            'width' => 200,
-            'height' => floor(200 * 3 / 4),
-            'delay' => 100,
-            'visit' => 'single',
-            'domain' => '',
-            'id' => ''
-        );
-
-    }
-
     protected function body()
     {
+        // initializing variables for short code
+        extract(shortcode_atts(array(
+                'survey' => null,
+                'link_text' => 'Take Our Survey',
+                'poll' => 'empty',
+                'rating' => 'empty',
+                'unique_id' => null,
+                'item_id' => null,
+                'title' => null,
+                'permalink' => null,
+                'cb' => 0,
+                'type' => 'button',
+                'body' => '',
+                'button' => '',
+                'text_color' => '000000',
+                'back_color' => 'FFFFFF',
+                'align' => '',
+                'style' => '',
+                'width' => 200,
+                'height' => floor(200 * 3 / 4),
+                'delay' => 100,
+                'visit' => 'single',
+                'domain' => '',
+                'id' => ''
+            ),
+            $this->attrs
+        ));
 
         if (intval($poll) > 0) {
 
