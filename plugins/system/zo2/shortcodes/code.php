@@ -18,19 +18,17 @@ class Code extends ZO2Shortcode
     // set short code tag
     protected $tagname = 'code';
 
-    /**
-     * initializing variables for short code
-     */
-    protected function init_attrs() {
-        $this->default_attrs = array(
-            'languages' => '',
-            'firstline' => '1',
-            'highlight' => '',
-        );
-    }
-
     protected function body()
     {
+
+        // initializing variables for short code
+        extract(shortcode_atts(array(
+                'languages' => '',
+                'firstline' => '1',
+                'highlight' => '',
+            ),
+            $this->attrs
+        ));
 
         $highlight = (!empty($highlight)) ? 'highlight: ' . $highlight . ';' : '';
 

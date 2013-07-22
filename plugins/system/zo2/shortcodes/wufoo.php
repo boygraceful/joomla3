@@ -13,25 +13,23 @@ defined('_JEXEC') or die ('resticted aceess');
 
 Zo2Framework::import2('core.shortcodes');
 
-class Wufoo  extends ZO2Shortcode
+class Wufoo extends ZO2Shortcode
 {
     // set short code tag
     protected $tagname = 'wufoo';
 
-    /**
-     * initializing variables for short code
-     */
-    protected function init_attrs() {
-        $this->default_attrs =  array(
-            'username' => '',
-            'formhash' => '',
-            'h' => 320,
-        );
-    }
-
     protected function body()
     {
-        return '<iframe height="'.$h.'" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="http://'.$username.'.wufoo.com/embed/'.$formhash.'/"><a href="http://'.$username.'.wufoo.com/forms/'.$formhash.'/">Fill out my Wufoo form!</a></iframe>';
+        // initializing variables for short code
+        extract(shortcode_atts(array(
+                'username' => '',
+                'formhash' => '',
+                'h' => 320,
+            ),
+            $this->attrs
+        ));
+
+        return '<iframe height="' . $h . '" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="http://' . $username . '.wufoo.com/embed/' . $formhash . '/"><a href="http://' . $username . '.wufoo.com/forms/' . $formhash . '/">Fill out my Wufoo form!</a></iframe>';
     }
 
 }

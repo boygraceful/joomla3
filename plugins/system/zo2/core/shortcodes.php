@@ -14,10 +14,6 @@ defined('_JEXEC') or die ('resticted aceess');
 class ZO2ShortCode extends JObject
 {
     /**
-     * @var array
-     */
-    protected $default_attrs = array();
-    /**
      * @var string
      */
     protected $tagname = '';
@@ -34,21 +30,9 @@ class ZO2ShortCode extends JObject
      * Construct
      */
     public function __construct() {
-        $this->init_attrs();
-    }
-
-    /**
-     * initializing variables for shortcode
-     */
-    protected function init_attrs() {
-        // default
-        $this->default_attrs = array(
-            'id' => '',
-            'w' => '',
-            'h' => ''
-        );
 
     }
+
 
     /**
      * Running short code
@@ -75,11 +59,6 @@ class ZO2ShortCode extends JObject
     {
         $this->attrs = $attrs;
         $this->content = $content;
-
-        extract(shortcode_atts(
-            $this->default_attrs,
-            $this->attrs
-        ));
 
         if (!is_array($this->attrs)) {
             return '<!-- '.$this->tagname.' tag passed invalid attributes -->';

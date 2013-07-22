@@ -13,24 +13,22 @@ defined('_JEXEC') or die ('resticted aceess');
 
 Zo2Framework::import2('core.shortcodes');
 
-class Instagram  extends ZO2Shortcode
+class Instagram extends ZO2Shortcode
 {
     // set short code tag
     protected $tagname = 'instagram';
 
-    /**
-     * initializing variables for short code
-     */
-    protected function init_attrs() {
-        $this->default_attrs =  array(
-            'url' => '',
-            'w' => 720,
-            'h' => 320,
-        );
-    }
-
     protected function body()
     {
+        // initializing variables for short code
+        extract(shortcode_atts(array(
+                'url' => '',
+                'w' => 720,
+                'h' => 320,
+            ),
+            $this->attrs
+        ));
+
         if (!empty($this->content)) {
 
             $video_json = 'http://api.instagram.com/oembed?url=' . $this->content;

@@ -13,24 +13,22 @@ defined('_JEXEC') or die ('resticted aceess');
 
 Zo2Framework::import2('core.shortcodes');
 
-class Gist  extends ZO2Shortcode
+class Gist extends ZO2Shortcode
 {
     // set short code tag
     protected $tagname = 'gist';
 
-    /**
-     * initializing variables for short code
-     */
-    protected function init_attrs() {
-        $this->default_attrs =  array(
-            'id' => '',
-            'username' => '',
-            'url' => ''
-        );
-    }
-
     protected function body()
     {
+
+        // initializing variables for short code
+        extract(shortcode_atts(array(
+                'id' => '',
+                'username' => '',
+                'url' => ''
+            ),
+            $this->attrs
+        ));
 
         if (!empty($this->content)) {
 
