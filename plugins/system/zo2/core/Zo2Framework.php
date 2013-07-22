@@ -250,7 +250,7 @@ class Zo2Framework {
      * @param $menutype
      * @param $template
      */
-    public static function displayMegaMenu($menutype, $template) {
+    public static function displayMegaMenu($menutype, $template, $isAdmin = false) {
         Zo2Framework::import2('core.menu');
         $params = Zo2Framework::getParams();
 //        $file = JPATH_ROOT . '/templates/'.$template.'/layouts/megamenu.json';
@@ -266,7 +266,7 @@ class Zo2Framework {
 //        Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL.'/css/megamenu-responsive.css');
         //Zo2Framework::addJsScript(ZO2_ADMIN_PLUGIN_URL.'/js/megamenu.js');
 
-        return $menu->renderMenu();
+        return $menu->renderMenu($isAdmin);
     }
 
     /**
