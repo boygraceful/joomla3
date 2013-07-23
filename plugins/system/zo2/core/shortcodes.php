@@ -11,6 +11,11 @@
 //no direct accees
 defined('_JEXEC') or die ('resticted aceess');
 
+/**
+ * Base class for a Short code
+ * @package     zo2
+ * @subpackage  ZO2ShortCode
+ */
 class ZO2ShortCode extends JObject
 {
     /**
@@ -19,7 +24,7 @@ class ZO2ShortCode extends JObject
      */
     protected $tagname = '';
     /**
-     * The attributes of a short code
+     * The ShortCode attributes
      * @var array
      */
     protected $attrs = array();
@@ -35,7 +40,6 @@ class ZO2ShortCode extends JObject
 
     }
 
-
     /**
      * Running short code
      */
@@ -47,15 +51,15 @@ class ZO2ShortCode extends JObject
     }
 
     /**
-     * The content of a short code
+     * The content of a short code, it is empty content. So this method must be overwritten by a child method
      */
     protected function body(){}
 
     /**
-     *
-     * @param $attrs
-     * @param string $content
-     * @return string|void
+     * Attempts to convert a ShortCode tag into embed HTML
+     * @param array $attrs ShortCode attributes
+     * @param string $content the url attempting to be embedded.
+     * @return string the embed HTML on success
      */
     public function content($attrs, $content = "")
     {

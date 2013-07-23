@@ -18,6 +18,10 @@ class Flickr extends ZO2Shortcode
     // set short code tag
     protected $tagname = 'flickr';
 
+    /**
+     * Overwrites the parent method
+     * @return string the embed HTML
+     */
     protected function body()
     {
 

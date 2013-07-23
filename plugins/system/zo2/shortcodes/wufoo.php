@@ -18,6 +18,11 @@ class Wufoo extends ZO2Shortcode
     // set short code tag
     protected $tagname = 'wufoo';
 
+    /**
+     * Overwrites the parent method
+     * @return string the embed HTML
+     */
+
     protected function body()
     {
         // initializing variables for short code

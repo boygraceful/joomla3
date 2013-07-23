@@ -18,6 +18,10 @@ class Code extends ZO2Shortcode
     // set short code tag
     protected $tagname = 'code';
 
+    /**
+     * Overwrites the parent method
+     * @return string the embed HTML
+     */
     protected function body()
     {
 
@@ -38,7 +42,9 @@ class Code extends ZO2Shortcode
 
     }
 
-    // Write output scripts for SyntaxHighlighter
+    /**
+     * Write output scripts for SyntaxHighlighter
+     */
     public function loadScripts()
     {
 

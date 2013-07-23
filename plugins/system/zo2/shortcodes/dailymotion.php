@@ -18,6 +18,10 @@ class Dailymotion extends ZO2Shortcode
     // set short code tag
     protected $tagname = 'dailymotion';
 
+    /**
+     * Overwrites the parent method
+     * @return string the embed HTML
+     */
     protected function body()
     {
 

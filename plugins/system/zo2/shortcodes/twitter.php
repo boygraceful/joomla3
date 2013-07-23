@@ -19,15 +19,9 @@ class Twitter extends ZO2Shortcode
     protected $tagname = 'twitter';
 
     /**
-     * initializing variables for short code
+     * Overwrites the parent method
+     * @return string the embed HTML
      */
-    protected function init_attrs()
-    {
-        $this->default_attrs = array(
-            'id' => '',
-            'username' => '',
-        );
-    }
 
     protected function body()
     {

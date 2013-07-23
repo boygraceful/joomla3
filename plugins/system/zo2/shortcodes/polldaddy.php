@@ -18,6 +18,11 @@ class Polldaddy extends ZO2Shortcode
 {
     protected $tagname = 'polldaddy';
 
+    /**
+     * Overwrites the parent method
+     * @return string the embed HTML
+     */
+
     protected function body()
     {
         // initializing variables for short code
