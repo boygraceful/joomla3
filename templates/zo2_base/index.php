@@ -12,4 +12,16 @@ $zo2 = Zo2Framework::getInstance();
 $templateName = $this->template;
 $layoutName = $zo2->getCurrentPage();
 $layout = new Zo2Layout($templateName, $layoutName);
-echo $layout->compile();
+//echo $layout->compile();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <jdoc:include type="head" />
+    <?php echo $layout->insertHeaderAssets()?>
+</head>
+<body>
+<?php echo $layout->generateHtml();?>
+<?php echo $layout->insertFooterAssets()?>
+</body>
+</html>

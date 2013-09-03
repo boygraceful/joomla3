@@ -26,33 +26,43 @@ class Zo2Layout {
      * @param $templateName
      * @param $layoutName
      */
-    public function __construct($templateName, $layoutName){
+    public function __construct($templateName, $layoutName)
+    {
         // assign values to private variables
         $this->_templatePath = JPATH_SITE . '/templates/' . $templateName . '/';
         $layoutDir = JPATH_SITE . '/templates/' . $templateName . '/layouts/';
-        $this->_layoutPath = $layoutDir . $layoutName . '.compiled.php';
-        $this->_staticsPath = $layoutDir . $layoutName . '.json';
+        $this->_layoutPath = $layoutDir . $layoutName . '.json';
+        //$this->_staticsPath = $layoutDir . $layoutName . '.json';
         $this->_coreStaticsPath = $layoutDir . 'core.json';
         $this->_templateName = $templateName;
         $this->_layoutName = $layoutName;
         $this->_templateUri = JUri::root() . 'templates/' . $templateName;
 
         // check layout existence, if layout not existed, get default layout, which is homepage.php
-        if(!file_exists($this->_layoutPath) || !file_exists($this->_staticsPath)) {
-            $this->_layoutPath = JPATH_SITE . '/templates/' . $templateName . '/layouts/homepage.compiled.php';
-            $this->_staticsPath = JPATH_SITE . '/templates/' . $templateName . '/layouts/homepage.json';
+        if(!file_exists($this->_layoutPath)) {
+            $this->_layoutPath = JPATH_SITE . '/templates/' . $templateName . '/layouts/homepage.json';
+            //$this->_staticsPath = JPATH_SITE . '/templates/' . $templateName . '/layouts/homepage.json';
         }
 
         // get template content
         $this->_layoutStatics = array();
         $this->_layoutContent = file_get_contents($this->_layoutPath);
         $coreStaticsJson = file_get_contents($this->_coreStaticsPath);
-        $staticsJson = file_get_contents($this->_staticsPath);
+        //$staticsJson = file_exists($this->_staticsPath) ? file_get_contents($this->_staticsPath) : array();
         $coreStatics = json_decode($coreStaticsJson, true);
-        $statics = json_decode($staticsJson, true);
+        //$statics = json_decode($staticsJson, true);
 
         // combine layout statics
-        $this->_layoutStatics = array_merge_recursive($coreStatics, $statics);
+        $this->_layoutStatics = $coreStatics;
+    }
+
+    public function getLayoutJson()
+    {
+        $path = $this->_templatePath . 'layouts/' . $this->_layoutName . '.json';
+        if (file_exists($path)) {
+            return file_get_contents($path);
+        }
+        else return '';
     }
 
     public function insertStatic($path, $type, array $options = array(), $position) {
@@ -200,6 +210,131 @@ class Zo2Layout {
         return $this->_output;
     }
 
+    public function generateHtml()
+    {
+        $html = '';
+        $app = JFactory::getApplication();
+        $template = $app->getTemplate(true);
+        $params = $template->params;
+        $layoutType = $params->get('layout_type');
+        if ($layoutType == 'fixed') $layoutType = '';
+        else $layoutType = '-fluid';
+
+        if (file_exists($this->_layoutPath))
+        {
+            $data = json_decode(file_get_contents($this->_layoutPath), true);
+
+            $html .= '<div class="container' . $layoutType . '">';
+
+            for ($i = 0, $total = count($data); $i < $total; $i++) {
+                $html .= self::generateHtmlFromItem($data[$i], $layoutType);
+            }
+            $html .= '</div>';
+            return $html;
+        }
+        else return '';
+    }
+
+    private static function generateHtmlFromItem($item, $layoutType)
+    {
+        $html = '';
+        if ($item['type'] == 'row') $html .= self::generateRow($item, $layoutType);
+        else if ($item['type'] == 'col') $html .= self::generateColumn($item, $layoutType);
+
+        return $html;
+    }
+
+    private static function generateRow($item, $layoutType)
+    {
+        $html = '';
+        $html .= '<div class="row' . $layoutType . '">';
+
+        for ($i = 0, $total = count($item['children']); $i < $total; $i++) {
+            $html .= self::generateHtmlFromItem($item['children'][$i], $layoutType);
+        }
+
+        $html .= '</div>';
+        return $html;
+    }
+
+    private static function generateColumn($item, $layoutType)
+    {
+        $html = '';
+        $class = 'span' . $item['span'];
+        if (!empty($item['customClass'])) $class .= ' ' . $item['customClass'];
+        $html .= '<div class="' . $class . '">';
+
+        if (!empty($item['position'])) {
+            if ($item['position'] == 'component') $html .= '<jdoc:include type="component" />';
+            else if($item['position'] == 'mega_menu') {
+                $zo2 = Zo2Framework::getInstance();
+                $html .= $zo2->displayMegaMenu($zo2->getParams('menutype', 'mainmenu'), $zo2->getTemplate());
+            }
+            else {
+                $html .= '<!-- module pos: ' . $item['position'] . ' -->';
+                $html .= '<jdoc:include type="modules" name="' . $item['position'] . '"  style="' . $item['style'] . '" />';
+                $html .= '<!-- /module pos: ' . $item['position'] . ' -->';
+            }
+        }
+
+        if ($total = count($item['children']) > 0) {
+            for ($i = 0; $i < $total; $i++) {
+                $html .= self::generateHtmlFromItem($item['children'][$i], $layoutType);
+            }
+        }
+
+        $html .= '</div>';
+        return $html;
+    }
+
+    public function insertHeaderAssets()
+    {
+        $html = '';
+        foreach($this->_layoutStatics as $item) {
+            if ($item['position'] == 'header') {
+                if ($item['type'] == 'css') $html .= $this->generateCssTag($item);
+                elseif ($item['type'] == 'js') $html .= $this->generateJsTag($item);
+            }
+        }
+
+        if (count($this->_styleDeclaration) > 0) {
+            $styles = '';
+            foreach ($this->_styleDeclaration as $style) {
+                $styles .= $style . "\n";
+            }
+
+            $styles = '<style type="text/css">' . $styles . '</style>';
+            $html .= "\n" . $styles;
+        }
+
+        return $html;
+    }
+
+    public function insertFooterAssets()
+    {
+        $html = '';
+        foreach($this->_layoutStatics as $item) {
+            if ($item['position'] == 'footer') {
+                if ($item['type'] == 'css') $html .= $this->generateCssTag($item);
+                elseif ($item['type'] == 'js') $html .= $this->generateJsTag($item);
+            }
+        }
+
+        if (count($this->_jsDeclaration) > 0) {
+            $scripts = '';
+
+            foreach ($this->_jsDeclaration as $js) {
+                $scripts .= $js . "\n";
+            }
+
+            $scripts = '<script type="text\javascript">' . $scripts . '</script>';
+
+            $html .= $scripts;
+        }
+
+        return $html;
+    }
+
     private function combine($level = 1) {
         $style = '';
         $script = '';
@@ -223,6 +358,10 @@ class Zo2Layout {
 
                 if ($item['type'] == 'css') $style .= file_get_contents($path) . "\n";
                 elseif ($item['type'] == 'js') $script .= file_get_contents($path) . "\n";
+                elseif ($item['type'] == 'less') {
+                    $lessContent = file_get_contents($path);
+                    $style .= $this->processLess($lessContent) . "\n";
+                }
             }
 
             Zo2Framework::import('core.class.minify.jsshrink');
@@ -268,6 +407,14 @@ class Zo2Layout {
 
         $this->_output = str_replace('</head>', $cssTag . '</head>' , $this->_output);
         $this->_output = str_replace('</body>', $scriptTag . '</body>' , $this->_output);
+    }
+
+    private function processLess($content) {
+        if (!class_exists('lessc', false)) Zo2Framework::import('core.class.less.lessc');
+
+        $compiler = new lessc();
+
+        return $compiler->compile($content);
     }
 
     private function insertLayoutBuilderCss() {
@@ -322,7 +469,7 @@ class Zo2Layout {
                     return '<jdoc:include type="component" />';
                 }
 
-                $classname = 'zo2widget_' . $componentName;
+                $classname = 'zo2com_' . $componentName;
 
                 if (!class_exists($classname, false)){
                     // as good as include from frontend, may not work on backend
@@ -333,7 +480,7 @@ class Zo2Layout {
 
                 $component = new $classname();
 
-                if ($component instanceof Zo2Widget) {
+                if ($component instanceof Zo2Component) {
                     $component->loadAttributes($attributes);
                     return $component->render();
                 }
@@ -397,5 +544,16 @@ class Zo2Layout {
         $path = $this->_templatePath . 'runtime' . DIRECTORY_SEPARATOR . 'state.php';
 
         file_put_contents($path, $state);
+    }
+
+    public function getComponents()
+    {
+        $path = $this->_templatePath . 'data' . DIRECTORY_SEPARATOR . 'components.json';
+
+        if (file_exists($path)) {
+            $content = file_get_contents($path);
+            return json_decode($content, true);
+        }
+        else return null;
     }
 }

@@ -54,26 +54,35 @@ class ZO2Controller
 
     public static function saveLayout()
     {
-        if($_POST && isset($_POST['name']) && isset($_POST['html']) && isset($_POST['template'])) {
+        if($_POST && isset($_POST['name']) && isset($_POST['data']) && isset($_POST['template'])) {
             $templatePath = JPATH_SITE . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $_POST['template'] . DIRECTORY_SEPARATOR .
-                'layouts' . DIRECTORY_SEPARATOR . $_POST['name'] . '.compiled.php';
-            if(file_exists($templatePath)) {
-                $html = '<!DOCTYPE html><html lang="en"><head></head><body>' . $_POST['html'] . '</body></html>';
+                'layouts' . DIRECTORY_SEPARATOR . $_POST['name'] . '.json';
 
-                // remove annoying javascript
-                $pattern = '|<script type="text/javascript"[^>]+></script>|';
-                $html = preg_replace($pattern, '', $html);
-
-                file_put_contents($templatePath, $html);
-            }
+            file_put_contents($templatePath, $_POST['data']);
         }
     }
 
     public static function getLayout()
     {
-        if($_GET && isset($_GET['layout']) && $_GET['template']) {
+        if(isset($_GET['layout']) && $_GET['template']) {
             $layout = new Zo2Layout($_GET['template'], $_GET['layout']);
-            echo $layout->compile(true, true);
+            echo $layout->getLayoutJson(true, true);
+        }
+    }
+
+    public static function getComponents()
+    {
+        if($_GET['template']) {
+            header('Content-Type: application/json');
+            echo Zo2Framework::getComponents($_GET['template']);
+        }
+    }
+
+    public static function getLayouts()
+    {
+        if ($_GET['template']) {
+            header('Content-Type: application/json');
+            echo Zo2Framework::getTemplateLayoutsName($_GET['template']);
         }
     }
 }

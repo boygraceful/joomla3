@@ -39,7 +39,7 @@ class Zo2Framework {
     public static function init(){
         self::getInstance();
         Zo2Framework::import('core.Zo2Layout');
-        Zo2Framework::import('core.Zo2Widget');
+        Zo2Framework::import('core.Zo2Component');
 
         $app = JFactory::getApplication();
 
@@ -165,6 +165,25 @@ class Zo2Framework {
     }
 
     /**
+     * Get list of data components of current template. Usable from backend only.
+     *
+     * @param string $templateName
+     * @return string
+     */
+    public static function getComponents($templateName)
+    {
+        if(!empty($templateName)){
+            $path = JPATH_SITE . '/templates/' . $templateName . '/data/components.json';
+            if (file_exists($path)) {
+                $content = file_get_contents($path);
+                echo $content;
+            }
+        }
+
+        return '';
+    }
+
+    /**
      * Get template params
      *
      * @param bool $assocArray
@@ -198,12 +217,33 @@ class Zo2Framework {
      */
     public static function getTemplateLayouts($templateId = 0){
         $templateName = self::getTemplateName($templateId);
+
         if(!empty($templateName)){
             $templatePath = JPATH_SITE . '/templates/' . $templateName . '/layouts/*.php';
             $layoutFiles = glob($templatePath);
             return array_map('basename', $layoutFiles, array('.php'));
         }
         else return array();
+    }
+
+    public static function getTemplateLayoutsName($templateName) {
+        if(!empty($templateName)) {
+            $templatePath = JPATH_SITE . '/templates/' . $templateName . '/layouts/*.php';
+            $layoutFiles = glob($templatePath);
+
+            $list = array();
+
+            foreach ($layoutFiles as $path) {
+                if (strpos($path, '.compiled.php') !== false) $list[] = $path;
+            }
+
+            for ($i = 0, $total = count($list); $i < $total; $i++) {
+                $list[$i] = basename($list[$i]);
+                $list[$i] = str_replace('.compiled.php', '', $list[$i]);
+            }
+            return json_encode($list);
+        }
+        else return json_encode(array());
     }
 
     /**
@@ -349,7 +389,6 @@ class Zo2Framework {
      * Add head
      */
     public static function addHead() {
-
         JHtml::_('jquery.framework');
         Zo2Framework::addJsScript(ZO2_ADMIN_PLUGIN_URL.'/vendor/bootstrap/js/bootstrap.min.js');
         Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL.'/vendor/bootstrap/css/bootstrap.min.css');
@@ -359,6 +398,21 @@ class Zo2Framework {
         Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/template.css');
         Zo2Framework::addCssStylesheet('templates/'.Zo2Framework::getTemplate()->template.'/css/style.css');
 
+    }
+
+    public static function getAvailablePositions($templateName)
+    {
+        $path = JPath::clean(JPATH_SITE . '/templates/' . $templateName . '/templateDetails.xml');
+
+        if (file_exists($path) && is_file($path))
+        {
+            $xml = simplexml_load_file($path);
+            $positions = (array) $xml->positions;
+            if (isset($positions['position']))  $positions = $positions['position'];
+            else $positions = array();
+            return $positions;
+        }
+        else return array();
     }
 
     public static function getCurrentTemplateAbsolutePath()
@@ -373,5 +427,4 @@ class Zo2Framework {
     public static function addFooter() {
 
     }
-
 }
