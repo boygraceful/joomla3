@@ -5,17 +5,20 @@
         "options": {
             "rel": "stylesheet"
         },
-        "position": "header"
+        "position": "header",
+        "base": "plugin"
     },
     {
         "path": "/vendor/jquery/jquery-1.9.1.min.js",
         "type": "js",
-        "position": "footer"
+        "position": "footer",
+        "base": "plugin"
     },
     {
         "path": "/vendor/bootstrap3/js/bootstrap.min.js",
         "type": "js",
-        "position": "footer"
+        "position": "footer",
+        "base": "plugin"
     },
     {
         "path": "/css/megamenu.css",
@@ -23,12 +26,14 @@
         "options": {
             "rel": "stylesheet"
         },
-        "position": "header"
+        "position": "header",
+        "base": "theme"
     },
     {
         "path": "/js/megamenu.js",
         "type": "js",
-        "position": "footer"
+        "position": "footer",
+        "base": "theme"
     },
     {
         "path": "/css/style.css",
@@ -36,6 +41,7 @@
         "options": {
             "rel": "stylesheet"
         },
-        "position": "header"
+        "position": "header",
+        "base": "theme"
     }
 ]

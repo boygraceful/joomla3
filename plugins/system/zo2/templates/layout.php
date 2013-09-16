@@ -4,48 +4,12 @@
 <input type="hidden" id="hdLayoutBuilder" value="0" />
 <input type="hidden" id="hfLayoutName" value="homepage" />
 <div id="layoutbuilder-container">
-    <div id="leftSidebar">
-        <div>
-            <button id="btSaveLayout" class="btn btn-success btn-large">Save layout</button>
-        </div>
-        <div id="workspace-tabs">
-            <div class="tabbable">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#components-container" data-toggle="tab">Components</a></li>
-                    <li><a href="#attributes-container" data-toggle="tab">Attributes</a></li>
-                    <li><a href="#layouts-container" data-toggle="tab">Layouts</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="components-container">
-                    </div>
-                    <div class="tab-pane" id="attributes-container">
-                        <div id="fixed-attributes">
-                            <div class="control-group">
-                                <label class="control-label" for="inputClass">Class</label>
-                                <div class="controls">
-                                    <input type="text" id="inputClass" />
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label" for="inputId">ID</label>
-                                <div class="controls">
-                                    <input type="text" id="inputId">
-                                </div>
-                            </div>
-                        </div>
-                        <div id="dynamic-attributes">
-
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="layouts-container">
-                        <select id="selectLayouts">
-                        </select>
-                        <button id="btLoadLayout" class="btn btn-info btn-large">Load layout</button>
-                        <button id="btDuplicateLayout" class="btn btn-success btn-large" style="margin-left: 10px">Duplicate layout</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="top-controls" class="container-fluid">
+        <select id="selectLayouts">
+            <option value="homepage">homepage</option>
+        </select>
+        <button id="btLoadLayout" class="btn btn-info">Load layout</button>
+        <button id="btSaveLayout" class="btn btn-success">Save layout</button>
     </div>
     <div id="droppable-container">
         <div class="container-fluid">
@@ -70,6 +34,15 @@
                     <label class="control-label" for="txtRowCss">Custom CSS class</label>
                     <div class="controls">
                         <input type="text" id="txtRowCss" placeholder="Row's custom CSS class">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="ddlRowLayout">Row layout</label>
+                    <div class="controls">
+                        <select id="ddlRowLayout">
+                            <option value="fixed">Fixed</option>
+                            <option value="fluid">Fluid</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -116,6 +89,26 @@
                             <option value="10">span10</option>
                             <option value="11">span11</option>
                             <option value="12">span12</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="ddlColOffset">Offset</label>
+                    <div class="controls">
+                        <select id="ddlColOffset">
+                            <option value="0">No offset</option>
+                            <option value="1">offset1</option>
+                            <option value="2">offset2</option>
+                            <option value="3">offset3</option>
+                            <option value="4">offset4</option>
+                            <option value="5">offset5</option>
+                            <option value="6">offset6</option>
+                            <option value="7">offset7</option>
+                            <option value="8">offset8</option>
+                            <option value="9">offset9</option>
+                            <option value="10">offset10</option>
+                            <option value="11">offset11</option>
+                            <option value="12">offset12</option>
                         </select>
                     </div>
                 </div>
