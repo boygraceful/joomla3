@@ -16,10 +16,13 @@ $(window).bind('load', function(){
     $('#hfTemplateName').appendTo($layoutBuilder);
     $('#hfLayoutName').appendTo($layoutBuilder);
     $layoutContainer.remove();
+
+    insertLogo();
+    addIconToMenu();
+    fixToolbarIcon();
 });
 
 jQuery(document).ready(function($){
-
     generateLayoutsList();
 
     //var width = $('#style-form').width() - 320;
@@ -28,7 +31,7 @@ jQuery(document).ready(function($){
     var templateName = $('#hfTemplateName').val();
 
     $('#btSaveLayout').on('click', function() {
-        var $overlay = $('<div />').addClass('overlay').appendTo('body').fadeIn();;
+        var $overlay = $('<div />').addClass('overlay').appendTo('body').fadeIn();
         var json = generateJson();
         var postData = {
             zo2controller: 'saveLayout',
@@ -62,7 +65,7 @@ jQuery(document).ready(function($){
         var $meta = jQuery('<div class="span12 row-control"><div class="row-control-container"><div class="row-name">(unnamed row)' +
             '</div><div class="row-control-buttons"><div class="row-control-icon dragger"></div><div class="row-control-icon settings"></div><div class="row-control-icon delete"></div><div class="row-control-icon duplicate"></div><div class="row-control-icon split"></div></div></div></div>');
         $meta.appendTo($row);
-        jQuery('<hr />').appendTo($row);
+        //jQuery('<hr />').appendTo($row);
         //var $span12 = jQuery('<div />').addClass('span12').appendTo($row);
         var $colContainer = jQuery('<div />').addClass('col-container row-fluid clearfix');
         $colContainer.appendTo($meta);
@@ -171,7 +174,7 @@ var bindSortable = function () {
         items: '>.sortable-row',
         handle: '>.row-control>.row-control-container>.row-control-buttons>.row-control-icon.dragger',
         containment: 'parent',
-        tolerance: "pointer",
+        tolerance: 'pointer',
         axis: 'y'
 
     });
@@ -212,9 +215,9 @@ var insertRow = function (row, $parent) {
     $row.attr('data-zo2-customClass', row.customClass);
     $row.attr('data-zo2-layout', 'fixed');
     var $meta = jQuery('<div class="span12 row-control"><div class="row-control-container"><div class="row-name">' + row.name +
-        '</div><div class="row-control-buttons"><div class="row-control-icon dragger"></div><div class="row-control-icon settings"></div><div class="row-control-icon delete"></div><div class="row-control-icon duplicate"></div><div class="row-control-icon split"></div></div></div></div>');
+        '</div><div class="row-control-buttons"><i class="icon-move row-control-icon dragger" /><i class="icon-cog row-control-icon settings" /><i class="row-control-icon duplicate icon-align-justify" /><i class="row-control-icon split icon-columns" /><i class="row-control-icon delete icon-remove" /></div></div></div>');
     $meta.appendTo($row);
-    jQuery('<hr />').appendTo($row);
+    //jQuery('<hr />').appendTo($row);
     //var $span12 = jQuery('<div />').addClass('span12').appendTo($row);
     var $colContainer = jQuery('<div />').addClass('col-container row-fluid clearfix');
     $colContainer.appendTo($meta);
@@ -232,7 +235,7 @@ var insertCol = function(span, $parent) {
     $span.attr('data-zo2-offset', span.offset !== null ? span.offset : 0);
     $span.attr('data-zo2-position', span.position);
     var $meta = jQuery('<div class="col-name">' + span.name +
-        '</div><div class="col-control-buttons"><div class="col-control-icon dragger"></div><div class="col-control-icon settings"></div><div class="col-control-icon delete"></div></div>');
+        '</div><div class="col-control-buttons"><i class="col-control-icon dragger icon-move" /><i class="icon-cog col-control-icon settings" /><i class="icon-remove col-control-icon delete" /></div>');
     $meta.appendTo($span);
     var $spanContainer = jQuery('<div />').addClass('row-container row-fluid sortable-row');
     $spanContainer.appendTo($span);
@@ -340,4 +343,24 @@ var generateLayoutsList = function() {
             jQuery("#selectLayouts").trigger("liszt:updated");
         }
     });
+};
+
+var addIconToMenu = function() {
+    var $ = jQuery;
+    $('#myTabTabs').find('a').eq(0).html('<i class="icon-info" /> Details');
+    $('#myTabTabs').find('a').eq(1).html('<i class="icon-cog" /> General Options');
+    $('#myTabTabs').find('a').eq(2).html('<i class="icon-edit-sign" /> Menu Assignment');
+    $('#myTabTabs').find('a').eq(3).html('<i class="icon-th" /> Layout Builder');
+};
+
+var insertLogo = function () {
+    var $ = jQuery;
+    var $form = $('#style-form');
+    $form.prepend('<a href="http://zo2framework.org" target="_blank" id="zo2logo" title="Zo2 Framework"></a>');
+};
+
+var fixToolbarIcon = function () {
+    $('.icon-apply').replaceWith('<i class="icon-check"></i>');
+    $('.icon-save-copy').replaceWith('<i class="icon-copy"></i>');
+    $('.icon-cancel').replaceWith('<i class="icon-remove-sign color4"></i>');
 };
