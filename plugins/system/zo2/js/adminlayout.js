@@ -64,7 +64,7 @@ jQuery(document).ready(function($){
         $row.attr('data-zo2-customClass', '');
         $row.attr('data-zo2-layout', 'fixed');
         var $meta = jQuery('<div class="span12 row-control"><div class="row-control-container"><div class="row-name">(unnamed row)' +
-            '</div><div class="row-control-buttons"><i class="icon-move row-control-icon dragger" /><i class="icon-cog row-control-icon settings" /><i class="row-control-icon duplicate icon-align-justify" /><i class="row-control-icon split icon-columns" /><i class="row-control-icon delete icon-remove" /></div></div></div>');
+            '</div><div class="row-control-buttons"><i class="icon-move row-control-icon dragger" /><i class="icon-cogs row-control-icon settings" /><i class="row-control-icon duplicate icon-align-justify" /><i class="row-control-icon split icon-columns" /><i class="row-control-icon delete icon-remove" /></div></div></div>');
         $meta.appendTo($row);
         //jQuery('<hr />').appendTo($row);
         //var $span12 = jQuery('<div />').addClass('span12').appendTo($row);
@@ -87,7 +87,7 @@ jQuery(document).ready(function($){
             $span.attr('data-zo2-type', 'span');
             $span.attr('data-zo2-position', '');
             $span.attr('data-zo2-offset', 0);
-            var $meta = jQuery('<div class="col-name">(none)</div><div class="col-control-buttons"><i class="col-control-icon dragger icon-move" /><i class="icon-cog col-control-icon settings" /><i class="icon-remove col-control-icon delete" /></div></div>');
+            var $meta = jQuery('<div class="col-name">(none)</div><div class="col-control-buttons"><i class="col-control-icon dragger icon-move" /><i class="icon-cogs col-control-icon settings" /><i class="icon-remove col-control-icon delete" /></div></div>');
             $meta.appendTo($span);
             var $spanContainer = jQuery('<div />').addClass('row-container row-fluid sortable-row');
             $spanContainer.appendTo($span);
@@ -150,9 +150,11 @@ jQuery(document).ready(function($){
         var spanWidth = $col.attr('data-zo2-span');
         var spanPosition = $col.attr('data-zo2-position');
         var spanOffset = $col.attr('data-zo2-offset');
+        var spanStyle = $col.attr('data-zo2-style');
         $('#dlColWidth').val(spanWidth).trigger("liszt:updated"); // trigger chosen to update its selected value, stupid old version
         $('#dlColPosition').val(spanPosition).trigger("liszt:updated");
         $('#ddlColOffset').val(spanOffset).trigger("liszt:updated");
+        $('#ddlColStyle').val(spanStyle).trigger("liszt:updated");
         $('#colSettingsModal').modal('show');
     });
 
@@ -160,6 +162,7 @@ jQuery(document).ready(function($){
         var $col = $.data(document.body, 'editingEl');
         $col.attr('data-zo2-span', $('#dlColWidth').val());
         $col.attr('data-zo2-offset', $('#ddlColOffset').val());
+        $col.attr('data-zo2-style', $('#ddlColStyle').val());
         var colName = $('#dlColPosition').val().length > 0 ? $('#dlColPosition').val() : '(none)';
         $col.removeClass('span1 span2 span3 span4 span5 span6 span7 span8 span9 span10 span11 span12').addClass('span' + $('#dlColWidth').val());
         $col.removeClass('offset1 offset2 offset3 offset4 offset5 offset6 offset7 offset8 offset9 offset10 offset11 offset12').addClass('offset' + $('#ddlColOffset').val());
@@ -216,7 +219,7 @@ var insertRow = function (row, $parent) {
     $row.attr('data-zo2-customClass', row.customClass);
     $row.attr('data-zo2-layout', 'fixed');
     var $meta = jQuery('<div class="span12 row-control"><div class="row-control-container"><div class="row-name">' + row.name +
-        '</div><div class="row-control-buttons"><i class="icon-move row-control-icon dragger" /><i class="icon-cog row-control-icon settings" /><i class="row-control-icon duplicate icon-align-justify" /><i class="row-control-icon split icon-columns" /><i class="row-control-icon delete icon-remove" /></div></div></div>');
+        '</div><div class="row-control-buttons"><i class="icon-move row-control-icon dragger" /><i class="icon-cogs row-control-icon settings" /><i class="row-control-icon duplicate icon-align-justify" /><i class="row-control-icon split icon-columns" /><i class="row-control-icon delete icon-remove" /></div></div></div>');
     $meta.appendTo($row);
     //jQuery('<hr />').appendTo($row);
     //var $span12 = jQuery('<div />').addClass('span12').appendTo($row);
@@ -235,6 +238,7 @@ var insertCol = function(span, $parent) {
     $span.attr('data-zo2-type', 'span').attr('data-zo2-span', span.span);
     $span.attr('data-zo2-offset', span.offset !== null ? span.offset : 0);
     $span.attr('data-zo2-position', span.position);
+    $span.attr('data-zo2-style', span.style);
     var $meta = jQuery('<div class="col-name">' + span.name +
         '</div><div class="col-control-buttons"><i class="col-control-icon dragger icon-move" /><i class="icon-cog col-control-icon settings" /><i class="icon-remove col-control-icon delete" /></div>');
     $meta.appendTo($span);
@@ -287,6 +291,7 @@ var generateItemJson = function($item) {
             span: parseInt($item.attr('data-zo2-span')),
             offset: parseInt($item.attr('data-zo2-offset')),
             customClass: $item.attr('data-zo2-customClass'),
+            style: $item.attr('data-zo2-style'),
             children: []
         };
 
