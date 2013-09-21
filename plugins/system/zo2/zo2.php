@@ -64,7 +64,6 @@ class plgSystemZo2 extends JPlugin
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
         $config = Zo2Framework::getParams();
-
         // Don't run this plugin when the content is being indexed
         if ($context == 'com_finder.indexer') {
             return true;
@@ -86,6 +85,14 @@ class plgSystemZo2 extends JPlugin
                 $gplus = '<a href="'.$config->get('google_profile_url', '').'/?rel='.$rel.'"';
                 $gplus .= ' title="Google Plus Profile for '.$author_name.'" plugin="Google Plus Authorship">'.$author_name.'</a>';
                 $article->text = $gplus . $article->text;
+            }
+            if ($config->get('tab_order', 'facebook,gplus,disqus,k2comment')) {
+
+                Zo2Framework::import2('addons.comments.api');
+                $comment = new ZO2Comments();
+
+                $article->text = $article->text .   (string)$comment->renderHtml();;
+
             }
 
         }
