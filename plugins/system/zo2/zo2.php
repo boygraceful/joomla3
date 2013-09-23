@@ -111,7 +111,7 @@ class plgSystemZo2 extends JPlugin
     {
 
         if (Zo2Framework::loadShortCodes()) {
-            return do_shortcode($content);
+            return Zo2Framework::getInstance()->ShortCode->do_shortcode($content);
         } else {
             return $content;
         }
