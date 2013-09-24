@@ -1,3 +1,15 @@
+/**
+* Zo2 (http://www.zo2framework.org)
+* A powerful Joomla template framework
+*
+* @link        http://www.zo2framework.org
+* @link        http://github.com/aploss/zo2
+* @author      Duc Nguyen <ducntv@gmail.com>
+* @author      Hiepvu <vqhiep2010@gmail.com>
+* @copyright   Copyright (c) 2013 APL Solutions (http://apl.vn)
+* @license     GPL v2
+*/
+
 .zo2-selected{box-shadow: 0 0 3px #2EBDFF !important}
 .zo2-dragging{box-shadow: 0 0 3px #3437ff !important;z-index: 10000}
 .zo2-clonedragging{opacity: 0.5;max-width: 800px;min-width: 200px}
