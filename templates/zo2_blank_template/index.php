@@ -33,10 +33,10 @@ $layout = new Zo2Layout($templateName, 'homepage');
     <?php echo $layout->insertHeaderAssets()?>
 </head>
 <body>
-<div class="wrapper">
+<section class="wrapper">
     <?php echo $layout->generateHtml();?>
     <?php echo $layout->insertFooterAssets()?>
-</div>
+</section>
 <?php if ($params['debug_visibility'] == 1) : ?>
 <jdoc:include type="modules" name="debug" />
 <?php endif; ?>

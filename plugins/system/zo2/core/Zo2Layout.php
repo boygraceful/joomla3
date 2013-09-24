@@ -149,12 +149,16 @@ class Zo2Layout {
      */
     private function generateJsTag($item) {
         $basePath = '';
-        if (isset($item['base']) && $item['base'] == 'theme') $basePath = $this->_templateUri;
+        if (isset($item['base']) && $item['base'] == 'template') $basePath = $this->_templateUri;
         else $basePath = Zo2Framework::getSystemPluginPath();
         $path = strpos($item['path'], 'http://') !== false ? $item['path'] : $basePath . $item['path'];
         $async = "";
-        if(isset($item['options']['async'])) $async = " async=\"" . $item['options']['async'] . "\"";
-        return "<script" . $async . " type=\"text/javascript\" src=\"" . $path . "\"></script>\n";
+        if (isset($item['options']['async'])) $async = " async=\"" . $item['options']['async'] . "\"";
+        $result = "<script" . $async . " type=\"text/javascript\" src=\"" . $path . "\"></script>\n";
+        if (isset($item['condition']) && !empty($item['condition'])) {
+            $result = '<!--[' . $item['condition'] . ']>' . $result . '<![endif]-->';
+        }
+        return $result;
     }
 
     /**
@@ -165,7 +169,7 @@ class Zo2Layout {
      */
     private function generateCssTag($item) {
         $basePath = '';
-        if (isset($item['base']) && $item['base'] == 'theme') $basePath = $this->_templateUri;
+        if (isset($item['base']) && $item['base'] == 'template') $basePath = $this->_templateUri;
         else $basePath = Zo2Framework::getSystemPluginPath();
         $path = strpos($item['path'], 'http://') !== false ? $item['path'] : $basePath . $item['path'];
         $rel = isset($item['options']['rel']) ? $item['options']['rel'] : "stylesheet";
@@ -254,15 +258,15 @@ class Zo2Layout {
         //$class = $layoutType == 'fluid' ? 'container' : 'container-fixed';
         $class = 'container';
         $html = '';
-        if (!empty($item['id'])) $html .= '<div id="' . $item['id'] . '" class="' . $class . '">';
-        else $html .= '<div class="' . $class . '">'; // start of container
-        $html .= '<div class="row">'; // start of row
+        if (!empty($item['id'])) $html .= '<section id="' . $item['id'] . '" class="' . $class . '">';
+        else $html .= '<section class="' . $class . '">'; // start of container
+        $html .= '<section class="row">'; // start of row
 
         for ($i = 0, $total = count($item['children']); $i < $total; $i++) {
             $html .= self::generateHtmlFromItem($item['children'][$i], $layoutType);
         }
-        $html .= '</div>'; // end of row
-        $html .= '</div>'; // end of container
+        $html .= '</section>'; // end of row
+        $html .= '</section>'; // end of container
         return $html;
     }
 
@@ -272,8 +276,8 @@ class Zo2Layout {
         $class = 'col-md-' . $item['span'];
         //$class = 'col-xs-' . $item['span'] . ' col-md-' . $item['span'] . ' col-lg-' . $item['span'];
         if (!empty($item['customClass'])) $class .= ' ' . $item['customClass'];
-        if (!empty($item['id'])) $html .= '<div id="' . $item['id'] . '" class="' . $class . '">';
-        else $html .= '<div class="' . $class . '">';
+        if (!empty($item['id'])) $html .= '<section id="' . $item['id'] . '" class="' . $class . '">';
+        else $html .= '<section class="' . $class . '">';
 
         if (!empty($item['position'])) {
             if ($item['position'] == 'component') $html .= '<jdoc:include type="component" />';
@@ -283,9 +287,9 @@ class Zo2Layout {
                 $html .= $zo2->displayMegaMenu($zo2->getParams('menutype', 'mainmenu'), $zo2->getTemplate());
             }
             else {
-                $html .= '<!-- module pos: ' . $item['position'] . ' - ' . $item['style'] . ' -->';
+                //$html .= '<!-- module pos: ' . $item['position'] . ' - ' . $item['style'] . ' -->';
                 $html .= '<jdoc:include type="modules" name="' . $item['position'] . '"  style="' . $item['style'] . '" />';
-                $html .= '<!-- /module pos: ' . $item['position'] . ' -->';
+                //$html .= '<!-- /module pos: ' . $item['position'] . ' -->';
             }
         }
 
@@ -295,7 +299,7 @@ class Zo2Layout {
             }
         }
 
-        $html .= '</div>';
+        $html .= '</section>';
         return $html;
     }
 
@@ -376,8 +380,8 @@ class Zo2Layout {
                 }
             }
 
-            Zo2Framework::import('core.class.minify.jsshrink');
-            Zo2Framework::import('core.class.minify.css');
+            Zo2Framework::import('core.classes.minify.jsshrink');
+            Zo2Framework::import('core.classes.minify.css');
 
             // minify js first
             if ($level == '2') {
@@ -422,7 +426,7 @@ class Zo2Layout {
     }
 
     private function processLess($content) {
-        if (!class_exists('lessc', false)) Zo2Framework::import('core.class.less.lessc');
+        if (!class_exists('lessc', false)) Zo2Framework::import('core.classes.less.lessc');
 
         $compiler = new lessc();
 
@@ -510,7 +514,7 @@ class Zo2Layout {
 
     public function combineJS() {
         if(!class_exists('PhpClosure', false)) {
-            Zo2Framework::import('core.class.minify.closure');
+            Zo2Framework::import('core.classes.minify.closure');
         }
     }
 
