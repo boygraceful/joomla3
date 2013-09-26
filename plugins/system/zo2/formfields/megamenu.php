@@ -40,8 +40,8 @@ class JFormFieldMegaMenu extends JFormFieldHidden
 
             $jdoc = JFactory::getDocument();
             $jdoc->addStylesheet(ZO2_PLUGIN_URL . '/assets/css/megamenu.css');
-            $jdoc->addStyleSheet(ZO2_PLUGIN_URL . '/formfields/css/megamenu.css');
-            $jdoc->addScript(ZO2_PLUGIN_URL . '/formfields/js/megamenu.js');
+            $jdoc->addStyleSheet(ZO2_PLUGIN_URL . '/assets/css/adminmegamenu.css');
+            $jdoc->addScript(ZO2_PLUGIN_URL . '/assets/js/adminmegamenu.js');
 
         }
 
