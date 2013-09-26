@@ -156,11 +156,16 @@
 
         <fieldset name="comments" label="Comments System">
 
+            <field name="enable_comments" type="radio" default="0" label="Enable Comments" description="Enable Comments" class="btn-group">
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+            </field>
+
             <field name="tab_order" type="text" default="facebook,gplus,disqus,k2comment"
                    label="Tabs Order"
                    description="Only tabs listed will be showed" />
 
-            <field name="disqus_shortname" type="text" default="disqus_short"
+            <field name="disqus_shortname" type="text" default="zootemplates"
                    label="Disqus Shortname"
                    description="Required if showing the disqus tab" />
 

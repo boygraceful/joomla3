@@ -46,7 +46,7 @@ class plgSystemZo2 extends JPlugin
 
             }
         }
-        Zo2Framework::addCssStylesheet(ZO2_ADMIN_PLUGIN_URL . '/addons/shortcodes/css/shortcodes.css');
+        Zo2Framework::addCssStylesheet(ZO2_PLUGIN_URL . '/addons/shortcodes/css/shortcodes.css');
     }
 
     function onAfterRender()
@@ -75,7 +75,7 @@ class plgSystemZo2 extends JPlugin
 
         if (JFactory::getApplication()->isSite()) {
             $article->text = $this->doShortCode($article->text);
-
+            /* Google Authorship */
             if ((int)$config->get("enable_googleauthorship", 0)) {
                 $author_name = "+";
                 $user = JFactory::getUser();
@@ -88,13 +88,12 @@ class plgSystemZo2 extends JPlugin
                 $gplus .= ' title="Google Plus Profile for '.$author_name.'" plugin="Google Plus Authorship">'.$author_name.'</a>';
                 $article->text = $gplus . $article->text;
             }
-            if ($config->get('tab_order', 'facebook,gplus,disqus,k2comment')) {
+            /* Comments System */
+            if ($config->get('enable_comments', 0)) {
 
-                Zo2Framework::import2('addons.comments.api');
-                $comment = new ZO2Comments();
-
-                $article->text = $article->text .   (string)$comment->renderHtml();;
-
+                Zo2Framework::import2('addons.comments.Zo2Comments');
+                $comment = new Zo2Comments();
+                $article->text = $article->text . $comment->renderHtml();
             }
 
         }
@@ -286,7 +285,7 @@ class plgSystemZo2 extends JPlugin
                 foreach ($items as $shortcoder) {
 
                     $text .= '  <a class="btn" href="javascript: void(0);" onclick="jSelectShortcode(\'' . $shortcoder['syntax'] . '\')" title="' . $shortcoder['desc'] . '">';
-                    $text .= '  <i class="zo2-icon-bsc-' . $i++ . '" style="background: url(' . JUri::root() . ZO2_ADMIN_PLUGIN_REL . '/addons/shortcodes/images/' . $shortcoder['image'] . ') 0 0 no-repeat;"></i>';
+                    $text .= '  <i class="zo2-icon-bsc-' . $i++ . '" style="background: url(' . JUri::root() . ZO2_PLUGIN_REL . '/addons/shortcodes/images/' . $shortcoder['image'] . ') 0 0 no-repeat;"></i>';
                     $text .= $shortcoder['name'];
                     $text .= '  </a>';
                 }
