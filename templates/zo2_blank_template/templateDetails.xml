@@ -154,7 +154,7 @@
 
         </fieldset>
 
-        <fieldset name="comments" label="Comments System">
+        <fieldset name="comments" label="Comments Options">
 
             <field name="enable_comments" type="radio" default="0" label="Enable Comments" description="Enable Comments" class="btn-group">
                 <option value="1">JYES</option>

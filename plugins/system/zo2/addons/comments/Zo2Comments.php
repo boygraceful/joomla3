@@ -180,6 +180,87 @@ class Zo2Comments
                     break;
                 case 'k2comment';
 
+                    jimport('joomla.application.component.helper');
+
+                    if(!JComponentHelper::isEnabled('com_k2', true))
+                    {
+                        $html .= '' . JText::_('Zo2 Framework requires k2 component installed');
+
+                    } else {
+
+                        JHtml::_('behavior.formvalidation');
+                        JHtml::_('behavior.keepalive');
+
+                        //JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
+                        //$comment = JTable::getInstance('K2Comments', 'Table');
+                        //$comment->load($item->id);
+
+                        $html .= '
+                            <script type=\"text/javascript\">
+                                Joomla.submitbutton = function(task)
+                                {
+                                    if (document.formvalidator.isValid(document.id(\'comment-form\')))
+                                    {
+                                        Joomla.submitform(task, document.getElementById(\'comment-form\'));
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            </script>';
+
+                        // $user = JFactory::getUser();
+                        //$user->guest;
+
+                        $html .= '<div id="zo2framework-comments">
+                            <form action="'.JURI::root(true).'/index.php" method="post" name="adminForm" id="comment-form" class="form-validate form-horizontal" role="form">
+
+                                <div class="form-group">
+                                    <label id="commentText-lbl" for="commentText" class="col-lg-2 hasTip required control-label formComment" title="">Message<span class="star">&nbsp;*</span></label>
+                                    <div class="col-lg-10">
+                                      <textarea rows="5" cols="10" class="form-control required" required="required" aria-required="true"  name="commentText" id="commentText" placeholder="Your message here"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label id="userName-lbl" for="userName" class="col-lg-2 hasTip required control-label formName" title="">Name<span class="star">&nbsp;*</span></label>
+                                    <div class="col-lg-10">
+                                      <input class="form-control required" type="text" required="required" aria-required="true" name="userName" id="userName" value="" placeholder="Your name" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label id="commentEmail-lbl" for="commentEmail" class="col-lg-2 hasTip required control-label formEmail" title="">Email<span class="star">&nbsp;*</span></label>
+                                    <div class="col-lg-10">
+                                       <input class="inputbox form-control required" required="required" aria-required="true" type="text" name="commentEmail" id="commentEmail" value="" placeholder="Your email" />
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label id="commentURL-lbl" for="commentURL" class="col-lg-2 hasTip required control-label formUrl" title="">Website URL<span class="star">&nbsp;*</span></label>
+                                    <div class="col-lg-10">
+                                       <input class="inputbox form-control required" required="required" aria-required="true" type="text" name="commentURL" id="commentURL" value=""  placeholder="Website URL" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label"></label>
+                                    <div class="col-lg-10">
+                                        <input type="submit" class="btn btn-primary" id="submitCommentButton" value="Submit Comments" onclick="Joomla.submitbutton(\'comment\'); return false;" />
+                                    </div>
+                                </div>
+
+                                <span id="formLog"></span>
+
+                                <input type="hidden" name="option" value="com_k2" />
+                                <input type="hidden" name="view" value="item" />
+                                <input type="hidden" name="task" value="comment" />
+                                <input type="hidden" name="itemID" value="'.JRequest::getInt('id').'" />
+                                '.JHTML::_('form.token').'
+                            </form></div>
+                            ';
+                    }
+
                     break;
             }
 
