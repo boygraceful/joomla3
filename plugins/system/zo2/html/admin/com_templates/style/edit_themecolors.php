@@ -12,11 +12,8 @@
  */
 
 defined('_JEXEC') or die;
+$fields = $this->form->getFieldset('themecolors');
 ?>
-
-<?php foreach ($this->form->getFieldset('layout') as $field) : ?>
-
-            <?php echo $field->input; ?>
-
+<?php foreach ($fields as $field) : ?>
+    <?php echo $field->input; ?>
 <?php endforeach;
-
