@@ -91,7 +91,7 @@ class plgSystemZo2 extends JPlugin
     {
         $app = JFactory::getApplication();
 
-        if ($app->isSite) {
+        if ($app->isSite()) {
 
             Zo2Framework::import2('addons.sharesocial.Zo2Sharesocial');
             $zo2Social = new Zo2Sharesocial($this->params);

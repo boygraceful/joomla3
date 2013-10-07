@@ -31,7 +31,7 @@ $canDo = TemplatesHelper::getActions();
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_templates&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="style-form" class="form-validate form-horizontal">
-	<fieldset>
+	<fieldset id="zo2">
 		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
 			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('Overview', true)); ?>
@@ -94,15 +94,20 @@ $canDo = TemplatesHelper::getActions();
 				<?php endif; ?>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'options', JText::_('General Option', true)); ?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'options', JText::_('General', true)); ?>
 				<?php //get the menu parameters that are automatically set but may be modified.
 					echo $this->loadTemplate('options'); ?>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
             <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'fonts', JText::_('Fonts', true)); ?>
-        <?php //get the menu parameters that are automatically set but may be modified.
-        echo $this->loadTemplate('fonts'); ?>
+            <?php //get the menu parameters that are automatically set but may be modified.
+            echo $this->loadTemplate('fonts'); ?>
             <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'theme', JText::_('Preset Styles', true)); ?>
+        <?php //get the menu parameters that are automatically set but may be modified.
+        echo $this->loadTemplate('themecolors'); ?>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
 
             <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'layoutbuiler', JText::_('Layout Builder', true)); ?>
                 <?php echo $this->loadTemplate('layoutbuilder'); ?>
