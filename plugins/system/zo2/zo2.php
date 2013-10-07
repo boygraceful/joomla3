@@ -37,6 +37,8 @@ class plgSystemZo2 extends JPlugin
     function onBeforeRender()
     {
         $app = JFactory::getApplication();
+        $document = JFactory::getDocument();
+
         if (isset($_GET['option']) && $_GET['option'] == 'com_templates' && isset($_GET['id'])) {
             if ($app->isAdmin()) {
                 // Load Bootstrap CSS
@@ -46,7 +48,20 @@ class plgSystemZo2 extends JPlugin
             }
         }
         if ($app->isSite()) {
+
             Zo2Framework::addJsScript(ZO2_PLUGIN_URL . '/addons/shortcodes/js/shortcodes.js');
+            // Share social
+            $type = $document->getType();
+
+            if ($type == 'html' && $this->params->get('enable_popup', 0)) {
+
+                $body = JResponse::getBody();
+                Zo2Framework::import2('addons.sharesocial.Zo2Sharesocial');
+                $zo2Social = new Zo2Sharesocial($this->params);
+                $body = $zo2Social->renderPopup($body, '#zo2-social-popup');
+                JResponse::setBody($body);
+            }
+
         } else {
             Zo2Framework::addCssStylesheet(ZO2_PLUGIN_URL . '/assets/vendor/fontello/css/fontello.css');
         }
@@ -68,6 +83,19 @@ class plgSystemZo2 extends JPlugin
             $body = $this->doShortCode($body);
             JResponse::setBody($body);
 
+        }
+
+    }
+
+    public function onContentBeforeDisplay($context, &$article, &$params, $limitstart = 0)
+    {
+        $app = JFactory::getApplication();
+
+        if ($app->isSite) {
+
+            Zo2Framework::import2('addons.sharesocial.Zo2Sharesocial');
+            $zo2Social = new Zo2Sharesocial($this->params);
+            $zo2Social->renderSocial($article, '.zo2-social-btn');
         }
 
     }
