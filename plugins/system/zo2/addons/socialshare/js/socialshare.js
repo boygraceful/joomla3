@@ -10,22 +10,18 @@
  * @license     GPL v2
  */
 
-(function($){
+(function ($) {
 
-    $.fn.Zo2ShareSocial = function (options) {
+    $.fn.Zo2Socialshare = function (options) {
 
-        var $config = $.extend({}, {
-            
+        var $config = $.extend({
+
             buttons: 'facebook,twitter,linkedin,gplus',
             style: 'default', // default or floating
-            button_layout: 'vertical', // vertical or horizontal
-            position: 'left',
-            socialWidth: 200,
-            socialHeight: 200,
-            topPosition: 100,
-            leftPosition: 0,
-            rightPosition: 0,
-            
+            social_width: 200,
+            social_height: 200,
+            box_top: 200,
+            box_left: 20,
             enablePopup: false,
             popupParams: {
                 sClose: 10,
@@ -60,26 +56,38 @@
             linkedin: 'http://www.linkedin.com/shareArticle?mini=true&amp;url={URL}&amp;title={TITLE}'
         };
 
-        if ($config.enablePopup) {
-            $config.button_layout = 'horizontal';
-        }
 
-        return this.each (function() {
+        return this.each(function () {
 
             var count = 0;
             var counter = '';
             var $this = this;
             var $container = $(this);
             var $socials = $config.buttons.split(',');
-            
+
+            $(window).load(function () {
+                scrollBox();
+            });
+
             if ($.isArray($socials)) {
-                
-                $.each($socials, function(key, value) {
+
+                $.each($socials, function (key, value) {
                     var $button = getHtmlButton(value);
                     if ($button != null) {
                         $container.append($button);
                     }
                 });
+
+                if ($config.style == 'floating') {
+
+
+                    $(window).resize(function () {
+                        scrollBox();
+                    });
+                    $(window).scroll(function () {
+                        scrollBox();
+                    });
+                }
 
                 if ($config.enablePopup) {
 
@@ -88,7 +96,7 @@
                     if (show != 'true') {
                         window.setTimeout(
                             function () {
-                                $('#SocialModal').addClass($config.button_layout).modal('show');
+                                $('#zo2Modal').addClass('horizontal').modal('show');
                                 $.cookie('show_modal', true, { expires: parseInt($config.popupParams.dPopup), path: '/'});
                             },
                             $config.popupParams.sPopup * 1000
@@ -102,35 +110,41 @@
                         }, 1000);
                     }
 
-                } else {
-
-                    if ($config.button_layout == 'default') {
-
-                        var sPosition = 0;
-                        if ($config.position == 'left') {
-                            sPosition = 'margin-left:' + $config.leftPosition + 'px';
-                        } else if ($config.position == 'right') {
-                            sPosition = 'margin-right:' + $config.rightPosition + 'px';
-                        }
-                        var sWidth = ($config.socialWidth == '') ? 'auto' : $config.socialWidth + 'px';
-                        var sHeight = ($config.socialHeight == '') ? 'auto' : $config.socialHeight + 'px';
-                        $container.attr('style', 'position: relative;margin: 0; padding: 0; z-index: 9999; top: ' + $config.topPosition + 'px;float:' + $config.position + ';' + sPosition + ';width: ' + sWidth + ';height: ' + sHeight + ';');
-                    }
-
                 }
-               
-                
             }
 
+            /*For floating*/
+            function scrollBox() {
+
+                var $main_box = $($this).closest('.container');
+                var $social_box = $($this);
+                var $top_scrolled = 30;
+                var $x = parseInt($main_box.offset().left) - $config.box_left;
+                var $y = $config.box_top - $top_scrolled;
+                var $scrollY = $(window).scrollTop();
+
+                if ($social_box.length > 0) {
+                    if ($scrollY > $y) {
+                        //$social_box.stop().css({position: 'fixed', top: $top_scrolled, left: $x});
+                        $social_box.stop().attr('style', 'position: fixed; z-index: 9999; top: ' + $top_scrolled + 'px; left: ' + $x + 'px');
+                    } else if ($scrollY < $y) {
+                        // $social_box.css({position: 'absolute', top: $config.box_top, left: $x});
+                        $social_box.attr('style', 'position: fixed; z-index: 9999; top: ' + $config.box_top + 'px; left: ' + $x + 'px');
+                    }
+                }
+
+            }
+
+            /*For popup*/
             function closePopup() {
                 count--;
                 if (count <= 0) {
                     clearInterval(counter);
-                    $('#SocialModal').modal('hide');
+                    $('#zo2Modal').modal('hide');
                     return;
                 }
             }
-            
+
             function getHtmlButton(type) {
 
                 var $html = '';
@@ -144,7 +158,7 @@
 
                     case 'facebook':
                         var $fblayout = '';
-                        if ($config.button_layout == 'vertical') {
+                        if ($config.style == 'floating') {
                             $fblayout = 'box_count';
                         } else {
                             $fblayout = 'button_count';
@@ -159,7 +173,7 @@
 
                         var $countLayout = 'vertical';
 
-                        if ($config.button_layout == 'horizontal') {
+                        if ($config.style == 'default') {
                             $countLayout = 'horizontal';
                         }
 
@@ -171,7 +185,7 @@
 
                         var $gShareAnnotation = '';
 
-                        if ($config.button_layout == 'vertical') {
+                        if ($config.style == 'floating') {
                             $gShareAnnotation = 'vertical-bubble';
                         } else {
                             $gShareAnnotation = "bubble";
@@ -185,7 +199,7 @@
 
                         var $linkedinCount = 'right';
 
-                        if ($config.button_layout == "vertical") {
+                        if ($config.style == "floating") {
                             $linkedinCount = 'top';
                         }
 
@@ -199,7 +213,7 @@
                 return $beforeHtml + $html + $afterHtml;
             }
 
-            function getUrl($type) {
+            function getUrl(type) {
 
                 var $params = $config.socialParams[type];
                 var $itemUrl = $container.data('url');

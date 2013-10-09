@@ -1,11 +1,5 @@
 [
     {
-        "path": "/assets/vendor/jquery/jquery-1.9.1.min.js",
-        "type": "js",
-        "position": "header",
-        "base": "plugin"
-    },
-    {
         "path": "/vendor/html5shiv/html5shiv.js",
         "type": "js",
         "position": "header",
@@ -30,17 +24,18 @@
         "position": "header",
         "base": "plugin"
     },
-    {
-        "path": "/assets/vendor/jquery/jquery-1.9.1.min.js",
-        "type": "js",
-        "position": "footer",
-        "base": "plugin"
-    },
+
     {
         "path": "/assets/vendor/bootstrap/js/bootstrap.min.js",
         "type": "js",
-        "position": "footer",
+        "position": "header",
         "base": "plugin"
+    },
+    {
+        "path": "/assets/js/megamenu.js",
+        "type": "js",
+        "position": "header",
+        "base": "template"
     },
     {
         "path": "/assets/css/megamenu.css",
@@ -49,12 +44,6 @@
             "rel": "stylesheet"
         },
         "position": "header",
-        "base": "template"
-    },
-    {
-        "path": "/assets/js/megamenu.js",
-        "type": "js",
-        "position": "footer",
         "base": "template"
     },
     {
