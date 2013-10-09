@@ -187,23 +187,6 @@ defined('_JEXEC') or die;
                     <?php echo $this->form->getInput('social_position', 'params'); ?>
                 </div>
             </div>
-            <div class="control-group">
-                <div class="control-label">
-                    <?php echo $this->form->getLabel('social_width', 'params'); ?>
-                </div>
-                <div class="controls">
-                    <?php echo $this->form->getInput('social_width', 'params'); ?>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    <?php echo $this->form->getLabel('social_height', 'params'); ?>
-                </div>
-                <div class="controls">
-                    <?php echo $this->form->getInput('social_height', 'params'); ?>
-                </div>
-            </div>
 
             <div class="control-group">
                 <div class="control-label">

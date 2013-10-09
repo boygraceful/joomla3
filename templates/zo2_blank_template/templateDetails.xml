@@ -240,19 +240,6 @@
             </field>
 
             <field
-                    name="social_width"
-                    type="text"
-                    default=""
-                    label="Social width"
-                    description="Social width"/>
-            <field
-                    name="social_height"
-                    type="text"
-                    default=""
-                    label="Social height"
-                    description="Social height"/>
-
-            <field
                     name="box_top"
                     type="text"
                     default="200"

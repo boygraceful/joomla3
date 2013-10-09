@@ -65,8 +65,6 @@ class Zo2Socialshare
                         $("' . $selector . '").Zo2Socialshare({
                             buttons: "' . $this->params->get('ordering_buttons') . '",
                             style: "' . $style . '",
-                            social_width: "' . $this->params->get('social_width') . '",
-                            social_height: "' . $this->params->get('social_height') . '",
                             box_top: "' . $this->params->get('box_top', 100) . '",
                             box_left: "' . $this->params->get('box_left', 0) . '",
                             enablePopup: ' . $this->params->get('enable_popup', 0) . ',

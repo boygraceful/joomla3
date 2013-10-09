@@ -18,8 +18,6 @@
 
             buttons: 'facebook,twitter,linkedin,gplus',
             style: 'default', // default or floating
-            social_width: 200,
-            social_height: 200,
             box_top: 200,
             box_left: 20,
             enablePopup: false,
