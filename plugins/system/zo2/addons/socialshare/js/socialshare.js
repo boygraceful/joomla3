@@ -63,9 +63,6 @@
             var $container = $(this);
             var $socials = $config.buttons.split(',');
 
-            $(window).load(function () {
-                scrollBox();
-            });
 
             if ($.isArray($socials)) {
 
@@ -78,6 +75,9 @@
 
                 if ($config.style == 'floating') {
 
+                    $(window).load(function () {
+                        scrollBox();
+                    });
 
                     $(window).resize(function () {
                         scrollBox();
