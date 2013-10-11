@@ -378,8 +378,9 @@ class Zo2Layout {
         else $html .= '<section class="' . $class . '">';
 
         if (!empty($item['position'])) {
-            if ($item['position'] == 'component') $html .= '<jdoc:include type="component" />';
-            else if ($item['position'] == 'message') $html .= '<jdoc:include type="message" />';
+
+            if (($item['position'] == 'component')&& (!$this->hideComponent())) $html .= '<jdoc:include type="component" />';
+            else if (($item['position'] == 'message') && (!$this->hideComponent())) $html .= '<jdoc:include type="message" />';
             else if($item['position'] == 'mega_menu') {
                 $html .= $zo2->displayMegaMenu($zo2->getParams('menutype', 'mainmenu'), $zo2->getTemplate());
             }
@@ -387,7 +388,7 @@ class Zo2Layout {
                 $moduleJdoc = '<jdoc:include type="modules" name="' . $item['position'] . '"  style="' . $item['style'] . '" />';
                 $componentHtml = '';
                 if ($componentPath = $this->_components[$item['position']]) {
-                    $componentClassName = "Zo2Component_" . $item['position'];
+                    $componentClassName = " " . $item['position'];
                     if (file_exists($componentPath)) require_once $componentPath;
                     if (class_exists($componentClassName)) {
                         $component = new $componentClassName();
@@ -816,4 +817,22 @@ class Zo2Layout {
         $classes[] = Zo2Framework::getCurrentPage();
         return trim(implode(' ', $classes) . ' ' . $customClass);
     }
+
+    /**
+     * Hide component from frontpage
+     * @return bool
+     */
+    private static function hideComponent()
+    {
+        $params = Zo2Framework::getParams();
+        $isFrontPage = Zo2Framework::isFrontPage();
+        if ((int)$params->get('component_area', 0) && $isFrontPage) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
 }
