@@ -343,7 +343,7 @@ class Zo2Layout {
     private function generateRow($item)
     {
         //$class = $layoutType == 'fluid' ? 'container' : 'container-fixed';
-        $class = 'container';
+        $class = $item['fullwidth'] ? '' : 'container';
         $class .= ' ' . self::generateVisibilityClass($item['visibility']);
         $html = '';
         if (!empty($item['id'])) $html .= '<section id="' . $item['id'] . '" class="' . $item['customClass'] . '">';
@@ -388,7 +388,7 @@ class Zo2Layout {
                 $moduleJdoc = '<jdoc:include type="modules" name="' . $item['position'] . '"  style="' . $item['style'] . '" />';
                 $componentHtml = '';
                 if ($componentPath = $this->_components[$item['position']]) {
-                    $componentClassName = " " . $item['position'];
+                    $componentClassName = "Zo2Component_" . $item['position'];
                     if (file_exists($componentPath)) require_once $componentPath;
                     if (class_exists($componentClassName)) {
                         $component = new $componentClassName();
