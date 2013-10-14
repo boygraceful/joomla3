@@ -363,6 +363,7 @@ class Zo2Framework {
 //        $configs = json_decode(JFile::read($file), true);
         $configs = json_decode($params->get('menu_config', ''), true);
         $mmconfig = ($configs && isset($configs[$menutype])) ? $configs[$menutype] : array();
+        //$mmconfig = array();
         if (JFactory::getApplication()->isAdmin()) {
             $mmconfig['edit'] = true;
         }

@@ -52,8 +52,24 @@ $footer = $layout->insertFooterAssets();
     <?php echo $header?>
 </head>
 <body class="<?php echo $layout->getBodyClass()?>">
+
+ <nav data-zo2selectable="navbar" class="wrap zo2-menu navbar navbar-default" role="navigation">
+     <div class="container">
+        <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">ZO2</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <?php echo $this->zo2->displayMegaMenu($zo2->getParams('menutype', 'mainmenu'), $templateName); ?>
+        </div>
+     </div>
+ </nav>
+
 <section class="wrapper">
-    <?php echo $body;?>
+    <?php //echo $body;?>
 </section>
 <?php if ($debug == 1) : ?>
 <jdoc:include type="modules" name="debug" />
