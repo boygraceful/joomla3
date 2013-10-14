@@ -332,4 +332,23 @@ defined('_JEXEC') or die;
     echo JHtml::_('bootstrap.endAccordion');
 ?>
 
+<fieldset>
+    <legend style="margin-bottom: 0"><span class="zo2-label label-info">Debug options</span></legend>
+    <div class="control-group">
+        <div class="control-label">
+            <?php echo $this->form->getLabel('debug_visibility', 'params'); ?>
+        </div>
+        <div class="controls">
+            <?php echo $this->form->getInput('debug_visibility', 'params'); ?>
+        </div>
+    </div>
 
+    <div class="control-group">
+        <div class="control-label">
+            <?php echo $this->form->getLabel('disable_mootools', 'params'); ?>
+        </div>
+        <div class="controls">
+            <?php echo $this->form->getInput('disable_mootools', 'params'); ?>
+        </div>
+    </div>
+</fieldset>
