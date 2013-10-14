@@ -218,8 +218,9 @@ class Zo2MegaMenu
                         $menus[] = $item;
                     }
                 }
-                if (!count($menus)) return;
             }
+
+            if (!count($menus)) return;
 
         } else if ($start === 0){
             $pid = $parent->id;
@@ -477,9 +478,6 @@ class Zo2MegaMenu
             $rowClass = 'row';
             $colClass = 'col-md-';
         }
-//        if ($parent->id == 475) {
-//            var_dump($submenu['rows']);die;
-//        }
         foreach ($submenu['rows'] as $key => $row) {
             //start row
             $html .= '<div class="'.$rowClass .'">';
@@ -510,7 +508,6 @@ class Zo2MegaMenu
                     if (!isset($endItems[$column['item']])) continue;
                     $endId = $endItems[$column['item']];
                     $startId = $firstitem ? $fitem : $column['item'];
-                    var_dump($startId, $endId);
                     $html .= $this->getMenu($parent, (int) $startId, (int)$endId);
                     $firstitem = false;
                 }
