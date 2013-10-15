@@ -45,7 +45,6 @@ class plgSystemZo2 extends JPlugin
             try {
                 // remove stupid mootools
                 unset($doc->_scripts[JURI::root(true) . '/media/system/js/mootools-core.js']);
-                unset($doc->_scripts[JURI::root(true) . '/media/system/js/mootools-more.js']);
                 unset($doc->_scripts[JURI::root(true) . '/media/system/js/core.js']);
                 unset($doc->_scripts[JURI::root(true) . '/media/system/js/caption.js']);
                 unset($doc->_scripts[JURI::root(true) . '/media/system/js/modal.js']);
@@ -69,6 +68,22 @@ class plgSystemZo2 extends JPlugin
             catch(Exception $e){}
         }
 
+        if (!$app->isAdmin()) {
+            try {
+                // remove default jquery and bootstrap 2
+                JHtml::_('bootstrap.framework',false);
+                JHtml::_('jquery.framework',false);
+                //JHtml::_('behavior.tooltip', false);
+                unset($doc->_scripts[JURI::root(true) . '/media/jui/js/jquery.min.js']);
+                unset($doc->_scripts[JURI::root(true) . '/media/jui/js/jquery-noconflict.js']);
+                unset($doc->_scripts[JURI::root(true) . '/media/jui/js/bootstrap.min.js']);
+                unset($doc->_scripts[JURI::root(true) . '/media/jui/js/jquery.min.js']);
+                unset($doc->_scripts[JURI::root(true) . '/media/jui/js/jquery-noconflict.js']);
+                unset($doc->_scripts[JURI::root(true) . '/media/jui/js/bootstrap.min.js']);
+            }
+            catch(Exception $e){}
+        }
+
         if (isset($_GET['option']) && $_GET['option'] == 'com_templates' && isset($_GET['id'])) {
             if ($app->isAdmin()) {
                 // Load Bootstrap CSS
@@ -79,7 +94,7 @@ class plgSystemZo2 extends JPlugin
         }
         if ($app->isSite()) {
 
-            Zo2Framework::addJsScript(ZO2_PLUGIN_URL . '/addons/shortcodes/js/shortcodes.js');
+            $doc->addScript(ZO2_PLUGIN_URL . '/addons/shortcodes/js/shortcodes.js');
             // Share social
             $params = Zo2Framework::getParams();
             if ($params->get('enable_popup', 0)) {
@@ -91,7 +106,7 @@ class plgSystemZo2 extends JPlugin
         } else {
             Zo2Framework::addCssStylesheet(ZO2_PLUGIN_URL . '/assets/vendor/fontello/css/fontello.css');
         }
-        Zo2Framework::addCssStylesheet(ZO2_PLUGIN_URL . '/addons/shortcodes/css/shortcodes.css');
+        $doc->addStyleSheet(ZO2_PLUGIN_URL . '/addons/shortcodes/css/shortcodes.css');
     }
 
     function onAfterRender()

@@ -59,7 +59,7 @@ class Zo2MegaMenu
             $itemid = 'item-' . $item->id;
             $config = isset($this->_configs[$itemid]) ? $this->_configs[$itemid] : array();
 
-            // decode html tag
+    
             if (isset($config['caption']) && $config['caption']) $config['caption'] = str_replace(array('[lt]','[gt]'), array('<','>'), $config['caption']);
             if ($item->level == 1 && isset($config['caption']) && $config['caption']) {
                 $item->top_level_caption = true;
@@ -183,8 +183,7 @@ class Zo2MegaMenu
             if ($isAdmin == true) {
                 return $html;
             } elseif ($isAdmin == false) {
-               // return $prefix . $html . $suffix;
-                return $html ;
+                return $prefix . $html . $suffix;
             }
         }
         return '';
