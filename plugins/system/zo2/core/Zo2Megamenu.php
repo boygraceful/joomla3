@@ -183,8 +183,7 @@ class Zo2MegaMenu
             if ($isAdmin == true) {
                 return $html;
             } elseif ($isAdmin == false) {
-               // return $prefix . $html . $suffix;
-                return $html ;
+                return $prefix . $html . $suffix;
             }
         }
         return '';
