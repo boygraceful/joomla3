@@ -210,11 +210,11 @@ class Zo2MegaMenu
 
                 if ($started) {
                     if ($item->id == $end) break;
-                    $menus[] = $item;
+                    array_push($menus, $item);
                 } else {
                     if ($item->id == $start) {
                         $started = true;
-                        $menus[] = $item;
+                        array_push($menus, $item);
                     }
                 }
             }
@@ -454,22 +454,23 @@ class Zo2MegaMenu
         $html .= "<div $style $class $data><div class=\"mega-dropdown-inner\">";
 
         $endItems = array();
-        $k1 = $k2 = 0;
+        $key1 = 0;
+        $key2 = 0;
         foreach ($submenu['rows'] as $row) {
 
             foreach ($row as $column) {
                 if (!isset($column['module_id'])) {
-                    if ($k1) {
-                        $k2 = $column['item'];
-                        if (!isset($this->_items[$k2]) || $this->_items[$k2]->parent_id != $parent->id) break;
-                        $endItems[$k1] = $k2;
+                    if ($key1) {
+                        $key2 = $column['item'];
+                        if (!isset($this->_items[$key2]) || $this->_items[$key2]->parent_id != $parent->id) break;
+                        $endItems[$key1] = $key2;
                     }
-                    $k1 = $column['item'];
+                    $key1 = $column['item'];
                 }
             }
         }
 
-        $endItems[$k1] = 0;
+        $endItems[$key1] = 0;
         $firstitem = true;
         $rowClass = 'row-fluid';
         $colClass = 'span';
