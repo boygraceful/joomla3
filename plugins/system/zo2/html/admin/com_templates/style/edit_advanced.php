@@ -122,21 +122,31 @@ defined('_JEXEC') or die;
             </ul>
             <div class="tab-content">
                 <div id="basic" class="tab-pane active">
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <?php echo $this->form->getLabel('box_top', 'params'); ?>
+                        </div>
+                        <div class="controls">
+                            <?php echo $this->form->getInput('box_top', 'params'); ?>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <?php echo $this->form->getLabel('box_left', 'params'); ?>
+                        </div>
+                        <div class="controls">
+                            <?php echo $this->form->getInput('box_left', 'params'); ?>
+                        </div>
+                    </div>
+
                     <div class="control-group">
                         <div class="control-label">
                             <?php echo $this->form->getLabel('ordering_buttons', 'params'); ?>
                         </div>
                         <div class="controls">
                             <?php echo $this->form->getInput('ordering_buttons', 'params'); ?>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <div class="control-label">
-                            <?php echo $this->form->getLabel('social_style', 'params'); ?>
-                        </div>
-                        <div class="controls">
-                            <?php echo $this->form->getInput('social_style', 'params'); ?>
                         </div>
                     </div>
 
@@ -167,6 +177,32 @@ defined('_JEXEC') or die;
                     </div>
                     <div class="control-group">
                         <div class="control-label">
+                            <?php echo $this->form->getLabel('include_categories', 'params'); ?>
+                        </div>
+                        <div class="controls">
+                            <?php echo $this->form->getInput('include_categories', 'params'); ?>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <?php echo $this->form->getLabel('display_type', 'params'); ?>
+                        </div>
+                        <div class="controls">
+                            <?php echo $this->form->getInput('display_type', 'params'); ?>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label">
+                            <?php echo $this->form->getLabel('social_order', 'params'); ?>
+                        </div>
+                        <div class="controls">
+                            <?php echo $this->form->getInput('social_order', 'params'); ?>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
                             <?php echo $this->form->getLabel('button_layout', 'params'); ?>
                         </div>
                         <div class="controls">
@@ -179,24 +215,6 @@ defined('_JEXEC') or die;
                         </div>
                         <div class="controls">
                             <?php echo $this->form->getInput('social_position', 'params'); ?>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <div class="control-label">
-                            <?php echo $this->form->getLabel('box_top', 'params'); ?>
-                        </div>
-                        <div class="controls">
-                            <?php echo $this->form->getInput('box_top', 'params'); ?>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <div class="control-label">
-                            <?php echo $this->form->getLabel('box_left', 'params'); ?>
-                        </div>
-                        <div class="controls">
-                            <?php echo $this->form->getInput('box_left', 'params'); ?>
                         </div>
                     </div>
 
