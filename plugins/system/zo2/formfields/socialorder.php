@@ -23,16 +23,18 @@ class JFormFieldSocialorder extends JFormFieldText
      */
     public function getInput()
     {
+        $document = JFactory::getDocument();
+        $document->addScript(ZO2_PLUGIN_URL . '/assets/js/adminsocial.js');
+
         $html = '<table width="100%" id="social_options" class="table table-striped">
                     <thead>
                         <tr>
                             <th width="1%" class="index sequence nowrap center"></th>
                             <th width="1%" class="index sequence nowrap center">#</th>
                             <th width="8%" class="nowrap center">Website</th>
-                            <th width="30%" class="">Integration Type</th>
-                            <th width="20%" class="">Button Design</th>
                             <th width="20%" class="nowrap center isactive">Enable</th>
-                            <th width="20%" class="nowrap center">Ordering</th>
+                            <th width="30%" class="">Position</th>
+                            <th width="20%" class="">Button Design</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,29 +46,22 @@ class JFormFieldSocialorder extends JFormFieldText
                             <td class="center">
                                 <a href="#" title="twitter">Twitter</a>
                             </td>
-                            <td class="">
-                                <select name="integration_type">
-                                    <option value="float_left">Float Left</option>
-                                    <option value="float_right">Float Right</option>
-                                </select>
+
+                             <td class="center">
+                                '.$this->renderEnable('twitter', 1).'
                             </td>
+
+                            <td class="">
+                                '.$this->renderPosition('twitter').'
+                            </td>
+
                             <td class="">
                                 <select name="button_design">
                                     <option value="like_standard">Like Standard</option>
                                     <option value="like_box_count">Like Box Count</option>
                                 </select>
                             </td>
-                             <td class="center">
-                                <fieldset id="enable_twitter" class="radio btn-group">
-                                    <input type="radio" id="enable_twitter0" name="enable_twitter" value="1">
-                                    <label for="enable_twitter0" class="btn">Yes</label>
-                                    <input type="radio" id="enable_twitter1" name="enable_twitter" value="0">
-                                    <label for="enable_twitter1" class="btn active btn-danger">No</label>
-                                </fieldset>
-                            </td>
-                            <td class="center">
-                                Ordering
-                            </td>
+
                         </tr>
 
                         <tr class="row1">
@@ -75,47 +70,122 @@ class JFormFieldSocialorder extends JFormFieldText
                             <td class="center">
                                 <a href="#" title="twitter">Goolge</a>
                             </td>
-                            <td class="">
-                                <select name="integration_type">
-                                    <option value="float_left">Float Left</option>
-                                    <option value="float_right">Float Right</option>
-                                </select>
+
+                            <td class="center">
+                                '.$this->renderEnable('google', 0).'
                             </td>
+
+                            <td class="">
+                                '.$this->renderPosition('google').'
+                            </td>
+
                             <td class="">
                                 <select name="button_design">
                                     <option value="like_standard">Like Standard</option>
                                     <option value="like_box_count">Like Box Count</option>
                                 </select>
                             </td>
-                             <td class="center">
-                                <fieldset id="enable_twitter" class="radio btn-group">
-                                    <input type="radio" id="enable_twitter0" name="enable_twitter" value="1">
-                                    <label for="enable_twitter0" class="btn">Yes</label>
-                                    <input type="radio" id="enable_twitter1" name="enable_twitter" value="0">
-                                    <label for="enable_twitter1" class="btn active btn-danger">No</label>
-                                </fieldset>
-                            </td>
-                            <td class="center">
-                                Ordering
-                            </td>
+
                         </tr>
 
                     </tbody>
                 </table>
                 <script type="text/javascript">
                     jQuery("#social_options > tbody").sortable({
-                        stop: updateIndex
+                        stop: Zo2Social.updateIndex
                     });
-
-                    function updateIndex(e, ui) {
-                        console.log(ui);
-                        jQuery(\'td.index\', ui.item.parent()).each(function (i) {
-                            jQuery(this).html(i + 1);
-                        });
-                    };
                 </script>
             ';
 
         return  $html ;
     }
+
+    function renderEnable($name, $value = 0) {
+
+        $name = 'enable_' . $name;
+        $on = ($value) ? 'active btn-success' : '';
+        $off = (!$value) ? 'active btn-danger' : '';
+        $html = '
+            <fieldset name="fs_'.$name.'" class="radio btn-group social-onoff '.((!$value) ? 'toggle-off' : '').'">
+                <input name="'.$name.'" id="'.$name.'" type="radio" value="'.$value.'">
+                <label for="'.$name.'" class="btn on '. $on .'">Yes</label>
+                <label for="'.$name.'" class="btn off '. $off .'">No</label>
+            </fieldset>
+        ';
+
+        $options = array(
+            JHtml::_('select.option', '1', JText::_('JYES')),
+            JHtml::_('select.option', '0', JText::_('JNO'))
+        );
+
+        return $this->radiolist($options, $name ,null, 'value', 'text', $value, $name);
+        //return $html;
+    }
+
+    function renderPosition($name, $active = 'top', $type = 'normal') {
+
+        $array = array();
+
+        if ($type == 'normal') {
+            $array[] = JHtml::_('select.option', 'top', JText::_('Top'));
+            $array[] = JHtml::_('select.option', 'bottom', JText::_('Bottom'));
+        } else if ($type == 'floating') {
+            $array[] = JHtml::_('select.option', 'float_left', JText::_('Float left'));
+            $array[] = JHtml::_('select.option', 'float_right', JText::_('Float right'));
+        }
+
+        return JHtml::_('select.genericlist', $array, $name . '_position', 'class="inputbox"', 'value', 'text', $active, $name . '_position');
+    }
+
+    function radiolist($data, $name, $attribs = null, $optKey = 'value', $optText = 'text', $selected = null, $idtag = false, $translate = false)
+    {
+        reset($data);
+
+        if (is_array($attribs))
+        {
+            $attribs = JArrayHelper::toString($attribs);
+        }
+
+        $id_text = $idtag ? $idtag : $name;
+
+        $html = '<fieldset class="radio btn-group">';
+
+        foreach ($data as $obj)
+        {
+            $k = $obj->$optKey;
+            $t = $translate ? JText::_($obj->$optText) : $obj->$optText;
+            $id = (isset($obj->id) ? $obj->id : null);
+
+            $extra = '';
+            $extra .= $id ? ' id="' . $obj->id . '"' : '';
+
+            if (is_array($selected))
+            {
+                foreach ($selected as $val)
+                {
+                    $k2 = is_object($val) ? $val->$optKey : $val;
+
+                    if ($k == $k2)
+                    {
+                        $extra .= ' selected="selected"';
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                $extra .= ((string) $k == (string) $selected ? ' checked="checked"' : '');
+            }
+
+            $html .= "\n\t" . "\n\t" . '<input type="radio" name="' . $name . '" id="' . $id_text . $k . '" value="' . $k . '" ' . $extra . ' '
+                . $attribs . '>';
+            $html .= "\n\t" . '<label for="' . $id_text . $k . '" id="' . $id_text . $k . '-lbl" class="radio">'. $t .'</label>';
+        }
+
+        $html .= '</fieldset>';
+        $html .= "\n";
+
+        return $html;
+    }
+
 }
