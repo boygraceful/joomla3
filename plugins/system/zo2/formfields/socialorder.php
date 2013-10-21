@@ -33,7 +33,6 @@ class JFormFieldSocialorder extends JFormFieldText
                             <th width="1%" class="index sequence nowrap center">#</th>
                             <th width="8%" class="nowrap center">Website</th>
                             <th width="20%" class="nowrap center isactive">Enable</th>
-                            <th width="30%" class="">Position</th>
                             <th width="20%" class="">Button Design</th>
                         </tr>
                     </thead>
@@ -49,10 +48,6 @@ class JFormFieldSocialorder extends JFormFieldText
 
                              <td class="center">
                                 '.$this->renderEnable('twitter', 1).'
-                            </td>
-
-                            <td class="">
-                                '.$this->renderPosition('twitter').'
                             </td>
 
                             <td class="">
@@ -73,10 +68,6 @@ class JFormFieldSocialorder extends JFormFieldText
 
                             <td class="center">
                                 '.$this->renderEnable('google', 0).'
-                            </td>
-
-                            <td class="">
-                                '.$this->renderPosition('google').'
                             </td>
 
                             <td class="">
@@ -118,8 +109,8 @@ class JFormFieldSocialorder extends JFormFieldText
             JHtml::_('select.option', '0', JText::_('JNO'))
         );
 
-        return $this->radiolist($options, $name ,null, 'value', 'text', $value, $name);
-        //return $html;
+        //return $this->radiolist($options, $name ,null, 'value', 'text', $value, $name);
+        return $html;
     }
 
     function renderPosition($name, $active = 'top', $type = 'normal') {

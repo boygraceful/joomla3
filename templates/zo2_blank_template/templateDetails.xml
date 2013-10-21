@@ -248,17 +248,34 @@
                 <option value="0">JNO</option>
             </field>
 
-            <field name="include_categories" type="list" default="none" label="Include"
-                   description="Include categories">
-                <option value="none">select all</option>
-                <option value="a">A</option>
-                <option value="a">B</option>
+            <field
+                    name="catid"
+                    type="category"
+                    extension="com_content"
+                    multiple="true"
+                    size="10"
+                    default=""
+                    label="Include categories"
+                    description="Include categories" >
+                <option value="">JOPTION_ALL_CATEGORIES</option>
             </field>
 
             <field name="display_type" type="list" default="default" label="Display type"
                    description="Display type">
-                <option value="default">default</option>
-                <option value="floating">floating</option>
+                <option value="normal">Normal</option>
+                <option value="floating">Floating</option>
+            </field>
+
+            <field name="normal_position" type="list" label="Normal type"
+                   description="Normal position" >
+                <option value="top">Top</option>
+                <option value="bottom">Bottom</option>
+            </field>
+
+            <field name="floating_position" type="list" label="Floating type"
+                   description="Float position" >
+                <option value="float_left">Left</option>
+                <option value="float_right">Right</option>
             </field>
 
             <field name="social_order" type="socialorder" label="" description="test"/>
