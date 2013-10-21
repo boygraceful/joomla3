@@ -177,10 +177,10 @@ defined('_JEXEC') or die;
                     </div>
                     <div class="control-group">
                         <div class="control-label">
-                            <?php echo $this->form->getLabel('include_categories', 'params'); ?>
+                            <?php echo $this->form->getLabel('catid', 'params'); ?>
                         </div>
                         <div class="controls">
-                            <?php echo $this->form->getInput('include_categories', 'params'); ?>
+                            <?php echo $this->form->getInput('catid', 'params'); ?>
                         </div>
                     </div>
 
@@ -192,6 +192,24 @@ defined('_JEXEC') or die;
                             <?php echo $this->form->getInput('display_type', 'params'); ?>
                         </div>
                     </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <?php echo $this->form->getLabel('normal_position', 'params'); ?>
+                        </div>
+                        <div class="controls">
+                            <?php echo $this->form->getInput('normal_position', 'params'); ?>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label">
+                            <?php echo $this->form->getLabel('floating_position', 'params'); ?>
+                        </div>
+                        <div class="controls">
+                            <?php echo $this->form->getInput('floating_position', 'params'); ?>
+                        </div>
+                    </div>
+
                     <div class="control-group">
                         <div class="control-label">
                             <?php echo $this->form->getLabel('social_order', 'params'); ?>

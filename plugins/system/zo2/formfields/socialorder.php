@@ -12,7 +12,7 @@
  */
 defined('_JEXEC') or die;
 
-class JFormFieldSocialorder extends JFormFieldText
+class JFormFieldSocialorder extends JFormFieldHidden
 {
     protected $type = 'Socialorder';
 
@@ -25,6 +25,33 @@ class JFormFieldSocialorder extends JFormFieldText
     {
         $document = JFactory::getDocument();
         $document->addScript(ZO2_PLUGIN_URL . '/assets/js/adminsocial.js');
+        if ($this->value) {
+            $value = json_decode($this->value);
+        } else {
+            $value = array(
+                array(
+                    'name' => 'twitter',
+                    'index' => 1,
+                    'website' => 'Twitter',
+                    'link' => '#',
+                    'enable' => 1,
+                    'button_design' => 'like_standard'
+                ),
+                array(
+                    'name' => 'google',
+                    'index' => 2,
+                    'website' => 'Google',
+                    'link' => '#',
+                    'enable' => 1,
+                    'button_design' => 'like_standard',
+                ),
+            );
+            $value = JArrayHelper::toObject($value);
+        }
+
+        $layout_button = array();
+        $layout_button['twitter'] = array('like_standard' => 'Like standard', 'like_box_count' => 'Like Count');
+        $layout_button['google'] = array('like_standard' => 'Like standard', 'like_box_count' => 'Like Count');
 
         $html = '<table width="100%" id="social_options" class="table table-striped">
                     <thead>
@@ -33,71 +60,51 @@ class JFormFieldSocialorder extends JFormFieldText
                             <th width="1%" class="index sequence nowrap center">#</th>
                             <th width="8%" class="nowrap center">Website</th>
                             <th width="20%" class="nowrap center isactive">Enable</th>
-                            <th width="30%" class="">Position</th>
                             <th width="20%" class="">Button Design</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody>';
 
-                        <tr class="row0">
+                    $count = 0;
 
-                            <td class="nowrap center"><i class="icon-reorder"></i></td>
-                            <td class="index sequence order nowrap center">1</td>
-                            <td class="center">
-                                <a href="#" title="twitter">Twitter</a>
-                            </td>
+                    foreach($value as $item) {
+                        $layouts = $layout_button[$item->name];
+                        $options = array();
+                        foreach($layouts as $key => $layout) {
+                            $options[] = JHtml::_('select.option', $key, JText::_($layout));
+                        }
 
-                             <td class="center">
-                                '.$this->renderEnable('twitter', 1).'
-                            </td>
+                        $html .= '<tr class="row'.$count.'">
+                                    <td class="nowrap center" name="'.$item->name.'"><i class="icon-reorder"></i></td>
+                                    <td class="index sequence order nowrap center">'.$item->index.'</td>
+                                    <td class="center">
+                                        <a href="'.$item->link.'" title="twitter">'.$item->website.'</a>
+                                    </td>
 
-                            <td class="">
-                                '.$this->renderPosition('twitter').'
-                            </td>
+                                     <td class="center">
+                                        '.$this->renderEnable($key, $item->enable).'
+                                    </td>
 
-                            <td class="">
-                                <select name="button_design">
-                                    <option value="like_standard">Like Standard</option>
-                                    <option value="like_box_count">Like Box Count</option>
-                                </select>
-                            </td>
+                                    <td class="">
+                                        '.JHtml::_('select.genericlist', $options, $item->name . '_button_design', 'class="inputbox"', 'value', 'text', $item->button_design, $item->name . '_button_design').'
+                                    </td>
 
-                        </tr>
+                                </tr>';
+                        $count++;
+                    }
 
-                        <tr class="row1">
-                            <td class="nowrap center"><i class="icon-reorder"></i></td>
-                            <td class="index sequence order nowrap center">2</td>
-                            <td class="center">
-                                <a href="#" title="twitter">Goolge</a>
-                            </td>
 
-                            <td class="center">
-                                '.$this->renderEnable('google', 0).'
-                            </td>
-
-                            <td class="">
-                                '.$this->renderPosition('google').'
-                            </td>
-
-                            <td class="">
-                                <select name="button_design">
-                                    <option value="like_standard">Like Standard</option>
-                                    <option value="like_box_count">Like Box Count</option>
-                                </select>
-                            </td>
-
-                        </tr>
-
-                    </tbody>
+        $html .=    '</tbody>
                 </table>
                 <script type="text/javascript">
                     jQuery("#social_options > tbody").sortable({
-                        stop: Zo2Social.updateIndex
-                    });
+                        beforeStop: Zo2Social.updateIndex,
+                        stop: Zo2Social.saveConfig
+                    }).disableSelection();
                 </script>
             ';
 
-        return  $html ;
+        return  $html . parent::getInput();
     }
 
     function renderEnable($name, $value = 0) {
@@ -118,8 +125,8 @@ class JFormFieldSocialorder extends JFormFieldText
             JHtml::_('select.option', '0', JText::_('JNO'))
         );
 
-        return $this->radiolist($options, $name ,null, 'value', 'text', $value, $name);
-        //return $html;
+        //return $this->radiolist($options, $name ,null, 'value', 'text', $value, $name);
+        return $html;
     }
 
     function renderPosition($name, $active = 'top', $type = 'normal') {
