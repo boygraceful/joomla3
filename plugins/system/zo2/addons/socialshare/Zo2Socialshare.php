@@ -40,16 +40,46 @@ class Zo2Socialshare
         $document = JFactory::getDocument();
         $type = $document->getType();
 
+
         if ($type == 'html') {
 
             $open_popup = (int)$this->params->get('show_popup', 1);
             $close_popup = (int)$this->params->get('close_popup', 10);
             $days_popup = (int)$this->params->get('days_popup_again', 1);
             $view = $this->getView();
-            $style = $this->params->get('social_style', 'default');
-            if (($style == 'floating') && ($view != "article")) {
-                $style = 'default';
+            $display_type = $this->params->get('display_type', 'normal');
+            if (($display_type == 'floating') && ($view != "article")) {
+                $display_type = 'normal';
             }
+
+            $socials = json_decode($this->params->get('social_order'));
+            $newSocials = array();
+
+            foreach($socials as $social) {
+
+                if ($social->enable) {
+
+                    if ($social->name == 'facebook') {
+                        $social->params = array(
+                            'fb_url' => $this->params->get('fb_url'),
+                            'fb_send' => ($this->params->get('fb_send') ? 'true' : 'false'),
+                            'fb_action' => $this->params->get('fb_action'),
+                        );
+                    } else if ($social->name == 'twitter') {
+                        $social->params = array(
+                            'tw_username' => $this->params->get('tw_username'),
+                            'tw_recommended' => $this->params->get('tw_recommended'),
+                            'tw_hashtags' => $this->params->get('tw_hashtags'),
+                        );
+                    } else {
+                        $social->params = array();
+                    }
+
+                    $newSocials[] = $social;
+                }
+            }
+
+            $newSocials  = "'" . addslashes(json_encode($newSocials)) . "'";
 
             $document->addStyleSheet(ZO2_PLUGIN_URL . '/addons/socialshare/css/social.css');
             //$document->addScript(ZO2_PLUGIN_URL . '/assets/vendor/jquery/jquery-1.9.1.min.js');
@@ -63,8 +93,8 @@ class Zo2Socialshare
                 jQuery(document).ready(
                     function($){
                         $("' . $selector . '").Zo2Socialshare({
-                            buttons: "' . $this->params->get('ordering_buttons') . '",
-                            style: "' . $style . '",
+                            buttons: $.parseJSON(' . $newSocials . '),
+                            display_style: "' . $display_type . '",
                             box_top: "' . $this->params->get('box_top', 100) . '",
                             box_left: "' . $this->params->get('box_left', 0) . '",
                             enablePopup: ' . $this->params->get('enable_popup', 0) . ',
@@ -73,24 +103,6 @@ class Zo2Socialshare
                                 sPopup: "' . $open_popup . '",
                                 dPopup: "' . $days_popup . '",
                                 domain: "' . JUri::getInstance()->toString(array('scheme', 'host', 'port')) . '"
-                            },
-                            socialParams: {
-                                facebook: {
-                                    fb_url: "' . $this->params->get('fb_url') . '",
-                                    fb_send: ' . ($this->params->get('fb_send') ? 'true' : 'false') . ',
-                                    fb_action: "' . $this->params->get('fb_action') . '"
-                                },
-                                twitter : {
-                                    tw_username: "' . $this->params->get('tw_username') . '",
-                                    tw_recommended: "' . $this->params->get('tw_recommended') . '",
-                                    tw_hashtags: "' . $this->params->get('tw_hashtags') . '",
-                                },
-                                 googleplus: {
-
-                                },
-                                linkedin: {
-
-                                }
                             }
                         });
                 });');

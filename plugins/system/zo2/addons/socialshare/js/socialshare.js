@@ -15,9 +15,8 @@
     $.fn.Zo2Socialshare = function (options) {
 
         var $config = $.extend({
-
-            buttons: 'facebook,twitter,linkedin,gplus',
-            style: 'default', // default or floating
+            buttons: null,
+            display_style: 'normal', // normal or floating
             box_top: 200,
             box_left: 20,
             enablePopup: false,
@@ -26,54 +25,34 @@
                 dPopup: 1,
                 sPopup: 3, // Time for showing popup window
                 domain: ''
-            },
-            socialParams: {
-                facebook: {
-                    fb_url: '',
-                    fb_send: false,
-                    fb_action: 'like'
-                },
-                twitter: {
-                    tw_username: '',
-                    tw_recommended: '',
-                    tw_hashtags: ''
-                },
-                gplus: {
-
-                },
-                linkedin: {
-
-                }
             }
         }, options);
 
         var $links = {
             facebook: 'http://www.facebook.com/sharer.php?u={URL}&amp;title={TITLE}',
             twitter: 'http://twitter.com/share?text={TITLE}&amp;url={URL}',
-            gplus: 'https://plus.google.com/share?url={URL}',
+            google: 'https://plus.google.com/share?url={URL}',
             linkedin: 'http://www.linkedin.com/shareArticle?mini=true&amp;url={URL}&amp;title={TITLE}'
         };
 
 
         return this.each(function () {
-
+//            console.log($config.test);
             var count = 0;
             var counter = '';
             var $this = this;
             var $container = $(this);
-            var $socials = $config.buttons.split(',');
 
+            if ($.isArray($config.buttons)) {
 
-            if ($.isArray($socials)) {
-
-                $.each($socials, function (key, value) {
+                $.each($config.buttons, function (key, value) {
                     var $button = getHtmlButton(value);
                     if ($button != null) {
                         $container.append($button);
                     }
                 });
 
-                if ($config.style == 'floating') {
+                if ($config.display_style == 'floating') {
 
                     $(window).load(function () {
                         scrollBox();
@@ -148,18 +127,16 @@
                 var $html = '';
                 var $beforeHtml = '<div class="zo2-social-box"><div class="zo2-social-inner">';
                 var $afterHtml = '</div></div>';
-                var $params = $config.socialParams[type];
-
+                var $params = type.params;
                 var $url = getUrl(type);
 
-                switch (type) {
+                switch (type.name) {
 
                     case 'facebook':
-                        var $fblayout = '';
-                        if ($config.style == 'floating') {
+
+                        var $fblayout = type.button_design;
+                        if ($config.display_style == 'floating') {
                             $fblayout = 'box_count';
-                        } else {
-                            $fblayout = 'button_count';
                         }
 
                         $html += '<div id="fb-root"></div>' +
@@ -169,9 +146,9 @@
                         break;
                     case 'twitter':
 
-                        var $countLayout = 'vertical';
+                        var $countLayout = type.button_design;
 
-                        if ($config.style == 'default') {
+                        if ($config.display_style == 'normal') {
                             $countLayout = 'horizontal';
                         }
 
@@ -179,25 +156,23 @@
                             '<span class="zo2-share-btn">Share on Twitter</span></a>';
 
                         break;
-                    case 'gplus':
+                    case 'google':
 
-                        var $gShareAnnotation = '';
+                        var $gShareAnnotation = type.button_design;
 
-                        if ($config.style == 'floating') {
+                        if ($config.display_style == 'floating') {
                             $gShareAnnotation = 'vertical-bubble';
-                        } else {
-                            $gShareAnnotation = "bubble";
                         }
 
-                        $html += '<a href="' + $url + '" class="socialite googleplus-share" data-action="share" data-annotation="' + $gShareAnnotation + '" data-href="' + $url + '" target="_blank">' +
+                        $html += '<a href="' + $url + '" class="socialite googleplus-share" data-action="share" '+(($gShareAnnotation == 'inline') ? '' : 'data-annotation="' + $gShareAnnotation +'"')+' data-href="' + $url + '" target="_blank">' +
                             '<span class="zo2-share-btn">Share on Google+</span></a>';
 
                         break;
                     case 'linkedin':
 
-                        var $linkedinCount = 'right';
+                        var $linkedinCount = type.button_design;
 
-                        if ($config.style == "floating") {
+                        if ($config.display_style == "floating") {
                             $linkedinCount = 'top';
                         }
 
@@ -213,19 +188,19 @@
 
             function getUrl(type) {
 
-                var $params = $config.socialParams[type];
+                var $params = type.params;
                 var $itemUrl = $container.data('url');
                 var $itemId = $container.data('id');
                 var $itemTitle = $container.data('title');
                 var $url = '';
 
                 if (typeof $itemUrl != "undefined" && $itemUrl != '') {
-                    $url = $links[type].replace('{URL}', encodeURIComponent($itemUrl)).replace('{TITLE}', encodeURIComponent((typeof($itemTitle) != "undefined") ? $itemTitle : document.title));
+                    $url = $links[type.name].replace('{URL}', encodeURIComponent($itemUrl)).replace('{TITLE}', encodeURIComponent((typeof($itemTitle) != "undefined") ? $itemTitle : document.title));
                 } else {
-                    $url = $links[type].replace('{URL}', encodeURIComponent(location.href)).replace('{TITLE}', encodeURIComponent(document.title));
+                    $url = $links[type.name].replace('{URL}', encodeURIComponent(location.href)).replace('{TITLE}', encodeURIComponent(document.title));
                 }
 
-                switch (type) {
+                switch (type.name) {
                     case 'facebook':
                         if ($params.fb_url != '' && $config.enablePopup) {
                             $url = $params.fb_url;
