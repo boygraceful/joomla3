@@ -211,25 +211,6 @@
                    description="" />
             <!--Share Social-->
 
-            <field
-                    name="box_top"
-                    type="text"
-                    default="200"
-                    label="Initial Top Position"
-                    description="Initial Top Position"/>
-            <field
-                    name="box_left"
-                    type="text"
-                    default="80"
-                    label="Left Position"
-                    description="Left Position"/>
-
-            <field name="ordering_buttons" type="social" default="facebook,twitter,linkedin,gplus"
-                   label="Ordering buttons"
-                   description="Only tabs listed will be showed"
-                   desc=""
-                    />
-
             <field name="show_in_article" type="radio" default="0" label="Show in Article"
                    description="Display the plugin in Article or not." class="btn-group">
                 <option value="1">JYES</option>
@@ -277,6 +258,25 @@
                 <option value="float_left">Left</option>
                 <option value="float_right">Right</option>
             </field>
+
+            <field
+                    name="box_top"
+                    type="text"
+                    default="200"
+                    label="Initial Top Position"
+                    description="Initial Top Position"/>
+            <field
+                    name="box_left"
+                    type="text"
+                    default="200"
+                    label="Left Position"
+                    description="Left Position"/>
+            <field
+                    name="box_right"
+                    type="text"
+                    default="300"
+                    label="Right Position"
+                    description="Right Position"/>
 
             <field name="social_order" type="socialorder" label="" description="test"/>
 

@@ -55,7 +55,7 @@ class Zo2Socialshare
             $socials = json_decode($this->params->get('social_order'));
             $newSocials = array();
 
-            foreach($socials as $social) {
+            foreach ($socials as $social) {
 
                 if ($social->enable) {
 
@@ -79,7 +79,7 @@ class Zo2Socialshare
                 }
             }
 
-            $newSocials  = "'" . addslashes(json_encode($newSocials)) . "'";
+            $newSocials = "'" . addslashes(json_encode($newSocials)) . "'";
 
             $document->addStyleSheet(ZO2_PLUGIN_URL . '/addons/socialshare/css/social.css');
             //$document->addScript(ZO2_PLUGIN_URL . '/assets/vendor/jquery/jquery-1.9.1.min.js');
@@ -95,8 +95,10 @@ class Zo2Socialshare
                         $("' . $selector . '").Zo2Socialshare({
                             buttons: $.parseJSON(' . $newSocials . '),
                             display_style: "' . $display_type . '",
+                            floating_position: "' . $this->params->get('floating_position', 'left') . '",
                             box_top: "' . $this->params->get('box_top', 100) . '",
                             box_left: "' . $this->params->get('box_left', 0) . '",
+                            box_right: "' . $this->params->get('box_right', 0) . '",
                             enablePopup: ' . $this->params->get('enable_popup', 0) . ',
                             popupParams: {
                                 sClose: "' . $close_popup . '",
@@ -159,22 +161,43 @@ class Zo2Socialshare
         $url = '';
         $option = JFactory::getApplication()->input->getCmd('option', '');
         $view = $this->getView();
+        $params = Zo2Framework::getParams();
 
         if ($this->showIn($view)) {
 
-            $this->loadScript($selector);
+            $cats = $params->get('catid');
 
-            if ($option == 'com_content') {
-                $url = JUri::getInstance()->toString(array('scheme', 'host', 'port')) . JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catslug));
-            } else if ($option == 'com_k2') {
-                $url = JUri::getInstance()->toString(array('scheme', 'host', 'port')) . $article->link;
-            }
-            $html = '<div class="zo2-social-wrap" data-id="' . $article->id . '" data-url="' . $url . '" data-title="' . $article->title . '" ></div>';
+            if (($cats[0] == '') || in_array($article->catid, $cats)) {
 
-            if ($view == 'article') {
-                $article->text = $html . $article->text;
-            } else if ($view == 'category' || $view == 'featured') {
-                $article->introtext = $html . $article->introtext;
+                $this->loadScript($selector);
+
+                if ($option == 'com_content') {
+                    $url = JUri::getInstance()->toString(array('scheme', 'host', 'port')) . JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catslug));
+                } else if ($option == 'com_k2') {
+                    $url = JUri::getInstance()->toString(array('scheme', 'host', 'port')) . $article->link;
+                }
+
+                $html = '<div class="zo2-social-wrap" data-id="' . $article->id . '" data-url="' . $url . '" data-title="' . $article->title . '" ></div>';
+
+                if ($view == 'article') {
+
+                    if ($params->get('display_type') == 'normal') {
+
+                        if ($params->get('normal_position') == 'top') {
+                            $html = $html . $article->text;
+                        } else if ($params->get('normal_position') == 'bottom') {
+                            $html = $article->text . $html;
+                        }
+
+                    } else {
+                        $html = $html . $article->text;
+                    }
+
+                    $article->text = $html;
+
+                } else if ($view == 'category' || $view == 'featured') {
+                    $article->introtext = $html . $article->introtext;
+                }
             }
 
         }

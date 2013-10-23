@@ -17,8 +17,10 @@
         var $config = $.extend({
             buttons: null,
             display_style: 'normal', // normal or floating
+            floating_position: 'float_left', // float_left or float_right
             box_top: 200,
-            box_left: 20,
+            box_left: 200,
+            box_right: 300,
             enablePopup: false,
             popupParams: {
                 sClose: 10,
@@ -37,13 +39,17 @@
 
 
         return this.each(function () {
-//            console.log($config.test);
+
             var count = 0;
             var counter = '';
             var $this = this;
             var $container = $(this);
 
             if ($.isArray($config.buttons)) {
+
+                if ($config.display_style == 'normal') {
+                    $container.addClass('horizontal');
+                }
 
                 $.each($config.buttons, function (key, value) {
                     var $button = getHtmlButton(value);
@@ -96,18 +102,28 @@
                 var $main_box = $($this).closest('.container');
                 var $social_box = $($this);
                 var $top_scrolled = 30;
-                var $x = parseInt($main_box.offset().left) - $config.box_left;
+                var $x = 0;
                 var $y = $config.box_top - $top_scrolled;
+                var $position = '';
                 var $scrollY = $(window).scrollTop();
 
+                if ($config.floating_position == 'float_left') {
+
+                    $x = parseInt($main_box.offset().left) - $config.box_left;
+
+                } else if ($config.floating_position == 'float_right') {
+
+                    $x = parseInt($main_box.width()) + parseInt($config.box_right);
+
+                }
                 if ($social_box.length > 0) {
+
                     if ($scrollY > $y) {
-                        //$social_box.stop().css({position: 'fixed', top: $top_scrolled, left: $x});
                         $social_box.stop().attr('style', 'position: fixed; z-index: 9999; top: ' + $top_scrolled + 'px; left: ' + $x + 'px');
                     } else if ($scrollY < $y) {
-                        // $social_box.css({position: 'absolute', top: $config.box_top, left: $x});
                         $social_box.attr('style', 'position: fixed; z-index: 9999; top: ' + $config.box_top + 'px; left: ' + $x + 'px');
                     }
+
                 }
 
             }
@@ -150,6 +166,8 @@
 
                         if ($config.display_style == 'normal') {
                             $countLayout = 'horizontal';
+                        } else if ($config.display_style == 'floating') {
+                            $countLayout = 'vertical';
                         }
 
                         $html += '<a href="' + $url + '" class="socialite twitter-share" data-url="' + $url + '" data-count="' + $countLayout + '" target="_blank">' +
@@ -164,7 +182,7 @@
                             $gShareAnnotation = 'vertical-bubble';
                         }
 
-                        $html += '<a href="' + $url + '" class="socialite googleplus-share" data-action="share" '+(($gShareAnnotation == 'inline') ? '' : 'data-annotation="' + $gShareAnnotation +'"')+' data-href="' + $url + '" target="_blank">' +
+                        $html += '<a href="' + $url + '" class="socialite googleplus-share" data-action="share" ' + (($gShareAnnotation == 'inline') ? '' : 'data-annotation="' + $gShareAnnotation + '"') + ' data-href="' + $url + '" target="_blank">' +
                             '<span class="zo2-share-btn">Share on Google+</span></a>';
 
                         break;
