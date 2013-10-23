@@ -28,16 +28,18 @@ class Zo2Component_footer_copyright extends Zo2Component {
         $gototop = $zo2->getParams('footer_gototop');
 
         $html = '<footer>';
-        $html .= '<a href="http://zo2framework.org" style="display:block;float:left;margin-right: 20px">';
-        $html .= '<img src="' . $logo . '" />';
-        $html .= '</a>';
-        $html .= '<section style="float:left">' . $copyright . '</section>';
+        $html .= '<section class="copyright" style="text-align:center">' . $copyright . '</section>';
+        if ($logo == 1) {
+            $html .= '<a class="footer_zo2_logo" href="http://zo2framework.org" style="display:block;clear:both;margin:auto;text-align: center">';
+            $html .= '<img src="' . JUri::root(true) . '/plugins/system/zo2/assets/images/zo2logo.png" />';
+            $html .= '</a>';
+        }
         if ($gototop) {
-            $html .= '<a href="#" id="gototop" title="Go to top"><i class="icon-chevron-sign-up" /></a>';
+            $html .= '<a href="#" id="gototop" title="Go to top"><i class="icon-chevron-sign-up"></i></a>';
 
             $style = '#gototop{display:block;position:fixed;width:20px;height:20px;right:40px;bottom:40px;font-size:30px;text-decoration:none}';
 
-            $script = 'jQuery("#gototop").click(function(){jQuery("body").animate({scrollTop: 0}); return false;});';
+            $script = 'jQuery("#gototop").click(function(){jQuery("body, html").animate({scrollTop: 0}); return false;});';
 
             $zo2->getLayout()->insertCssDeclaration($style)->insertJsDeclaration($script);
         }

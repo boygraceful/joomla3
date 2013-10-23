@@ -117,6 +117,14 @@ class Zo2Layout {
         return $this;
     }
 
+    public function insertLessDeclaration($less)
+    {
+        if (!class_exists('lessc', false)) Zo2Framework::import('vendor.less.lessc');
+        $compiler = new lessc();
+        $style = $compiler->compile($less);
+        $this->insertCssDeclaration($style);
+    }
+
     /**
      * Insert a CSS file into output
      *
@@ -140,7 +148,7 @@ class Zo2Layout {
         $cacheDir = $this->_templatePath . 'assets' . DIRECTORY_SEPARATOR . 'cache';
         $filePath = $cacheDir . DIRECTORY_SEPARATOR . $fileName;
         $relativePath = '/assets/cache/' . $fileName;
-        $content = $this->processLess(file_get_contents($path));
+        $content = $this->processLessFile($path);
         file_put_contents($filePath, $content);
 
         $this->insertCss($relativePath);
@@ -157,62 +165,6 @@ class Zo2Layout {
     {
         return $this->_layoutContent;
     }
-
-    /**
-     * Process javascript and css, then insert into document.
-     * Combine and minify if needed.
-     *
-     * @return string
-     */
-    private function processStatics()
-    {
-        $footer = "";
-        $header = "";
-        if ($this->_layoutStatics != null) {
-            foreach($this->_layoutStatics as $item) {
-                if ($item['position'] == 'header') {
-                    if ($item['type'] == 'css') $header .= $this->generateCssTag($item);
-                    elseif ($item['type'] == 'js') $header .= $this->generateJsTag($item);
-                }
-                elseif ($item['position'] == 'footer') {
-                    if ($item['type'] == 'css') $footer .= $this->generateCssTag($item);
-                    elseif ($item['type'] == 'js') $footer .= $this->generateJsTag($item);
-                }
-            }
-        }
-
-        if (count($this->_styleDeclaration) > 0) {
-            $styles = '';
-            foreach ($this->_styleDeclaration as $style) {
-                $styles .= $style . "\n";
-            }
-
-            $styles = '<style type="text/css">' . $styles . '</style>';
-            $header .= "\n" . $styles;
-        }
-
-        if (count($this->_jsDeclaration) > 0) {
-            $scripts = '';
-
-            foreach ($this->_jsDeclaration as $js) {
-                $scripts .= $js . "\n";
-            }
-
-            $scripts = '<script type="text/javascript">' . $scripts . '</script>';
-
-            $footer .= $scripts;
-        }
-
-        if(!empty($header)){
-            $this->_output = str_replace('</head>', $header . '</head>' , $this->_output);
-        }
-
-        if(!empty($header)){
-            $this->_output = str_replace('</body>', $footer . '</body>' , $this->_output);
-        }
-        return $this->_output;
-    }
-
 
     /**
      * Insert script tag for js
@@ -263,7 +215,8 @@ class Zo2Layout {
         $cacheDir = $this->_templatePath . 'assets' . DIRECTORY_SEPARATOR . 'cache';
         $filePath = $cacheDir . DIRECTORY_SEPARATOR . $fileName;
         $relativePath = '/assets/cache/' . $fileName;
-        $content = $this->processLess(file_get_contents($this->_templatePath . $item['path']));
+        //$content = $this->processLess(file_get_contents($this->_templatePath . $item['path']));
+        $content = $this->processLessFile($this->_templatePath . $item['path']);
         file_put_contents($filePath, $content);
 
         $path = $this->_templateUri . $relativePath;
@@ -756,6 +709,15 @@ class Zo2Layout {
         $compiler = new lessc();
 
         return $compiler->compile($content);
+    }
+
+    private function processLessFile($path)
+    {
+        if (!class_exists('lessc', false)) Zo2Framework::import('vendor.less.lessc');
+
+        $compiler = new lessc();
+
+        return $compiler->compileFile($path);
     }
 
     /**
