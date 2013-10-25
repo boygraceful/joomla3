@@ -284,3 +284,8 @@ html[xmlns] .clearfix { display: block; }
 .include_categories > ul > li {
     list-style: none !important;
 }
+.category-item label,
+.category-item input {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
