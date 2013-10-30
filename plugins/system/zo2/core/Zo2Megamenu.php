@@ -5,8 +5,7 @@
  *
  * @link        http://www.zo2framework.org
  * @link        http://github.com/aploss/zo2
- * @author      Duc Nguyen <ducntv@gmail.com>
- * @author      Hiepvu <vqhiep2010@gmail.com>
+ * @author      ZooTemplate <http://zootemplate.com>
  * @copyright   Copyright (c) 2013 APL Solutions (http://apl.vn)
  * @license     GPL v2
  */
@@ -21,6 +20,7 @@ class Zo2MegaMenu
     protected $_items = null;
     protected $edit = false;
     protected $isAdmin = false;
+    private $_activeMenuId = -1;
     function __construct($menutype = 'mainmenu', $configs = array(), $params)
     {
         $this->_configs = $configs;
@@ -38,6 +38,7 @@ class Zo2MegaMenu
 
         $active_menu = $menu->getActive() ? $menu->getActive() : $menu->getDefault();
         $menu_id = $active_menu ? $active_menu->id : 0;
+        $this->_activeMenuId = $menu_id;
         $menu_tree = $active_menu->tree ? $active_menu->tree : array();
 
         // Get all child menus for a parent menu
@@ -150,6 +151,90 @@ class Zo2MegaMenu
 
     }
 
+    public function renderOffCanvasMenu($isAdmin = false)
+    {
+        $this->isAdmin = $isAdmin;
+        $html = '<div class="offcanvas offcanvas-left hidden-lg hidden-md hidden-sm visible-xs"><div class="sidebar-nav">';
+
+        $keys = array_keys($this->_items);
+        $html .= $this->getOffCanvasMenu(null, $keys[0]);
+        $html .= '</div></div>';
+        return $html;
+    }
+
+    function getOffCanvasMenu($parent = null, $start = 0, $end = 0)
+    {
+        $html = '';
+        if ($start > 0) {
+            if (!isset($this->_items[$start])) return;
+            $parent_id = $this->_items[$start]->parent_id;
+            $menus = array();
+            $started = false;
+            foreach ($this->children[$parent_id] as $item) {
+
+                if ($started) {
+                    if ($item->id == $end) break;
+                    array_push($menus, $item);
+                } else {
+                    if ($item->id == $start) {
+                        $started = true;
+                        array_push($menus, $item);
+                    }
+                }
+            }
+
+            if (!count($menus)) return;
+
+        } else if ($start === 0){
+            $pid = $parent->id;
+            if (!isset($this->children[$pid])) return ;
+            $menus = $this->children[$pid];
+        } else {
+            return;
+        }
+
+
+        $class = '';
+        if (!$parent) {
+            $class .= ''; //additional class here
+        } else {
+            if (!$this->isAdmin) $class .= 'nav';
+            $class .= ' level' . $parent->level;
+        }
+
+        if ($class) $class = 'class="'.trim($class).'"';
+
+        $html .= '<ul '.$class.'>';
+
+        foreach ($menus as $menu) {
+            $html .= $this->generateOffCanvasHtml($menu);
+        }
+        $html .= '</ul>';
+
+        return $html;
+    }
+
+    private function generateOffCanvasHtml($menu)
+    {
+        $submenuHtml = '';
+        $menus = isset($this->children[$menu->id]) ? $this->children[$menu->id] : array();
+        if (!empty($menus)) {
+            $submenuHtml = '<ul class="submenu nav-sub">';
+            foreach ($menus as $submenu) {
+                $submenuHtml .= $this->generateOffCanvasHtml($submenu);
+            }
+            $submenuHtml .= '</ul>';
+        }
+        $liClass = array();
+        if (!empty($submenuHtml)) $liClass[] = 'nav-parent>';
+        if ($this->_activeMenuId == $menu->id) $liClass[] = 'nav-active';
+        $html = '<li class="' . implode(' ', $liClass) . '">';
+        $html .= '<a href="' . $menu->flink . '">' . $menu->title . '</a>';
+        $html .= $submenuHtml;
+        $html .= '</li>';
+        return $html;
+    }
+
     /**
      * render menu
      */
@@ -158,13 +243,25 @@ class Zo2MegaMenu
         $this->isAdmin = $isAdmin;
         //
         $prefix = '<nav data-zo2selectable="navbar" class="wrap zo2-menu navbar navbar-default" role="navigation"><div class="container">';
-        $prefix .= '<div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        $prefix .= '<div class="navbar-header">';
+
+        /*
+        $prefix .= '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                           <span class="sr-only">ZO2</span>
                           <span class="icon-bar"></span>
                           <span class="icon-bar"></span>
                           <span class="icon-bar"></span>
-                    </button>
-                    </div>
+                    </button>';
+        */
+
+        $prefix .= '<button type="button" class="navbar-toggle off-canvas-trigger" data-toggle="offcanvas">
+                          <span class="sr-only">ZO2</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                    </button>';
+
+        $prefix .= '</div>
                     <div class="navbar-collapse collapse">';
         $suffix = '</div></div></nav>';
         $html = '';

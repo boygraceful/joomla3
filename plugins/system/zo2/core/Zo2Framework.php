@@ -5,8 +5,7 @@
  *
  * @link        http://www.zo2framework.org
  * @link        http://github.com/aploss/zo2
- * @author      Duc Nguyen <ducntv@gmail.com>
- * @author      Hiepvu <vqhiep2010@gmail.com>
+ * @author      ZooTemplate <http://zootemplate.com>
  * @copyright   Copyright (c) 2013 APL Solutions (http://apl.vn)
  * @license     GPL v2
  */
@@ -397,9 +396,10 @@ class Zo2Framework {
     }
 
     /**
-     * Display megamenu
      * @param $menutype
      * @param $template
+     * @param bool $isAdmin
+     * @return string
      */
     public static function displayMegaMenu($menutype, $template, $isAdmin = false) {
 
@@ -412,7 +412,19 @@ class Zo2Framework {
         }
         $menu = new Zo2MegaMenu ($menutype, $mmconfig, $params);
         return $menu->renderMenu($isAdmin);
+    }
 
+    public static function displayOffCanvasMenu($menutype, $template, $isAdmin = false)
+    {
+        Zo2Framework::import2('core.Zo2Megamenu');
+        $params = Zo2Framework::getParams();
+        $configs = json_decode($params->get('menu_config', ''), true);
+        $mmconfig = ($configs && isset($configs[$menutype])) ? $configs[$menutype] : array();
+        if (JFactory::getApplication()->isAdmin()) {
+            $mmconfig['edit'] = true;
+        }
+        $menu = new Zo2MegaMenu ($menutype, $mmconfig, $params);
+        return $menu->renderOffCanvasMenu($isAdmin);
     }
 
     /**
